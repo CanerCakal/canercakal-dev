@@ -1,0 +1,124 @@
+---
+import "@fontsource-variable/inter";
+import "@fontsource-variable/jetbrains-mono";
+import "../styles/global.css";
+
+interface Props {
+    title: string;
+    description?: string;
+}
+
+const {
+    title,
+    description = "Caner Çakal — iOS Developer & Technical Writer",
+} = Astro.props;
+
+const nav = [
+    { path: "/projects", label: "~/projects" },
+    { path: "/writing", label: "~/writing" },
+    { path: "/about", label: "~/about" },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="tr">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content={description} />
+        <title>{title}</title>
+    </head>
+    <body>
+        <header class="site-header">
+            <nav>
+                <a href="/" class="logo">caner çakal</a>
+                <ul>
+                    {
+                        nav.map(({ path, label }) => (
+                            <li>
+                                <a
+                                    href={path}
+                                    class:list={{
+                                        active: currentPath.startsWith(path),
+                                    }}
+                                >
+                                    {label}
+                                </a>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <slot />
+        </main>
+
+        <footer class="site-footer">
+            <span class="prompt">$ echo</span> built in public — <a
+                href="https://github.com/CanerCakal/canercakal-dev"
+                target="_blank"
+                rel="noopener">source</a
+            >
+        </footer>
+    </body>
+</html>
+
+<style>
+    .site-header {
+        max-width: var(--max-width);
+        margin: 0 auto;
+        padding: var(--space-4) var(--space-3);
+    }
+    nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-3);
+    }
+    .logo {
+        font-family: var(--font-mono);
+        font-weight: 600;
+        color: var(--text);
+    }
+    nav ul {
+        display: flex;
+        gap: var(--space-3);
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    nav ul a {
+        font-family: var(--font-mono);
+        font-size: 0.875rem;
+        color: var(--text-muted);
+    }
+    nav ul a.active,
+    nav ul a:hover {
+        color: var(--accent);
+        opacity: 1;
+    }
+
+    main {
+        max-width: var(--max-width);
+        margin: 0 auto;
+        padding: var(--space-5) var(--space-3);
+        min-height: 60vh;
+    }
+
+    .site-footer {
+        max-width: var(--max-width);
+        margin: 0 auto;
+        padding: var(--space-4) var(--space-3);
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        color: var(--text-muted);
+        border-top: 1px solid var(--border);
+    }
+    .prompt {
+        color: var(--accent);
+    }
+</style>

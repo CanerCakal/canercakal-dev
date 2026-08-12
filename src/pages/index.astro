@@ -1,17 +1,24 @@
 ---
-
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Caner Çakal">
+	<h1>merhaba, ben caner<span class="cursor">_</span></h1>
+	<p>
+		iOS geliştiriyorum, yazıyorum ve public olarak build ediyorum. Bu site
+		şu an inşa halinde — süreci
+		<a href="https://github.com/CanerCakal/canercakal-dev">repo'dan</a> izleyebilirsin.
+	</p>
+</BaseLayout>
+
+<style>
+	.cursor {
+		color: var(--accent);
+		animation: blink 1.2s steps(2) infinite;
+	}
+	@keyframes blink {
+		50% {
+			opacity: 0;
+		}
+	}
+</style>
