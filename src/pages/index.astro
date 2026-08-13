@@ -1,24 +1,111 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const now = [
+  {
+    label: 'building',
+    text: 'Bu portfolyo sitesi — Astro ile, süreç public olarak repo\'da',
+  },
+  {
+    label: 'writing',
+    text: 'Telco churn prediction projesi üzerine bir Medium yazısı: sentetik dataset\'ten gerçek IBM dataset\'ine geçiş kararı',
+  },
+  {
+    label: 'learning',
+    text: 'Swift concurrency ve modern iOS mimarileri üzerine derinleşiyorum',
+  },
+];
+
+const lastUpdated = '2026-08-13';
 ---
 
 <BaseLayout title="Caner Çakal">
-	<h1>merhaba, ben caner<span class="cursor">_</span></h1>
-	<p>
-		iOS geliştiriyorum, yazıyorum ve public olarak build ediyorum. Bu site
-		şu an inşa halinde — süreci
-		<a href="https://github.com/CanerCakal/canercakal-dev">repo'dan</a> izleyebilirsin.
-	</p>
+  <section class="hero">
+    <h1>merhaba, ben caner<span class="cursor">_</span></h1>
+    <p class="intro">
+      Bilgisayar mühendisliği öğrencisiyim; iOS geliştiriyorum, oyun yapıyorum
+      ve öğrendiklerimi <a href="https://medium.com/@canercakalofficial">yazıyorum</a>.
+      Projelerimi sadece bitirmiyorum — verdiğim kararları, yaptığım hataları
+      ve öğrendiklerimi açık şekilde belgeliyorum.
+    </p>
+  </section>
+
+  <section class="now">
+    <h2><span class="prompt">~/</span>now</h2>
+    <ul>
+      {now.map(({ label, text }) => (
+        <li>
+          <span class="now-label">{label}</span>
+          <span class="now-text">{text}</span>
+        </li>
+      ))}
+    </ul>
+    <p class="updated">son güncelleme: {lastUpdated}</p>
+  </section>
 </BaseLayout>
 
 <style>
-	.cursor {
-		color: var(--accent);
-		animation: blink 1.2s steps(2) infinite;
-	}
-	@keyframes blink {
-		50% {
-			opacity: 0;
-		}
-	}
+  .hero {
+    margin-bottom: var(--space-6);
+  }
+  .intro {
+    font-size: 1.125rem;
+    color: var(--text-muted);
+    max-width: 38rem;
+  }
+  .intro a { color: var(--accent); }
+
+  .cursor {
+    color: var(--accent);
+    animation: blink 1.2s steps(2) infinite;
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  .now h2 {
+    font-size: 1.125rem;
+    margin-bottom: var(--space-3);
+  }
+  .prompt { color: var(--accent); }
+
+  .now ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .now li {
+    display: flex;
+    gap: var(--space-3);
+    align-items: baseline;
+    padding: var(--space-2) var(--space-3);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: border-color 0.25s var(--ease-spring), transform 0.25s var(--ease-spring);
+  }
+  .now li:hover {
+    border-color: var(--accent);
+    transform: translateX(4px);
+  }
+  .now-label {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--accent);
+    min-width: 5rem;
+    flex-shrink: 0;
+  }
+  .now-text {
+    color: var(--text);
+    font-size: 0.9375rem;
+  }
+  .updated {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: var(--space-3);
+  }
 </style>
