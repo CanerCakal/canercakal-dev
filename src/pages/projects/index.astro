@@ -1,0 +1,104 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { fetchRepo } from '../../lib/github';
+
+const entries = (await getCollection('projects'))
+  .sort((a, b) => a.data.order - b.data.order);
+
+const projects = await Promise.all(
+  entries.map(async (entry) => ({
+    ...entry.data,
+    live: await fetchRepo(entry.data.repo),
+  }))
+);
+
+const formatDate = (iso: string) => new Date(iso).toLocaleDateString('tr-TR');
+---
+
+<BaseLayout title="Projeler — Caner Çakal">
+  <h1><span class="prompt">~/</span>projects</h1>
+  <p class="lead">Yaptıklarım — canlı veriler doğrudan GitHub'dan geliyor.</p>
+
+  <div class="grid">
+    {projects.map((p) => (
+      <a class="card" href={p.live?.url ?? `https://github.com/${p.repo}`} target="_blank" rel="noopener">
+        <div class="card-top">
+          <h2>{p.title}</h2>
+          {p.live && <span class="stars">★ {p.live.stars}</span>}
+        </div>
+        <p class="summary">{p.summary}</p>
+        <div class="meta">
+          {p.live?.language && <span class="lang">{p.live.language}</span>}
+          {p.tags.map((t) => <span class="tag">{t}</span>)}
+        </div>
+      </a>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .prompt { color: var(--accent); }
+  .lead {
+    color: var(--text-muted);
+    margin-bottom: var(--space-5);
+  }
+  .grid {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .card {
+    display: block;
+    padding: var(--space-4);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    color: var(--text);
+    transition: border-color 0.25s var(--ease-spring), transform 0.25s var(--ease-spring);
+  }
+  .card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+  .card h2 {
+    font-size: 1.0625rem;
+    margin: 0;
+  }
+  .stars {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+  .summary {
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+    margin: var(--space-2) 0 var(--space-3);
+  }
+  .meta {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+  .lang, .tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 2px 10px;
+    border-radius: 999px;
+  }
+  .lang {
+    background: var(--accent-subtle);
+    color: var(--accent);
+  }
+  .tag {
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+</style>
