@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { fetchArticles } from '../../lib/medium';
+
+const articles = await fetchArticles();
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<BaseLayout title="Yazılar — Caner Çakal" description="Öğrendiklerim ve verdiğim kararlar üzerine yazdıklarım.">
+  <h1><span class="prompt">~/</span>writing</h1>
+  <p class="lead">
+    Öğrendiklerimi ve verdiğim kararları yazıya döküyorum — hepsi
+    <a href="https://medium.com/@canercakalofficial" target="_blank" rel="noopener">Medium</a>'da.
+  </p>
+
+  {articles.length === 0 ? (
+    <p class="empty">
+      Yazılar şu an yüklenemedi —
+      <a href="https://medium.com/@canercakalofficial" target="_blank" rel="noopener">Medium profilimden</a>
+      okuyabilirsin.
+    </p>
+  ) : (
+    <div class="list">
+      {articles.map((a) => (
+        <a class="article" href={a.url} target="_blank" rel="noopener">
+          <h2>{a.title}</h2>
+          <p class="excerpt">{a.excerpt}</p>
+          <div class="meta">
+            <time>{formatDate(a.date)}</time>
+            {a.tags.map((t) => <span class="tag">{t}</span>)}
+          </div>
+        </a>
+      ))}
+    </div>
+  )}
+</BaseLayout>
+
+<style>
+  .prompt { color: var(--accent); }
+  .lead {
+    color: var(--text-muted);
+    margin-bottom: var(--space-5);
+  }
+  .empty { color: var(--text-muted); }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+  }
+  .article {
+    display: block;
+    padding: var(--space-4) 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  .article:first-child { padding-top: 0; }
+  .article:hover { opacity: 1; }
+  .article h2 {
+    font-size: 1.0625rem;
+    margin: 0 0 var(--space-2);
+    transition: color 0.2s var(--ease-spring);
+  }
+  .article:hover h2 { color: var(--accent); }
+  .excerpt {
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+    margin: 0 0 var(--space-2);
+  }
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+  .tag {
+    border: 1px solid var(--border);
+    padding: 1px 8px;
+    border-radius: 999px;
+  }
+</style>
