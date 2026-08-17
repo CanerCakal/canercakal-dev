@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="404 — Caner Çakal">
+  <div class="notfound">
+    <h1><span class="prompt">$</span> cd: no such file or directory<span class="cursor">_</span></h1>
+    <p>Aradığın sayfa burada değil — belki taşındı, belki hiç olmadı.</p>
+    <a href="/">cd ~/</a>
+  </div>
+</BaseLayout>
+
+<style>
+  .notfound h1 {
+    font-size: 1.375rem;
+  }
+  .prompt { color: var(--accent); }
+  .cursor {
+    color: var(--accent);
+    animation: blink 1.2s steps(2) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  .notfound p { color: var(--text-muted); }
+  .notfound a { font-family: var(--font-mono); }
+</style>

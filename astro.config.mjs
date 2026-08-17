@@ -3,7 +3,12 @@ import { defineConfig } from 'astro/config';
 
 import mdx from '@astrojs/mdx';
 
+import sitemap from '@astrojs/sitemap';
+
 // https://astro.build/config
 export default defineConfig({
-  integrations: [mdx()]
+  // ...mevcut ayarlar (mdx vs.) burada kalacak
+  site: 'https://canercakal.dev',
+
+  integrations: [sitemap()]
 });
