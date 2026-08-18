@@ -3,26 +3,33 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 const now = [
 	{
-		label: "building",
+		label: "yapıyorum",
 		text: "Bu site dahil, aklımdaki fikirleri gerçek projelere dönüştürüyorum",
+		accent: "var(--accent)",
 	},
 	{
-		label: "focusing",
+		label: "odaklanıyorum",
 		text: "Swift ve iOS tarafında derinleşiyorum — mimari, modern API'ler, iyi kod",
+		accent: "var(--accent-2)",
 	},
 	{
-		label: "writing",
+		label: "yazıyorum",
 		text: "Öğrendiklerimi ve verdiğim kararları düzenli olarak yazıya döküyorum",
+		accent: "var(--accent-3)",
 	},
 ];
 
-const lastUpdated = "2026-08-13";
+const lastUpdated = "19 Ağustos 2026";
 ---
 
 <BaseLayout title="Caner Çakal">
 	<section class="hero">
-		<h1>merhaba, ben caner<span class="cursor">_</span></h1>
-		<p class="intro">
+		<h1>
+			Merhaba, ben <span class="gradient-text">Caner</span><span
+				class="cursor">_</span
+			>
+		</h1>
+		<p class="intro" id="intro">
 			Öğrenciyim ama bekleyen cinsten değilim: yapıyorum, bozuyorum,
 			yazıyorum. Şu sıralar aklım ve ellerim çoğunlukla tek bir yerde —
 			cebindeki cihazda çalışan şeyler üretmekte.
@@ -30,18 +37,47 @@ const lastUpdated = "2026-08-13";
 	</section>
 
 	<section class="now">
-		<h2><span class="prompt">~/</span>now</h2>
+		<h2><span class="pulse" aria-hidden="true"></span>Şu sıralar</h2>
 		<ul>
 			{
-				now.map(({ label, text }) => (
-					<li>
+				now.map(({ label, text, accent }) => (
+					<li style={`--item: ${accent}`}>
 						<span class="now-label">{label}</span>
 						<span class="now-text">{text}</span>
 					</li>
 				))
 			}
 		</ul>
-		<p class="updated">son güncelleme: {lastUpdated}</p>
+		<p class="updated">güncellendi: {lastUpdated}</p>
+	</section>
+
+	<section class="stack" aria-label="Kullandığım teknolojiler">
+		<div class="marquee">
+			<ul class="marquee-track">
+				{
+					[0, 1].map((copy) => (
+						<li aria-hidden={copy === 1}>
+							{[
+								"Swift",
+								"SwiftUI",
+								"SwiftData",
+								"UIKit",
+								"Python",
+								"Unity",
+								"C#",
+								"TypeScript",
+								"Astro",
+								"FastAPI",
+								"Git",
+								"Firebase",
+							].map((t) => (
+								<span class="chip">{t}</span>
+							))}
+						</li>
+					))
+				}
+			</ul>
+		</div>
 	</section>
 </BaseLayout>
 
@@ -53,11 +89,8 @@ const lastUpdated = "2026-08-13";
 		font-size: 1.125rem;
 		color: var(--text-muted);
 		max-width: 38rem;
+		min-height: 5.5em; /* scramble sırasında zıplamayı önler */
 	}
-	.intro a {
-		color: var(--accent);
-	}
-
 	.cursor {
 		color: var(--accent);
 		animation: blink 1.2s steps(2) infinite;
@@ -69,11 +102,29 @@ const lastUpdated = "2026-08-13";
 	}
 
 	.now h2 {
+		display: flex;
+		align-items: center;
+		gap: var(--space-2);
 		font-size: 1.125rem;
 		margin-bottom: var(--space-3);
 	}
-	.prompt {
-		color: var(--accent);
+	.pulse {
+		width: 9px;
+		height: 9px;
+		border-radius: 50%;
+		background: var(--accent);
+		animation: pulse 2.4s ease-out infinite;
+	}
+	@keyframes pulse {
+		0% {
+			box-shadow: 0 0 0 0 var(--accent-subtle);
+		}
+		70% {
+			box-shadow: 0 0 0 12px transparent;
+		}
+		100% {
+			box-shadow: 0 0 0 0 transparent;
+		}
 	}
 
 	.now ul {
@@ -87,24 +138,31 @@ const lastUpdated = "2026-08-13";
 	.now li {
 		display: flex;
 		gap: var(--space-3);
-		align-items: baseline;
-		padding: var(--space-2) var(--space-3);
-		background: var(--bg-elevated);
-		border: 1px solid var(--border);
+		align-items: center;
+		padding: var(--space-3);
+		background: var(--card-bg);
+		border: 1px solid var(--card-border);
+		backdrop-filter: blur(16px);
+		-webkit-backdrop-filter: blur(16px);
 		border-radius: var(--radius);
 		transition:
 			border-color 0.25s var(--ease-spring),
-			transform 0.25s var(--ease-spring);
+			transform 0.25s var(--ease-spring),
+			box-shadow 0.25s var(--ease-spring);
 	}
 	.now li:hover {
-		border-color: var(--accent);
+		border-color: color-mix(in srgb, var(--item) 45%, transparent);
+		box-shadow: 0 0 28px color-mix(in srgb, var(--item) 16%, transparent);
 		transform: translateX(4px);
 	}
 	.now-label {
 		font-family: var(--font-mono);
-		font-size: 0.8125rem;
-		color: var(--accent);
-		min-width: 5rem;
+		font-size: 0.78rem;
+		color: var(--item);
+		background: color-mix(in srgb, var(--item) 12%, transparent);
+		border: 1px solid color-mix(in srgb, var(--item) 28%, transparent);
+		padding: 3px 12px;
+		border-radius: 999px;
 		flex-shrink: 0;
 	}
 	.now-text {
@@ -117,4 +175,137 @@ const lastUpdated = "2026-08-13";
 		color: var(--text-muted);
 		margin-top: var(--space-3);
 	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.pulse {
+			animation: none;
+		}
+	}
+
+	.stack {
+		margin-top: var(--space-6);
+	}
+	.marquee {
+		overflow: hidden;
+		mask-image: linear-gradient(
+			90deg,
+			transparent,
+			black 12%,
+			black 88%,
+			transparent
+		);
+		-webkit-mask-image: linear-gradient(
+			90deg,
+			transparent,
+			black 12%,
+			black 88%,
+			transparent
+		);
+	}
+	.marquee-track {
+		display: flex;
+		width: max-content;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		animation: scroll 32s linear infinite;
+	}
+	.marquee:hover .marquee-track {
+		animation-play-state: paused;
+	}
+	.marquee-track li {
+		display: flex;
+		gap: var(--space-2);
+		padding-right: var(--space-2);
+	}
+	.chip {
+		font-family: var(--font-mono);
+		font-size: 0.8125rem;
+		color: var(--text-muted);
+		background: var(--card-bg);
+		border: 1px solid var(--card-border);
+		padding: 6px 16px;
+		border-radius: 999px;
+		white-space: nowrap;
+		transition:
+			color 0.2s,
+			border-color 0.2s;
+	}
+	.chip:hover {
+		color: var(--accent);
+		border-color: var(--accent);
+	}
+	@keyframes scroll {
+		to {
+			transform: translateX(-50%);
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.marquee-track {
+			animation: none;
+			flex-wrap: wrap;
+		}
+	}
 </style>
+
+<script>
+	const el = document.getElementById("intro");
+	const reduced = window.matchMedia(
+		"(prefers-reduced-motion: reduce)",
+	).matches;
+
+	if (el && !reduced) {
+		const intro = el; // TS narrowing closure'lara taşınmaz; sabit referans çözümü
+		const original = (intro.textContent ?? "").replace(/\s+/g, " ").trim();
+		const glyphs = "!<>-_\\/[]{}=+*^?#010110";
+		const rand = () => glyphs[Math.floor(Math.random() * glyphs.length)];
+
+		// 1) Açılışta: şifre çözülme efekti
+		let progress = 0;
+		const step = Math.ceil(original.length / 55);
+		intro.textContent = original
+			.split("")
+			.map((c) => (c === " " ? " " : rand()))
+			.join("");
+
+		const decode = setInterval(() => {
+			progress += step;
+			intro.textContent = original
+				.split("")
+				.map((c, i) => (c === " " || i < progress ? c : rand()))
+				.join("");
+			if (progress >= original.length) {
+				clearInterval(decode);
+				intro.textContent = original;
+				startFlicker();
+			}
+		}, 28);
+
+		// 2) Sonrasında: arada bir küçük bölgesel titreşim
+		function startFlicker() {
+			setInterval(() => {
+				const start = Math.floor(
+					Math.random() * (original.length - 10),
+				);
+				let ticks = 0;
+				const flicker = setInterval(() => {
+					intro.textContent = original
+						.split("")
+						.map((c, i) =>
+							i >= start &&
+							i < start + 7 &&
+							c !== " " &&
+							Math.random() < 0.6
+								? rand()
+								: c,
+						)
+						.join("");
+					if (++ticks > 4) {
+						clearInterval(flicker);
+						intro.textContent = original;
+					}
+				}, 55);
+			}, 5000);
+		}
+	}
+</script>

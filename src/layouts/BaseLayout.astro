@@ -14,9 +14,9 @@ const {
 } = Astro.props;
 
 const nav = [
-    { path: "/projects", label: "~/projects" },
-    { path: "/writing", label: "~/writing" },
-    { path: "/about", label: "~/about" },
+    { path: "/projects", label: "Projeler" },
+    { path: "/writing", label: "Yazılar" },
+    { path: "/about", label: "Hakkımda" },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -34,7 +34,7 @@ const currentPath = Astro.url.pathname;
         <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="sitemap" href="/sitemap-index.xml" />
-        <meta name="theme-color" content="#0d1117" />
+        <meta name="theme-color" content="#0a0b16" />
 
         <!-- Open Graph -->
         <meta property="og:type" content="website" />
@@ -54,9 +54,12 @@ const currentPath = Astro.url.pathname;
         <meta name="twitter:image" content={new URL("/og.png", Astro.site)} />
     </head>
     <body>
+        <div class="aurora" aria-hidden="true">
+            <span></span><span></span><span></span>
+        </div>
         <header class="site-header">
             <nav>
-                <a href="/" class="logo">caner çakal</a>
+                <a href="/" class="logo">Caner ÇAKAL</a>
                 <ul>
                     {
                         nav.map(({ path, label }) => (
@@ -92,9 +95,18 @@ const currentPath = Astro.url.pathname;
 
 <style>
     .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: color-mix(in srgb, var(--bg) 62%, transparent);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-bottom: 1px solid var(--border);
+    }
+    .site-header nav {
         max-width: var(--max-width);
         margin: 0 auto;
-        padding: var(--space-4) var(--space-3);
+        padding: var(--space-3);
     }
     nav {
         display: flex;
