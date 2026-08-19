@@ -57,6 +57,7 @@ const currentPath = Astro.url.pathname;
         <div class="aurora" aria-hidden="true">
             <span></span><span></span><span></span>
         </div>
+        <div class="lens" id="lens" aria-hidden="true"></div>
         <header class="site-header">
             <nav>
                 <a href="/" class="logo">Caner ÇAKAL</a>
@@ -156,4 +157,87 @@ const currentPath = Astro.url.pathname;
     .prompt {
         color: var(--accent);
     }
+    .lens {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-100px, -100px);
+        border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+        background: radial-gradient(
+            circle,
+            color-mix(in srgb, var(--accent) 10%, transparent),
+            transparent 70%
+        );
+        backdrop-filter: blur(2.5px) saturate(1.3);
+        -webkit-backdrop-filter: blur(2.5px) saturate(1.3);
+        transition:
+            width 0.3s var(--ease-spring),
+            height 0.3s var(--ease-spring),
+            border-color 0.3s ease,
+            opacity 0.3s ease;
+        opacity: 0;
+    }
+    body:hover .lens {
+        opacity: 1;
+    }
+    .lens.on-link {
+        width: 64px;
+        height: 64px;
+        border-color: color-mix(in srgb, var(--accent-3) 55%, transparent);
+        backdrop-filter: blur(1px) saturate(1.6);
+        -webkit-backdrop-filter: blur(1px) saturate(1.6);
+    }
+    @media (pointer: coarse), (prefers-reduced-motion: reduce) {
+        .lens {
+            display: none;
+        }
+    }
 </style>
+
+<script>
+    const lens = document.getElementById("lens");
+    const fine = window.matchMedia("(pointer: fine)").matches;
+    const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (lens && fine && !calm) {
+        let targetX = -100,
+            targetY = -100;
+        let x = targetX,
+            y = targetY;
+
+        window.addEventListener(
+            "mousemove",
+            (e) => {
+                targetX = e.clientX;
+                targetY = e.clientY;
+            },
+            { passive: true },
+        );
+
+        const loop = () => {
+            // lerp: her karede aradaki mesafenin %18'i kadar yaklaş — yumuşak takip
+            x += (targetX - x) * 0.18;
+            y += (targetY - y) * 0.18;
+            lens.style.transform =
+                "translate(" +
+                (x - lens.offsetWidth / 2) +
+                "px, " +
+                (y - lens.offsetHeight / 2) +
+                "px)";
+            requestAnimationFrame(loop);
+        };
+        requestAnimationFrame(loop);
+
+        document.addEventListener("mouseover", (e) => {
+            const t = e.target;
+            if (t instanceof Element) {
+                lens.classList.toggle("on-link", !!t.closest("a, button"));
+            }
+        });
+    }
+</script>
