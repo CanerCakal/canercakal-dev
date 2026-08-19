@@ -5,3 +5,61 @@ summary: 'Rol bazlı akademik proje yönetim uygulaması — öğrenci önerir, 
 tags: ['Swift', 'SwiftUI', 'Firebase', 'MVVM']
 order: 1
 ---
+## Nereden çıktı bu proje?
+
+Her şey Veri Tabanı Yönetim Sistemleri dersinin final projesiyle başladı. İlk hali,
+sadece lokalde çalışan bir HTML + CSS + JS uygulamasıydı — çalışıyordu, dersi de
+geçti, ama içimde bir yerde "bu iş burada bitmemeli" diyen bir ses vardı.
+
+Asıl fikir de dersin kendisinden doğdu: bu derslerde herkese farklı problemlere
+çözüm üretmesi için projeler dağıtılıyor ama kimse birbirinin ne yaptığını
+göremiyor. Aynı fikir muhtemelen birden fazla kişinin aklına geliyor ve bunu fark
+etmenin hiçbir yolu yok. "Bunu çözen bir sistem olsa nasıl olurdu?" sorusu,
+projenin hizmet edeceği alanı bana kendisi söyledi: öğrenci proje önerir, hoca
+görür ve onaylar, admin de tüm süreci yönetir.
+
+## Web'den cebe: yeniden yazım
+
+Ders bittikten sonra Swift öğrenmeye başlamıştım ve bu proje mükemmel bir
+antrenman sahasıydı — konusuna zaten hakimdim, tüm enerjimi *nasıl doğru
+yapılır* sorusuna verebilirdim. Sıfırdan, bu sefer mobil uygulama olarak ve
+standartlara uygun bir mimariyle yeniden yazdım.
+
+Teknik iskelet şöyle kuruldu:
+
+- **SwiftUI + MVVM** — Views, ViewModels ve Models katmanları net ayrılmış
+  durumda. View sadece çizer, karar vermez; iş mantığı ViewModel'de yaşar.
+  İlk projede "her şey bir arada" yazmanın nelere mal olduğunu gördüğüm için
+  bu ayrım benim için teori değil, ders çıkarılmış bir tercihti.
+- **Firebase Auth + Firestore** — üç farklı rolün (öğrenci, hoca, admin)
+  kimlik doğrulaması ve rol bazlı yetkilendirmesi Auth üzerinde; öneriler,
+  onay durumları ve ders verileri Firestore'da gerçek zamanlı duruyor.
+  Lokalde hapsolmuş ilk versiyonun aksine bu hali gerçekten çok kullanıcılı.
+- **Rol bazlı akış** — aynı uygulama, giriş yapan kişinin rolüne göre üç
+  farklı deneyime bürünüyor. Bunu tasarlarken "ekran çoğaltmak" yerine
+  yetki modelini merkeze almak, sonradan eklenen her özelliğin maliyetini
+  ciddi biçimde düşürdü.
+
+Uygulama yayınlanmadı — bu bir öğrenme ve portfolyo projesi. Ama mimarisi
+sayesinde, benzer bir ihtiyacı olan birinin bu iskeletten gerçek bir ürüne
+gitmesi hiç zor değil; zaten en gurur duyduğum tarafı da bu.
+
+## Ne öğrendim?
+
+Bu proje bana kod yazmaktan fazlasını öğretti:
+
+- **Bir mobil uygulamanın tasarım aşamaları** — fikirden ekran akışına,
+  oradan veri modeline giden yolun kağıt üstünde başladığını; Xcode'u
+  açmadan önce verilen kararların en kalıcıları olduğunu gördüm.
+- **Mimari bir yatırımdır** — başta MVVM kurmak yavaşlatıyor gibi
+  hissettiriyor; üçüncü haftada yeni bir özellik eklerken hangi dosyaya
+  bakacağını *düşünmeden* bilmek ise o yatırımın temettüsü.
+- **Deneme-yanılma da bir yöntem** — SwiftUI component'lerini önce yanlış
+  kullanıp sonra doğrusunu bulmak, dokümantasyon okumaktan daha kalıcı
+  öğretti. Hatalarım bu projenin gizli müfredatıydı.
+- **İleriyi düşünerek kod yazmak** — "bu satır altı ay sonra birinin
+  başını ağrıtır mı?" sorusunu her commit'te sormayı burada alışkanlık
+  edindim.
+
+Kısacası: bir ders projesi olarak doğdu, benim Swift'le ciddi ilişkimin
+başlangıcı olarak büyüdü.

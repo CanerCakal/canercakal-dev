@@ -7,9 +7,13 @@ const entries = (await getCollection("projects")).sort(
   (a, b) => a.data.order - b.data.order,
 );
 
+const accents = ["var(--accent)", "var(--accent-2)", "var(--accent-3)"];
+
 const projects = await Promise.all(
-  entries.map(async (entry) => ({
+  entries.map(async (entry, i) => ({
     ...entry.data,
+    id: entry.id,
+    accent: accents[i % 3],
     live: await fetchRepo(entry.data.repo),
   })),
 );
@@ -18,7 +22,7 @@ const formatDate = (iso: string) => new Date(iso).toLocaleDateString("tr-TR");
 ---
 
 <BaseLayout title="Projeler — Caner Çakal">
-  <h1><span class="prompt">~/</span>projects</h1>
+  <h1>Projeler<span class="dot"></span></h1>
   <p class="lead">Yaptıklarım — canlı veriler doğrudan GitHub'dan geliyor.</p>
 
   <div class="grid">
@@ -26,20 +30,26 @@ const formatDate = (iso: string) => new Date(iso).toLocaleDateString("tr-TR");
       projects.map((p) => (
         <a
           class="card"
-          href={p.live?.url ?? `https://github.com/${p.repo}`}
-          target="_blank"
-          rel="noopener"
+          href={"/projects/" + p.id}
+          style={"--item: " + p.accent}
         >
           <div class="card-top">
             <h2>{p.title}</h2>
-            {p.live && <span class="stars">★ {p.live.stars}</span>}
+            {p.live && p.live.stars > 0 && (
+              <span class="stars">★ {p.live.stars}</span>
+            )}
           </div>
           <p class="summary">{p.summary}</p>
           <div class="meta">
             {p.live?.language && <span class="lang">{p.live.language}</span>}
-            {p.tags.map((t) => (
-              <span class="tag">{t}</span>
-            ))}
+            {p.tags
+              .filter(
+                (t) =>
+                  t.toLowerCase() !== (p.live?.language ?? "").toLowerCase(),
+              )
+              .map((t) => (
+                <span class="tag">{t}</span>
+              ))}
           </div>
         </a>
       ))
@@ -48,8 +58,8 @@ const formatDate = (iso: string) => new Date(iso).toLocaleDateString("tr-TR");
 </BaseLayout>
 
 <style>
-  .prompt {
-    color: var(--accent);
+  .dot {
+    color: var(--accent-2);
   }
   .lead {
     color: var(--text-muted);
@@ -73,7 +83,8 @@ const formatDate = (iso: string) => new Date(iso).toLocaleDateString("tr-TR");
       transform 0.25s var(--ease-spring);
   }
   .card:hover {
-    border-color: var(--accent);
+    border-color: color-mix(in srgb, var(--item) 45%, transparent);
+    box-shadow: 0 0 30px color-mix(in srgb, var(--item) 14%, transparent);
     transform: translateY(-3px);
     opacity: 1;
   }
@@ -111,8 +122,8 @@ const formatDate = (iso: string) => new Date(iso).toLocaleDateString("tr-TR");
     border-radius: 999px;
   }
   .lang {
-    background: var(--accent-subtle);
-    color: var(--accent);
+    background: color-mix(in srgb, var(--item) 13%, transparent);
+    color: var(--item);
   }
   .tag {
     border: 1px solid var(--border);
