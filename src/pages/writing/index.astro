@@ -3,82 +3,102 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { fetchArticles } from '../../lib/medium';
 
 const articles = await fetchArticles();
+const accents = ['var(--accent)', 'var(--accent-2)', 'var(--accent-3)'];
 
 const formatDate = (d: Date) =>
-  d.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+	d.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 
 <BaseLayout title="Yazılar — Caner Çakal" description="Öğrendiklerim ve verdiğim kararlar üzerine yazdıklarım.">
-  <h1><span class="prompt">~/</span>writing</h1>
-  <p class="lead">
-    Öğrendiklerimi ve verdiğim kararları yazıya döküyorum — hepsi
-    <a href="https://medium.com/@canercakalofficial" target="_blank" rel="noopener">Medium</a>'da.
-  </p>
+	<h1>Yazılar<span class="dot"></span></h1>
+		<p class="lead">Öğrendiklerimi ve verdiğim kararları yazıya döküyorum — hepsi ve daha fazlası Medium'da.</p>
 
-  {articles.length === 0 ? (
-    <p class="empty">
-      Yazılar şu an yüklenemedi —
-      <a href="https://medium.com/@canercakalofficial" target="_blank" rel="noopener">Medium profilimden</a>
-      okuyabilirsin.
-    </p>
-  ) : (
-    <div class="list">
-      {articles.map((a) => (
-        <a class="article" href={a.url} target="_blank" rel="noopener">
-          <h2>{a.title}</h2>
-          <p class="excerpt">{a.excerpt}</p>
-          <div class="meta">
-            <time>{formatDate(a.date)}</time>
-            {a.tags.map((t) => <span class="tag">{t}</span>)}
-          </div>
-        </a>
-      ))}
-    </div>
-  )}
+	{articles.length === 0 ? (
+		<p class="empty">
+			Yazılar şu an yüklenemedi —
+			<a href="https://medium.com/@canercakalofficial" target="_blank" rel="noopener">Medium profilimden</a>
+			okuyabilirsin.
+		</p>
+	) : (
+		<div class="list">
+			{articles.map((a, i) => (
+				<a class="article" href={a.url} target="_blank" rel="noopener" style={'--item: ' + accents[i % 3]}>
+					<h2>{a.title}</h2>
+					<p class="excerpt">{a.excerpt}</p>
+					<div class="meta">
+						<time>{formatDate(a.date)}</time>
+						{a.tags.map((t) => <span class="tag">{t}</span>)}
+					</div>
+				</a>
+			))}
+		</div>
+	)}
 </BaseLayout>
 
 <style>
-  .prompt { color: var(--accent); }
-  .lead {
-    color: var(--text-muted);
-    margin-bottom: var(--space-5);
-  }
-  .empty { color: var(--text-muted); }
+	.dot { color: var(--accent-3); }
+	.lead {
+		color: var(--text-muted);
+		margin-bottom: var(--space-5);
+	}
+	.empty { color: var(--text-muted); }
 
-  .list {
-    display: flex;
-    flex-direction: column;
-  }
-  .article {
-    display: block;
-    padding: var(--space-4) 0;
-    border-bottom: 1px solid var(--border);
-    color: var(--text);
-  }
-  .article:first-child { padding-top: 0; }
-  .article:hover { opacity: 1; }
-  .article h2 {
-    font-size: 1.0625rem;
-    margin: 0 0 var(--space-2);
-    transition: color 0.2s var(--ease-spring);
-  }
-  .article:hover h2 { color: var(--accent); }
-  .excerpt {
-    color: var(--text-muted);
-    font-size: 0.9375rem;
-    margin: 0 0 var(--space-2);
-  }
-  .meta {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--text-muted);
-  }
-  .tag {
-    border: 1px solid var(--border);
-    padding: 1px 8px;
-    border-radius: 999px;
-  }
+	.list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3);
+	}
+	.article {
+		display: block;
+		padding: var(--space-4);
+		background: var(--card-bg);
+		border: 1px solid var(--card-border);
+		backdrop-filter: blur(16px);
+		-webkit-backdrop-filter: blur(16px);
+		border-radius: var(--radius-lg);
+		color: var(--text);
+		transition:
+			border-color 0.25s var(--ease-spring),
+			transform 0.25s var(--ease-spring),
+			box-shadow 0.25s var(--ease-spring);
+	}
+	.article:hover {
+		border-color: color-mix(in srgb, var(--item) 45%, transparent);
+		box-shadow: 0 0 30px color-mix(in srgb, var(--item) 14%, transparent);
+		transform: translateY(-3px);
+		opacity: 1;
+	}
+	.article h2 {
+		font-size: 1.0625rem;
+		margin: 0 0 var(--space-2);
+		transition: color 0.2s ease;
+	}
+	.article:hover h2 { color: var(--item); }
+	.excerpt {
+		color: var(--text-muted);
+		font-size: 0.9375rem;
+		line-height: 1.7;
+		margin: 0 0 var(--space-3);
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+	.meta {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: var(--space-2);
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		color: var(--text-muted);
+	}
+	.meta time {
+		color: var(--item);
+	}
+	.tag {
+		border: 1px solid var(--card-border);
+		padding: 1px 10px;
+		border-radius: 999px;
+	}
 </style>

@@ -1,0 +1,274 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import me from "../assets/me.png";
+import me2 from "../assets/me-2.png";
+import me3 from "../assets/me-3.png";
+
+const contacts = [
+	{ label: "Türkiye", href: null, accent: "var(--accent)", icon: "pin" },
+	{
+		label: "GitHub — CanerCakal",
+		href: "https://github.com/CanerCakal",
+		accent: "var(--accent-2)",
+		icon: "github",
+	},
+	{
+		label: "Medium — @canercakalofficial",
+		href: "https://medium.com/@canercakalofficial",
+		accent: "var(--accent-3)",
+		icon: "medium",
+	},
+	{
+		label: "LinkedIn",
+		href: "https://www.linkedin.com/in/KULLANICI-ADIN",
+		accent: "var(--accent)",
+		icon: "linkedin",
+	},
+	{
+		label: "mail@ornek.com",
+		href: "mailto:mail@ornek.com",
+		accent: "var(--accent-2)",
+		icon: "mail",
+	},
+];
+
+const icons: Record<string, string> = {
+	pin: "M12 21s-7-5.1-7-11a7 7 0 1 1 14 0c0 5.9-7 11-7 11z M12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z",
+	github: "M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.2-3.4-1.2-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.4 1.1 3 .8.1-.6.4-1.1.6-1.3-2.2-.3-4.6-1.1-4.6-5a3.9 3.9 0 0 1 1-2.7 3.6 3.6 0 0 1 .1-2.7s.9-.3 2.8 1a9.4 9.4 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1a3.6 3.6 0 0 1 .1 2.7 3.9 3.9 0 0 1 1 2.7c0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5A10 10 0 0 0 12 2z",
+	medium: "M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5v-11zm4.2 3c.1 0 .2.1.2.3v6.1c0 .2 0 .2-.2.4l-1.3 1.5v.2h3.8v-.2l-1.3-1.5c-.2-.2-.2-.2-.2-.4v-5l3.3 7.1h.3l2.8-7.1v5.7c0 .2 0 .2-.1.3l-1 1v.2h4.8v-.2l-1-1c-.1-.1-.1-.1-.1-.3V10c0-.2 0-.2.1-.3l1-1v-.2h-3.4l-2.4 6-2.7-6H6.9v.2l1.3 1.8z",
+	linkedin:
+		"M6.5 8.5v11h-3v-11h3zM5 4a1.8 1.8 0 1 1 0 3.6A1.8 1.8 0 0 1 5 4zm14.5 9.3v6.2h-3v-5.7c0-1.4-.5-2.3-1.8-2.3-1 0-1.5.7-1.8 1.3-.1.2-.1.5-.1.9v5.8h-3v-11h3v1.5c.4-.6 1.1-1.5 2.8-1.5 2 0 3.9 1.3 3.9 4.8z",
+	mail: "M4 6h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1zm8 6.5L4.5 7.2v9.6h15V7.2L12 12.5zM5.8 7h12.4L12 11 5.8 7z",
+};
+---
+
+<BaseLayout
+	title="Hakkımda — Caner Çakal"
+	description="Caner kimdir — kod, denge ve merak üzerine."
+>
+	<section class="about">
+		<div class="crew" aria-hidden="true">
+			<div class="figure side" style="--item: var(--accent)">
+				<Image
+					src={me2}
+					alt=""
+					widths={[320, 560]}
+					sizes="(max-width: 700px) 26vw, 13rem"
+				/>
+			</div>
+			<div class="figure lead-figure" style="--item: var(--accent-2)">
+				<Image
+					src={me}
+					alt="Caner Çakal"
+					widths={[400, 700]}
+					sizes="(max-width: 700px) 34vw, 16rem"
+				/>
+			</div>
+			<div class="figure side" style="--item: var(--accent-3)">
+				<Image
+					src={me3}
+					alt=""
+					widths={[320, 560]}
+					sizes="(max-width: 700px) 26vw, 13rem"
+				/>
+			</div>
+		</div>
+
+		<div class="content">
+			<h1>Merhaba<span class="dot"></span></h1>
+
+			<p class="opener">
+				Ben Caner. Çocukluğumdan beri bilgisayarlar, telefonlar —
+				düğmesi olan ne varsa — ilgimi çekti. Bu merakın bedeli,
+				kurcalarken bozduğum sayısız bilgisayar oldu; kazancı ise bugün
+				yaptığım iş.
+			</p>
+			<p>
+				Asıl kıvılcım bir okul gezisinde çıktı: ODTÜ'yü gezerken oradaki
+				gönüllülerin anlattıkları ve atölyeler, o güne kadar sadece
+				kurcaladığım şeylerin bir meslek olabileceğini gösterdi.
+				Lisede artık yönüm netti — işin iç yüzüne dair neredeyse hiçbir şey
+				bilmiyordum ama "ben bilgisayar mühendisi olacağım" diyordum. Çalışmalarımın
+				karşılığını alıp bölümü kazandığımda, o gezideki çocuğun sözünü tutmuş
+				oldum.
+			</p>
+			<p>
+				Kod yazmadığım zamanlarda sporumu yapar, sosyal hayatımı
+				yaşarım; kafa dağıtmak için arada oyunlara dalarım. Ama beni en
+				çok heyecanlandıran şey yeni yerler görmek — gezmek ve gittiğim
+				her yerde tadım yapmak. Damak zevkim seçicidir ama yemeye
+				bayılırım.
+			</p>
+			<p>
+				Düzenli bir insanım: kodun dağınıklığı da masanın dağınıklığı da
+				beni aynı derecede rahatsız eder. Sessiz ortamlara bayılırım ama
+				yeri geldiğinde eğlenmesini de bilirim — bence hayat da tam
+				olarak böyle yaşanmalı: dengede.
+			</p>
+
+			<ul class="contact">
+				{
+					contacts.map((c) => (
+						<li style={"--item: " + c.accent}>
+							<svg viewBox="0 0 24 24" aria-hidden="true">
+								<path d={icons[c.icon]} />
+							</svg>
+							{c.href ? (
+								<a href={c.href} target="_blank" rel="noopener">
+									{c.label}
+								</a>
+							) : (
+								<span>{c.label}</span>
+							)}
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.about {
+		position: relative;
+	}
+	.crew {
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+		gap: 0;
+		margin-bottom: var(--space-5);
+	}
+	.figure {
+		position: relative;
+		width: 13rem;
+		transition: transform 0.35s var(--ease-spring);
+	}
+	.figure.lead-figure {
+		width: 16rem;
+		z-index: 2;
+		margin: 0 -2.5rem; /* yanlardakilerin üstüne hafif binsin */
+	}
+	.figure.side {
+		z-index: 1;
+		transform: translateY(0.75rem) scale(0.96);
+		opacity: 0.92;
+	}
+	.figure.side:first-child {
+		rotate: -2.5deg;
+	}
+	.figure.side:last-child {
+		rotate: 2.5deg;
+	}
+	.figure:hover {
+		transform: translateY(-0.4rem);
+		z-index: 3;
+		opacity: 1;
+	}
+	.figure img {
+		width: 100%;
+		height: auto;
+		display: block;
+		filter: saturate(0.95) brightness(0.96);
+		mask-image: linear-gradient(to bottom, black 78%, transparent 98%);
+		-webkit-mask-image: linear-gradient(
+			to bottom,
+			black 78%,
+			transparent 98%
+		);
+	}
+	.figure::before {
+		content: "";
+		position: absolute;
+		inset: 4% -8% -8% -8%;
+		z-index: -1;
+		background: radial-gradient(
+			circle at 50% 42%,
+			color-mix(in srgb, var(--item) 15%, transparent),
+			transparent 68%
+		);
+		filter: blur(28px);
+	}
+
+	@media (max-width: 700px) {
+		.figure {
+			width: 26vw;
+		}
+		.figure.lead-figure {
+			width: 34vw;
+			margin: 0 -3vw;
+		}
+	}
+	.content {
+		position: relative;
+		z-index: 1;
+		max-width: 33rem;
+	}
+	.dot {
+		color: var(--accent);
+	}
+	.content p {
+		color: var(--text-muted);
+		line-height: 1.8;
+		margin: 0 0 var(--space-3);
+	}
+	.content .opener {
+		color: var(--text);
+		font-size: 1.125rem;
+	}
+	.content em {
+		color: var(--accent);
+		font-style: normal;
+	}
+
+	.contact {
+		list-style: none;
+		margin: var(--space-5) 0 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2);
+	}
+	.contact li {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
+		width: fit-content;
+		padding: 8px 16px;
+		background: var(--card-bg);
+		border: 1px solid var(--card-border);
+		backdrop-filter: blur(16px);
+		-webkit-backdrop-filter: blur(16px);
+		border-radius: 999px;
+		transition:
+			border-color 0.25s var(--ease-spring),
+			transform 0.25s var(--ease-spring);
+	}
+	.contact li:hover {
+		border-color: color-mix(in srgb, var(--item) 45%, transparent);
+		transform: translateX(4px);
+	}
+	.contact svg {
+		width: 17px;
+		height: 17px;
+		fill: var(--item);
+		flex-shrink: 0;
+	}
+	.contact a,
+	.contact span {
+		font-family: var(--font-mono);
+		font-size: 0.85rem;
+		color: var(--text);
+	}
+	.contact a:hover {
+		color: var(--item);
+		opacity: 1;
+	}
+
+	@media (max-width: 820px) {
+		.content {
+			max-width: none;
+		}
+	}
+</style>
