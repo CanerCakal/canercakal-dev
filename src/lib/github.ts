@@ -16,14 +16,17 @@ export async function fetchRepo(repo: string): Promise<RepoData | null> {
   try {
     const headers: Record<string, string> = {
       Accept: 'application/vnd.github+json',
+      'User-Agent': 'canercakal-dev-site',
+      'X-GitHub-Api-Version': '2022-11-28',
     };
     if (TOKEN) headers.Authorization = `Bearer ${TOKEN}`;
 
     const res = await fetch(`https://api.github.com/repos/${repo}`, { headers });
 
     if (!res.ok) {
+      const body = await res.text().catch(() => '');
       console.warn(
-        `[github] ${repo} → ${res.status} ${res.statusText} (token: ${TOKEN ? 'var' : 'yok'})`
+        `[github] ${repo} → ${res.status} | kalan: ${res.headers.get('x-ratelimit-remaining')} | ${body.slice(0, 160)}`
       );
       return null;
     }
