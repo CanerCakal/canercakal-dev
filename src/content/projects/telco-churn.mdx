@@ -5,3 +5,88 @@ summary: 'IBM Telco verisiyle uçtan uca churn tahmini — pipeline ile veri sı
 tags: ['Python', 'scikit-learn', 'ML']
 order: 2
 ---
+## Nereden çıktı bu proje?
+
+Türkiye Yapay Zeka Akademisi'ndeki bootcamp'in final ödeviydi. Haftalarca Python,
+veri bilimi ve makine öğrenmesi üzerine ders aldıktan sonra sıra "artık kendi
+başına bir şey yap" aşamasına gelmişti. Konu serbestti — ki bu, sanılanın aksine
+işi kolaylaştırmıyor. Önünde koca bir boşluk var ve ne yapacağın kadar *neden*
+onu yapacağın da sana kalmış.
+
+Telekom müşteri ayrılması tahminini seçtim. Sebebi şuydu: bu problemin sonunda
+bir tablo değil, bir karar var. Model "bu müşteri gidebilir" dediğinde birinin
+kalkıp o müşteriyi araması gerekiyor. Çıktısı raporda kalan değil, hayata değen
+bir şey istedim. Ders sırasında en çok merak ettiğim şey zaten buydu — bu
+öğrendiklerim gerçek bir şirkette ne işe yarar?
+
+Elimde IBM'in yayınladığı 7043 müşterilik bir veri seti vardı. Kim ne kadar
+süredir abone, hangi hizmetleri alıyor, ne kadar ödüyor. Ve tek bir soru:
+bu insan gidecek mi?
+
+## Kendime kurduğum ilk tuzak
+
+İlk modelim yüksek bir doğruluk oranı verdi ve açıkçası sevindim. Sonra
+verideki ayrılan müşteri oranına baktım: %26.5. Yani hiçbir şey yapmasam,
+tek satır model yazmasam, herkese "kalacak" desem zaten %73 doğruluk
+alacaktım. Modelimin bulduğu şey, aslında hiçbir şey bulmamaktan bir tık
+iyiydi.
+
+O an, bootcamp boyunca dinlediğim "metriğine dikkat et" cümlesinin ne demek
+olduğunu anladım. Okumakla, kendi ekranında görmek arasındaki fark bu olsa
+gerek. Metriği değiştirdim, modeli azınlıktaki müşterilere dikkat etmeye
+zorladım. Sonuçta doğruluk oranım düştü — ama ayrılacak müşterilerin
+%80'ini yakalar hale geldi. Kağıt üstünde daha kötü, işe yarar olma
+anlamında çok daha iyi bir model.
+
+Bu, projenin bana öğrettiği en sert ders oldu: iyi görünen sayı ile
+işe yarayan sayı aynı şey değil.
+
+## Verinin sakladıkları
+
+Bir başka an: fatura tutarı sütununda hiç eksik veri görünmüyordu. Kontrol
+ettim, tertemiz. Ama sayısal işlemlerde bir tuhaflık vardı. Kurcalayınca
+çıktı — eksik değerler "eksik" olarak değil, boşluk karakteri olarak
+duruyordu. Görünmez bir şekilde oradaydılar.
+
+En hoşuma giden kısmı da o satırlara tek tek bakınca oldu: hepsi henüz hiç
+fatura kesilmemiş, o ay abone olmuş yeni müşterilerdi. Yani veri bozuk
+değildi, bana bir şey anlatıyordu. Ortalama değerle doldurup geçmek yerine
+mantığın söylediğini yazdım.
+
+Zamanımın çoğunun burada geçtiğini fark ettim. Modeli eğitmek dakikalar
+sürüyor; veriyi anlamak günler. Bootcamp öncesi hayalimdeki "makine
+öğrenmesi" bu değildi, ama işin gerçeği buymuş.
+
+## Beklemediğim sonuç
+
+Dört farklı model denedim ve içlerinden Random Forest'ın kazanmasını
+bekliyordum. En karmaşık olan oydu, en havalı isim onundu. Kazanmadı.
+Kazanan, hepsinin arasındaki en basit ve en eski yöntem oldu.
+
+İlk tepkim hafif bir hayal kırıklığıydı — sonra bunun aslında iyi bir haber
+olduğunu gördüm. Basit model, neden öyle karar verdiğini bana söyleyebiliyordu.
+Ve söylediği şey şuydu: ilk yılındaki, aydan aya sözleşmeli, fiber internet
+kullanan müşteriler gitmeye en yakın olanlar. Uzun sözleşme yapmış, yıllardır
+kalan müşteriler ise en güvenli grup.
+
+Yani proje sonunda elimde bir skor değil, bir cümle vardı: "Kampanyayı önce
+şu insanlara yap." Başta istediğim şey tam olarak buydu.
+
+## Ne öğrendim?
+
+- **Hangi hatanın daha pahalı olduğunu bilmeden model kuramıyorsun.** Giden
+  müşteriyi kaçırmak mı kötü, kalacak müşteriye boşuna indirim yapmak mı?
+  Bu sorunun cevabı veride yok, işin kendisinde. Teknik bir tercih sandığım
+  şeyin aslında bir iş kararı olduğunu burada gördüm.
+- **Veriyle konuşmak gerekiyor.** "Ne eksik?" diye sormak yetmiyor; "bu değer
+  neden böyle?" diye sormak lazım. En öğretici anlarım hep ikinci soruyu
+  sorduğumda geldi.
+- **Karmaşık olan, iyi olan değil.** Anlayabildiğim ve savunabildiğim bir
+  modelin, iyi çalışan ama neden çalıştığını bilmediğim bir modelden değerli
+  olduğunu düşünüyorum artık.
+- **Bir işin sınırlarını yazmak da işin parçası.** Modelin neleri göremediğini
+  README'ye açıkça yazdım. Eksiklerini bilmediğin bir çalışmaya güvenmek zor.
+
+Kısacası: bir bootcamp ödevi olarak başladı, veriyle uğraşmanın modelle
+uğraşmaktan hem daha zor hem daha keyifli olduğunu bana gösteren proje
+olarak bitti.
