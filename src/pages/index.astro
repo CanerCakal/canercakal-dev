@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import { fetchArticles } from "../lib/medium";
+import { DOMAIN_LABELS, type Domain } from "../lib/domains";
 
 const featuredProjects = (await getCollection("projects"))
 	.sort((a, b) => a.data.order - b.data.order)
@@ -10,13 +11,23 @@ const featuredProjects = (await getCollection("projects"))
 const articles = await fetchArticles();
 const latestArticle = articles[0] ?? null;
 
-const featured = [
+type FeaturedCard = {
+	kind: string;
+	title: string;
+	text: string;
+	href: string;
+	accent: string;
+	domain?: Domain;
+};
+
+const featured: FeaturedCard[] = [
 	{
 		kind: "proje",
 		title: featuredProjects[0]?.data.title ?? "",
 		text: featuredProjects[0]?.data.summary ?? "",
 		href: `https://github.com/${featuredProjects[0]?.data.repo ?? ""}`,
 		accent: "var(--accent)",
+		domain: featuredProjects[0]?.data.domain,
 	},
 	...(latestArticle
 		? [
@@ -35,6 +46,7 @@ const featured = [
 		text: featuredProjects[1]?.data.summary ?? "",
 		href: `https://github.com/${featuredProjects[1]?.data.repo ?? ""}`,
 		accent: "var(--accent-3)",
+		domain: featuredProjects[1]?.data.domain,
 	},
 ].filter((f) => f.title);
 
@@ -55,7 +67,6 @@ const now = [
 		accent: "var(--accent-3)",
 	},
 ];
-
 ---
 
 <BaseLayout title="Caner Çakal">
@@ -66,8 +77,10 @@ const now = [
 			>
 		</h1>
 		<p class="intro" id="intro">
-			Bilgisayar mühendisliği öğrencisiyim ancak bekleyen cinsten değilim: yapıyorum, bozuyorum, tekrar yapıyorum
-			ve sonunda yazıya döküyorum. Bu aralar sürekli aynı şeylerle uğraşıyorum - herkesin cebinde olan cihazlarla...
+			Bilgisayar mühendisliği öğrencisiyim ancak bekleyen cinsten değilim:
+			yapıyorum, bozuyorum, tekrar yapıyorum ve sonunda yazıya döküyorum.
+			Bu aralar sürekli aynı şeylerle uğraşıyorum - herkesin cebinde olan
+			cihazlarla...
 		</p>
 	</section>
 
@@ -98,7 +111,14 @@ const now = [
 						style={`--item: ${f.accent}`}
 						data-card
 					>
-						<span class="kind">{f.kind}</span>
+						<span class="meta">
+							<span class="kind">{f.kind}</span>
+							{f.domain && (
+								<span class="domain">
+									{DOMAIN_LABELS[f.domain]}
+								</span>
+							)}
+						</span>
 						<h3>{f.title}</h3>
 						<p>{f.text}</p>
 					</a>
@@ -333,6 +353,11 @@ const now = [
 			border-color 0.3s ease,
 			box-shadow 0.3s ease;
 	}
+	.fcard .meta {
+		display: flex;
+		align-items: center;
+		gap: var(--space-2);
+	}
 	.fcard .kind {
 		font-family: var(--font-mono);
 		font-size: 0.72rem;
@@ -341,6 +366,12 @@ const now = [
 		border: 1px solid color-mix(in srgb, var(--item) 28%, transparent);
 		padding: 2px 10px;
 		border-radius: 999px;
+	}
+	.fcard .domain {
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
+		color: var(--text-muted);
+		letter-spacing: 0.02em;
 	}
 	.fcard h3 {
 		font-size: 1.0625rem;

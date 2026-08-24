@@ -8,6 +8,7 @@ const projects = defineCollection({
     repo: z.string(),            // "kullaniciadi/repo-adi" formatında
     summary: z.string(),         // API description yerine senin cümlen
     tags: z.array(z.string()).default([]),
+    domain: z.enum(['ios', 'web', 'ml', 'game']),
     order: z.number().default(99),
   }),
 });
