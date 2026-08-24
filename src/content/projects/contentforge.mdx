@@ -5,3 +5,54 @@ summary: 'Tek konudan kısa video içeriği üreten iOS uygulaması — uygulama
 tags: ['Swift 6', 'SwiftData', 'AppIntents', 'AI']
 order: 3
 ---
+## Nereden çıktı bu proje?
+
+Yaz tatilinde kendime bir hedef koydum: Swift'te ve iOS mimarisinde bir kademe
+derine inmek. Ama bu sefer alışıldık yoldan değil. Component dizip ekran
+güzelleştirerek değil — sistemin *içine* girerek.
+
+Araştırdıkça bir fikir netleşti: madem sosyal medya tarafı zaten ilgimi çekiyor,
+kendi içeriğimi üretebileceğim bir uygulama yapayım. Konu ver, o sana kısa video
+içeriği çıkarsın. Böylece hem merak ettiğim alanla uğraşmış olacaktım hem de
+teknik olarak kendimi zorlayacağım bir bahanem olacaktı.
+
+Sonuç beklediğimden iyi çıktı.
+
+## Görünmeyen tarafı inşa etmek
+
+İtiraf edeyim: bu uygulamada göze hitap eden bir tasarım yok. Ama işin ilginç
+tarafı, bunun bir eksiklik olmadığını proje ilerledikçe anladım — çünkü asıl iş
+görünmeyen yerdeydi.
+
+ContentForge'a üç ayrı kapıdan girilebiliyor: uygulamanın kendisinden,
+**Siri'ye söyleyerek** ya da Kestirmeler üzerinden, ve gece siz uyurken kendi
+kendine çalışan bir akışla. Üçü de farklı yerlerden başlıyor ama aynı iki
+protokolde buluşuyor — yani içerik üretme mantığı tek bir yerde yaşıyor,
+kapılar sadece ona açılıyor. Yeni bir giriş noktası eklemek istesem, o mantığı
+kopyalamam gerekmiyor.
+
+Bunu kurarken en çok hoşuma giden şey, hiçbir yere bağımlı kalmamaktı. Karşıma
+çıkan her sorunu — arka planda çalışma sınırları, veri kalıcılığı, sistemle
+konuşma — kendim çözmeye çalıştım. Hazır bir çözüm yapıştırmak yerine "bu neden
+böyle çalışıyor?" sorusunun peşine düştüm.
+
+Bir de dürüst bir not: API anahtarı şu an uygulamanın içinde duruyor. Kişisel
+kullanım için kabul edilebilir bir tercih, ama uygulamayı yayınlayacak olsam
+doğru cevap istekleri bir backend üzerinden geçirmek olurdu. Bunu repo'da da
+yazdım — çünkü bir kararın *neden* öyle verildiğini bilmek, kararın kendisinden
+daha önemli.
+
+## Ne öğrendim?
+
+- **Protokoller mimarinin iskeletidir** — "şu şeyi yapabilen herkes" diye
+  tanımladığın bir sözleşme, kodun geri kalanını birbirinden bağımsız tutuyor.
+  Teorik olarak biliyordum; burada elimle kurdum.
+- **UI olmadan da uygulama olur** — sistemle konuşan, kendi kendine tetiklenen,
+  arka planda yaşayan bir uygulamanın da bir "deneyimi" var. Sadece ekranda
+  değil, cihazın kendisinde yaşıyor.
+- **Kendi ihtiyacın için yazmak farklı** — bu uygulamayı gerçekten kullanıyorum.
+  Kendi kullandığın bir şeyi geliştirmek, eksikleri de en acımasız şekilde sana
+  gösteriyor.
+
+Bir yaz tatili projesi olarak başladı; bana Swift'in yüzeyinin altında ne
+olduğunu gösterdi.

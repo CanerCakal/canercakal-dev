@@ -5,3 +5,43 @@ summary: 'Tamamen offline çalışan RAG tabanlı soru-cevap asistanı — halü
 tags: ['Python', 'RAG', 'Foundry Local', 'Flask']
 order: 4
 ---
+## Bu projenin yeri ayrı
+
+Elden Oracle benim için diğerlerinden farklı bir yerde duruyor. Sebebi belli:
+uzaktan yürüttüğüm **Microsoft AI Innovators Internship** kapsamında istenen
+projeydi. Yani bu sefer sadece kendime değil, bir programa da hesap verecektim.
+O yüzden elimden geldiğince detaylı ve kapsamlı bir iş çıkarmaya çalıştım.
+
+Açıkçası normalde uğraştığım bir alan değildi. AI ve ML tarafıyla daha önce
+küçük çaplı eğitimlerle ilgilenmiştim — ilgi vardı ama eller kirlenmemişti.
+Bu proje o ilginin vücut bulduğu yer oldu.
+
+## Lokalde yaşayan bir chatbot
+
+Yaptığım şey, tamamen kendi bilgisayarımda çalışan bir soru-cevap asistanıydı.
+Buluta giden hiçbir istek yok; model de, veriler de, cevaplar da yerel.
+Backend'i Python ile yazdım, web arayüzünden erişilebilir hale getirdim.
+
+Asıl mesele ise **RAG** (retrieval-augmented generation) kavramını anlamaktı.
+Fikir basit ama etkisi büyük: modelden bir şeyi *hatırlamasını* istemek yerine,
+önce doğru kaynağı bulup önüne koyuyorsun ve *okumasını* istiyorsun. Aradaki
+fark, uydurulmuş bir cevapla dayanağı olan bir cevap arasındaki fark.
+
+Bunu sadece anlatmakla yetinmedim — uygulamaya aynı soruyu iki şekilde sorup
+sonuçları yan yana gösteren bir mod ekledim: kaynak verilmiş hali ve
+verilmemiş hali. Böylece RAG'in ne işe yaradığı bir paragraf teoriyle değil,
+ekranda gözle görülür şekilde ortaya çıkıyor. Bu projede en çok bu fikirden
+keyif aldım.
+
+## Ne öğrendim?
+
+- **RAG'i okuyarak değil, kurarak öğrendim** — veriyi parçalara ayırmak,
+  anlamsal olarak aranabilir hale getirmek, doğru parçayı bulup modele
+  taşımak... Zincirin her halkasını elimle kurunca kavram yerine oturdu.
+- **"Bilmiyorum" diyebilen sistem daha değerlidir** — halüsinasyonun çözümü
+  modeli daha çok zorlamak değil, ona doğru kaynağı vermekmiş.
+- **Yeni bir alana girmek sandığım kadar korkutucu değil** — tanımadığım bir
+  konuydu, sonunda üzerine konuşabildiğim bir konu oldu.
+
+Belki de bu alanda önümü açmak güzel olur. Elden Oracle en azından o kapının
+aralık olduğunu gösterdi.

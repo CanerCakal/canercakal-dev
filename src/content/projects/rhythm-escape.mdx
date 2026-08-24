@@ -5,3 +5,50 @@ summary: 'Müziğin BPM''ine senkronize sonsuz koşu oyunu — beat accuracy sis
 tags: ['Unity', 'C#', 'Game Dev']
 order: 5
 ---
+## Kendimi bir anda oyun sektöründe buldum
+
+Bu projenin çıkış noktası da Academic Project App gibiydi: bir ders final
+projesi. Görsel Programlama dersi için başladım, bir baktım oyun geliştiriyorum.
+
+Her şey yabancıydı. Unity'yi ilk kez kullanıyordum. C diline hakim olmam pek
+işe yaramadı — C# oldukça farklı bir dünyaydı ve fonksiyonları başka bir dilde
+yazmak ilk başta garip geliyordu. "Bunu nasıl yapacağım" sorusundan çok "bunun
+adı ne, nereye yazılıyor" sorusuyla boğuştum.
+
+## Sil, baştan başla, tekrar
+
+İstediğim gibi bir oyun çıkarmak için projeyi defalarca sildim ve sıfırdan
+başladım. Konu değiştirdim. 2D denedim. Bir sürü fikir açtım, çoğunu kapattım.
+Bu kısmı saklamak istemiyorum, çünkü öğrenme tam olarak orada oldu — çalışan
+bir şey çıkana kadar geçen o dağınık süreçte.
+
+Sonunda elimde bir sonsuz koşu oyunu vardı. Ama içimde "bunun bir farkı olmalı"
+diyen bir ses vardı; bu haliyle diğerlerinden ayrılan bir tarafı yoktu.
+
+## Fark: müziği oyunun kalbine koymak
+
+En mantıklı cevap ritimdi. Oyunu bir zamanlayıcının değil, **müziğin nabzının**
+yönetmesi fikri her şeyi değiştirdi.
+
+Merkeze bir beat saati koydum: parçanın temposundan vuruşları hesaplayıp
+sisteme haber veriyor. Engellerin çıkışı, oyuncunun hareketi, puanlama —
+hepsi o vuruşu dinliyor. Böylece müzik arka planda çalan bir dekor olmaktan
+çıkıp oyunun kendisi haline geldi.
+
+Üstüne birkaç şey daha ekledim: hareketin vuruşa ne kadar yakın olduğuna göre
+puanlanması, üst üste tutturunca devreye giren bir çarpan modu ve hayatta
+kaldıkça artan bir tempo. Görsel olarak sade kaldı — ama mekanik olarak
+istediğim "farkı" bulmuştum.
+
+## Ne öğrendim?
+
+- **Sıfırdan başlamak kayıp değil** — sildiğim her versiyon bir sonrakine ne
+  yapmamam gerektiğini öğretti.
+- **Yeni bir platform, yeni bir düşünme biçimi** — Unity'de kod yazmak, bir
+  uygulamada kod yazmaktan farklı; her şey bir sahnede, gerçek zamanda ve
+  kare kare çalışıyor.
+- **Bir fikir, tüm projeyi taşıyabilir** — "müzik oyunu yönetsin" fikri,
+  sıradan bir koşu oyununu anlatmaya değer bir şeye çevirdi.
+
+Farklı bir platformu bir nebze de olsa tanımamı sağladı — ve açıkçası
+bozup yeniden yapmanın da bir yöntem olduğunu burada kabullendim.

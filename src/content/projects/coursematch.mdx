@@ -5,3 +5,44 @@ summary: 'Üniversiteler arası ders eşdeğerlik sistemi — kural tabanlı ben
 tags: ['React', 'FastAPI', 'PostgreSQL', 'Docker']
 order: 6
 ---
+## Bir istekten doğdu
+
+Bu projenin çıkışı diğerlerinden farklı: fikir benden değil, bir hocamızdan
+geldi. Üniversiteler arası ders içeriklerini karşılaştıran bir sisteme ihtiyaç
+vardı — önce kendi üniversitemiz için çalışacak, sonrasında genişletilebilecek
+bir yapı. Yani baştan "önü açık olsun" diye tasarlanması isteniyordu.
+
+Yatay geçiş yapan ya da Erasmus'tan dönen herkesin sorduğu soru aslında bu:
+*"benim aldığım bu ders, orada sayılır mı?"* Cevabı bugün elle, tek tek,
+müfredat okuyarak veriliyor.
+
+## İkimiz ve bir deadline
+
+Bir arkadaşımla işi bölüştük: backend tarafı bende, frontend onda. Ama zaman
+kısıtlıydı — dönem sonuna geliyorduk ve önümüzde finaller vardı. Hızlıca işe
+koyulduk.
+
+Benim tarafımda şunlar vardı: veritabanı tasarımı, üniversite–bölüm–ders
+zincirini taşıyan API'lar, karşılaştırma motoru ve yapılan karşılaştırmaların
+saklandığı geçmiş kaydı. Karşılaştırma tarafında bilinçli olarak sade bir yol
+seçtim — ders adlarını ve içeriklerini normalize edip, Türkçe ve İngilizce
+terimleri ortak bir anahtarda buluşturarak benzerlik skoru üreten kural tabanlı
+bir yaklaşım. Kısıtlı sürede çalışan, açıklanabilir ve tahmin edilebilir bir
+çözüm istiyordum; anlamsal benzerlik ise gelecek sürüme not düştüğüm bir madde.
+
+Tüm sistemi Docker ile tek komutta ayağa kalkacak şekilde paketledik — iki
+kişinin farklı makinelerde aynı anda çalışabilmesi için en pratik yol buydu.
+
+## Ne öğrendim?
+
+- **Paylaşılan bir projede sınırlar önemli** — backend ve frontend'i bölüşmek,
+  aramızdaki "sözleşmenin" (yani API'ın) ne kadar net olduğuyla doğru orantılı
+  şekilde işledi.
+- **Zaman kısıtı bir tasarım girdisidir** — finaller kapıdayken "en doğru
+  çözüm" değil, "verilen sürede çalışan en sağlam çözüm" aranır. Kural tabanlı
+  motoru seçmemin sebebi tam olarak buydu.
+- **Bir başkasının ihtiyacı için yazmak** — kendi projelerimde istediğim gibi
+  ilerlerken, burada net bir talebi karşılamam gerekiyordu.
+
+Kim bilir, üzerine gidilirse mükemmel bir sisteme dönüşebilir. Ama şu an
+olduğu gibi duruyor: çalışan bir prototip — ve fena bir başlangıç değil.
