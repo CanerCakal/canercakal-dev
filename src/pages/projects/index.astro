@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { fetchRepo } from "../../lib/github";
+import { Image } from "astro:assets";
 
 const entries = (await getCollection("projects")).sort(
   (a, b) => a.data.order - b.data.order,
@@ -28,30 +29,42 @@ const formatDate = (iso: string) => new Date(iso).toLocaleDateString("tr-TR");
   <div class="grid">
     {
       projects.map((p) => (
-        <a
-          class="card"
-          href={"/projects/" + p.id}
-          style={"--item: " + p.accent}
-        >
-          <div class="card-top">
-            <h2>{p.title}</h2>
-            {p.live && p.live.stars > 0 && (
-              <span class="stars">★ {p.live.stars}</span>
+        <div class="row" style={"--item: " + p.accent}>
+          <a class="card" href={"/projects/" + p.id}>
+            <div class="card-top">
+              <h2>{p.title}</h2>
+              {p.live && p.live.stars > 0 && (
+                <span class="stars">★ {p.live.stars}</span>
+              )}
+            </div>
+            <p class="summary">{p.summary}</p>
+            <div class="meta">
+              {p.live?.language && <span class="lang">{p.live.language}</span>}
+              {p.tags
+                .filter(
+                  (t) =>
+                    t.toLowerCase() !== (p.live?.language ?? "").toLowerCase(),
+                )
+                .map((t) => (
+                  <span class="tag">{t}</span>
+                ))}
+            </div>
+            {p.preview && (
+              <Image
+                class="inline-shot"
+                src={p.preview}
+                alt={p.title + " ekran görüntüsü"}
+                width={480}
+                loading="lazy"
+              />
             )}
-          </div>
-          <p class="summary">{p.summary}</p>
-          <div class="meta">
-            {p.live?.language && <span class="lang">{p.live.language}</span>}
-            {p.tags
-              .filter(
-                (t) =>
-                  t.toLowerCase() !== (p.live?.language ?? "").toLowerCase(),
-              )
-              .map((t) => (
-                <span class="tag">{t}</span>
-              ))}
-          </div>
-        </a>
+          </a>
+          {p.preview && (
+            <div class="preview" aria-hidden="true">
+              <Image src={p.preview} alt="" width={560} loading="lazy" />
+            </div>
+          )}
+        </div>
       ))
     }
   </div>
@@ -68,6 +81,9 @@ const formatDate = (iso: string) => new Date(iso).toLocaleDateString("tr-TR");
   .grid {
     display: grid;
     gap: var(--space-3);
+  }
+  .row {
+    position: relative;
   }
   .card {
     display: block;
@@ -128,5 +144,69 @@ const formatDate = (iso: string) => new Date(iso).toLocaleDateString("tr-TR");
   .tag {
     border: 1px solid var(--border);
     color: var(--text-muted);
+  }
+  /* --- Hover preview (geniş ekran) --- */
+  .preview {
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    margin-left: -40px;
+    width: 280px;
+    padding: 6px;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--bg) 65%, transparent);
+    border: 1px solid color-mix(in srgb, var(--item) 30%, transparent);
+    box-shadow:
+      0 24px 60px rgba(0, 0, 0, 0.55),
+      0 0 40px color-mix(in srgb, var(--item) 12%, transparent);
+    backdrop-filter: blur(20px) saturate(1.2);
+    -webkit-backdrop-filter: blur(20px) saturate(1.2);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5;
+    transform: translateY(-50%) translateX(10px) scale(0.97);
+    transition:
+      opacity 0.28s ease,
+      transform 0.4s var(--ease-spring);
+  }
+  .preview :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
+  }
+  .card:hover + .preview,
+  .card:focus-visible + .preview {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0) scale(1);
+  }
+
+  /* --- Karta gömülü görsel (dar ekran) --- */
+  .inline-shot {
+    display: none;
+    width: 100%;
+    max-width: 240px;
+    height: auto;
+    border-radius: var(--radius);
+    border: 1px solid var(--card-border);
+    margin-top: var(--space-3);
+  }
+
+  @media (max-width: 1200px) {
+    .preview {
+      display: none;
+    }
+    .inline-shot {
+      display: block;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .preview,
+    .card:hover + .preview,
+    .card:focus-visible + .preview {
+      transform: translateY(-50%);
+      transition: opacity 0.2s ease;
+    }
   }
 </style>

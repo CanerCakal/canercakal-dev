@@ -3,12 +3,13 @@ import { glob } from 'astro/loaders';
 
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/projects' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
-    repo: z.string(),            // "kullaniciadi/repo-adi" formatında
-    summary: z.string(),         // API description yerine senin cümlen
+    repo: z.string(),
+    summary: z.string(),
     tags: z.array(z.string()).default([]),
     domain: z.enum(['ios', 'web', 'ml', 'game']),
+    preview: image().optional(),
     order: z.number().default(99),
   }),
 });
