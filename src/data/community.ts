@@ -12,13 +12,13 @@ export const community: CommunityEntry[] = [
 		start: "2026-03",
 		org: "HSD Türkiye",
 		role: "Sosyal Medya Lideri",
-		text: "HSD'nin ana hesabının içerik koordinasyonunu ekiple birlikte yürütüyorum; paylaşımların diğer toplulukların kullanımına uygunluğunu birlikte değerlendiriyoruz.",
+		text: "HSD'nin ana hesabının içerik koordinasyonunu ekiple birlikte yürütüyor; paylaşımların standartlara uygunluğunu değerlendiriyoruz.",
 	},
 	{
 		start: "2026-02",
 		org: "HSD Dumlupınar Üniversitesi",
 		role: "Kampüs Elçisi",
-		text: "Topluluğun genel işleyişinden sorumluyum; beş komitenin teknik ve sosyal faaliyetlerini koordine ediyorum.",
+		text: "Topluluğun genel işleyişinden sorumluyum; altı komitenin teknik ve sosyal faaliyetlerini koordine ediyorum.",
 	},
 	{
 		start: "2025-07",
@@ -32,6 +32,6 @@ export const community: CommunityEntry[] = [
 		end: "2025-07", // ← doğrula
 		org: "HSD Dumlupınar Üniversitesi",
 		role: "Sosyal Medya Komitesi Üyesi",
-		text: "Topluluğun tasarım ve video edit işlerini üstlendim; verilen görevleri zamanında teslim ettim.",
+		text: "Topluluğun tasarım ve video edit işlerini üstlendim; verilen görevleri uygun ve zamanında teslim ettim.",
 	},
 ];

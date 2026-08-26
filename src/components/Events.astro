@@ -1,0 +1,129 @@
+---
+import { events } from "../data/events";
+---
+
+<section class="events" aria-label="Etkinlikler ve yarışmalar">
+	<span class="group-label">etkinlikler</span>
+	<ul class="rows">
+		{
+			events.map((e) => (
+				<li class="row">
+					<span class="node" aria-hidden="true" />
+					<span class="title">{e.title}</span>
+					<span class="org">
+						{e.org} · {e.role}
+					</span>
+					{e.text && <span class="note">{e.text}</span>}
+					<span class="when">{e.period}</span>
+				</li>
+			))
+		}
+	</ul>
+</section>
+
+<style>
+	.events {
+		margin-top: var(--space-5);
+	}
+	.group-label {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
+		font-family: var(--font-mono);
+		font-size: 0.68rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--accent-3);
+		margin-bottom: var(--space-2);
+	}
+	.group-label::after {
+		content: "";
+		flex: 1;
+		height: 1px;
+		background: linear-gradient(
+			to right,
+			color-mix(in srgb, var(--accent-3) 40%, transparent),
+			transparent
+		);
+	}
+
+	.rows {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.row {
+		display: grid;
+		grid-template-columns: 14px 1fr auto;
+		align-items: baseline;
+		column-gap: var(--space-3);
+		padding: var(--space-2) 0;
+		border-bottom: 1px solid
+			color-mix(in srgb, var(--border) 55%, transparent);
+	}
+	.row:last-child {
+		border-bottom: none;
+	}
+
+	.node {
+		grid-row: 1;
+		grid-column: 1;
+		width: 6px;
+		height: 6px;
+		margin-top: 0.55em;
+		border-radius: 1px;
+		transform: rotate(45deg);
+		border: 1px solid color-mix(in srgb, var(--accent-3) 45%, transparent);
+	}
+
+	.title {
+		grid-row: 1;
+		grid-column: 2;
+		font-family: var(--font-mono);
+		font-size: 0.9375rem;
+		font-weight: 600;
+		letter-spacing: -0.01em;
+		color: var(--text);
+	}
+	.org {
+		grid-row: 2;
+		grid-column: 2;
+		font-size: 0.8125rem;
+		color: var(--text-muted);
+		line-height: 1.5;
+	}
+	.note {
+		grid-row: 3;
+		grid-column: 2;
+		font-size: 0.875rem;
+		color: color-mix(in srgb, var(--text) 72%, transparent);
+		line-height: 1.6;
+		margin-top: 4px;
+		max-width: 32rem;
+	}
+	.when {
+		grid-row: 1;
+		grid-column: 3;
+		font-family: var(--font-mono);
+		font-size: 0.7rem;
+		letter-spacing: 0.04em;
+		color: var(--text-muted);
+		white-space: nowrap;
+	}
+
+	@media (max-width: 520px) {
+		.row {
+			grid-template-columns: 14px 1fr;
+		}
+		.title,
+		.org,
+		.note,
+		.when {
+			grid-row: auto;
+			grid-column: 2;
+		}
+		.when {
+			margin-top: 4px;
+		}
+	}
+</style>

@@ -5,6 +5,7 @@ import { fetchArticles } from "../lib/medium";
 import { DOMAIN_LABELS, type Domain } from "../lib/domains";
 import Timeline from "../components/Timeline.astro";
 import Work from "../components/Work.astro";
+import Events from "../components/Events.astro";
 
 const featuredProjects = (await getCollection("projects"))
 	.sort((a, b) => a.data.order - b.data.order)
@@ -132,6 +133,7 @@ const now = [
 	</section>
 
 	<Timeline />
+	<Events />
 
 	<section class="stack" aria-label="Kullandığım teknolojiler">
 		<div class="marquee">
