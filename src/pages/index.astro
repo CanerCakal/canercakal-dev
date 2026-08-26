@@ -3,6 +3,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import { fetchArticles } from "../lib/medium";
 import { DOMAIN_LABELS, type Domain } from "../lib/domains";
+import Timeline from "../components/Timeline.astro";
+import Work from "../components/Work.astro";
 
 const featuredProjects = (await getCollection("projects"))
 	.sort((a, b) => a.data.order - b.data.order)
@@ -98,6 +100,8 @@ const now = [
 		</ul>
 	</section>
 
+	<Work />
+
 	<section class="featured" aria-label="Öne çıkanlar">
 		<h2>Öne çıkanlar</h2>
 		<div class="stage" id="stage">
@@ -126,6 +130,8 @@ const now = [
 			}
 		</div>
 	</section>
+
+	<Timeline />
 
 	<section class="stack" aria-label="Kullandığım teknolojiler">
 		<div class="marquee">

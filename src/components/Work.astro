@@ -1,0 +1,100 @@
+---
+const role = "AI Innovators Internship Program";
+const org = "Microsoft";
+const mode = "Uzaktan";
+const period = "Mayıs - Ağustos 2026"; 
+const text =
+	"Lokalde çalışan, RAG mimarisine dayalı bir chatbot geliştirdim — model, veri ve arayüz tarafını uçtan uca kurduğum bir süreçti.";
+---
+
+<section class="work" aria-label="İş deneyimi">
+	<span class="label">iş</span>
+	<div class="body">
+		<div class="head">
+			<h2>{role}</h2>
+			<span class="period">{period}</span>
+		</div>
+		<span class="org">{org} · {mode}</span>
+		<p>{text}</p>
+		<a class="link" href="/projects/elden-oracle">Çıkan işe bak →</a>
+	</div>
+</section>
+
+<style>
+	.work {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: var(--space-3);
+		align-items: start;
+		margin-top: var(--space-5);
+		padding: var(--space-4);
+		border: 1px solid var(--card-border);
+		border-radius: var(--radius-lg);
+		background: color-mix(in srgb, var(--bg) 60%, transparent);
+		position: relative;
+		overflow: hidden;
+	}
+	.work::before {
+		content: "";
+		position: absolute;
+		inset: 0 auto 0 0;
+		width: 2px;
+		background: linear-gradient(
+			to bottom,
+			var(--accent-2),
+			transparent
+		);
+	}
+
+	.label {
+		font-family: var(--font-mono);
+		font-size: 0.68rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--accent-2);
+		margin-top: 0.35em;
+	}
+
+	.head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: var(--space-3);
+		flex-wrap: wrap;
+	}
+	.work h2 {
+		font-size: 1.0625rem;
+		margin: 0;
+	}
+	.period {
+		font-family: var(--font-mono);
+		font-size: 0.7rem;
+		letter-spacing: 0.04em;
+		color: var(--text-muted);
+		white-space: nowrap;
+	}
+	.org {
+		display: block;
+		font-size: 0.8125rem;
+		color: var(--text-muted);
+		margin-top: 2px;
+	}
+	.work p {
+		font-size: 0.9375rem;
+		color: color-mix(in srgb, var(--text) 72%, transparent);
+		line-height: 1.6;
+		margin: var(--space-2) 0 var(--space-3);
+		max-width: 32rem;
+	}
+	.link {
+		font-family: var(--font-mono);
+		font-size: 0.8125rem;
+	}
+
+	@media (max-width: 520px) {
+		.work {
+			grid-template-columns: 1fr;
+			gap: var(--space-2);
+		}
+	}
+</style>

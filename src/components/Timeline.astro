@@ -1,0 +1,207 @@
+---
+import { community } from "../data/community";
+
+const MONTHS = [
+	"Oca",
+	"Şub",
+	"Mar",
+	"Nis",
+	"May",
+	"Haz",
+	"Tem",
+	"Ağu",
+	"Eyl",
+	"Eki",
+	"Kas",
+	"Ara",
+];
+
+const fmt = (v: string) => {
+	const [y, m] = v.split("-");
+	return `${MONTHS[Number(m) - 1]} ${y}`;
+};
+
+// Build anında hesaplanır; haftalık rebuild sayesinde kendini tazeler
+const span = (start: string, end?: string) => {
+	const [sy, sm] = start.split("-").map(Number);
+	const now = new Date();
+	const [ey, em] = end
+		? end.split("-").map(Number)
+		: [now.getFullYear(), now.getMonth() + 1];
+	const n = Math.max(1, (ey - sy) * 12 + (em - sm));
+	return n >= 12 ? `${Math.floor(n / 12)} yıl` : `${n} ay`;
+};
+
+const current = community.filter((e) => !e.end);
+const past = community.filter((e) => e.end);
+const years = [...new Set(past.map((e) => e.start.slice(0, 4)))]
+	.sort()
+	.reverse();
+---
+
+<section class="community" aria-label="Topluluk ve liderlik">
+	<h2>Topluluk</h2>
+
+	{
+		current.length > 0 && (
+			<div class="group is-now">
+				<span class="group-label">şu an</span>
+				<ul class="rows">
+					{current.map((e) => (
+						<li class="row">
+							<span class="node" aria-hidden="true" />
+							<span class="role">{e.role}</span>
+							<span class="org">{e.org}</span>
+							{e.text && <span class="note">{e.text}</span>}
+							<span class="when">{fmt(e.start)} →</span>
+						</li>
+					))}
+				</ul>
+			</div>
+		)
+	}
+
+	{
+		years.map((y) => (
+			<div class="group">
+				<span class="group-label">{y}</span>
+				<ul class="rows">
+					{past
+						.filter((e) => e.start.startsWith(y))
+						.map((e) => (
+							<li class="row">
+								<span class="node" aria-hidden="true" />
+								<span class="role">{e.role}</span>
+								<span class="org">{e.org}</span>
+								{e.text && <span class="note">{e.text}</span>}
+								<span class="when">{span(e.start, e.end)}</span>
+							</li>
+						))}
+				</ul>
+			</div>
+		))
+	}
+</section>
+
+<style>
+	.community {
+		margin-top: var(--space-6);
+	}
+	.community h2 {
+		font-size: 1.125rem;
+		margin-bottom: var(--space-4);
+	}
+
+	.group + .group {
+		margin-top: var(--space-4);
+	}
+	.group-label {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
+		font-family: var(--font-mono);
+		font-size: 0.68rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--text-muted);
+		margin-bottom: var(--space-2);
+	}
+	.group-label::after {
+		content: "";
+		flex: 1;
+		height: 1px;
+		background: var(--border);
+	}
+	.is-now .group-label {
+		color: var(--accent);
+	}
+	.is-now .group-label::after {
+		background: linear-gradient(
+			to right,
+			color-mix(in srgb, var(--accent) 40%, transparent),
+			transparent
+		);
+	}
+
+	.rows {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.row {
+		display: grid;
+		grid-template-columns: 14px 1fr auto;
+		align-items: baseline;
+		column-gap: var(--space-3);
+		padding: var(--space-2) 0;
+		border-bottom: 1px solid
+			color-mix(in srgb, var(--border) 55%, transparent);
+	}
+	.row:last-child {
+		border-bottom: none;
+	}
+
+	.node {
+		width: 6px;
+		height: 6px;
+		margin-top: 0.55em;
+		border-radius: 50%;
+		border: 1px solid color-mix(in srgb, var(--text-muted) 45%, transparent);
+	}
+	.is-now .node {
+		background: var(--accent);
+		border-color: var(--accent);
+		box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 50%, transparent);
+	}
+
+	.role {
+		grid-row: 1;
+		grid-column: 2;
+		font-family: var(--font-mono);
+		font-size: 0.9375rem;
+		font-weight: 600;
+		letter-spacing: -0.01em;
+		color: var(--text);
+	}
+	.org {
+		grid-row: 2;
+		grid-column: 2;
+		font-size: 0.8125rem;
+		color: var(--text-muted);
+		line-height: 1.5;
+	}
+	.note {
+		grid-row: 3;
+		grid-column: 2;
+		font-size: 0.875rem;
+		color: color-mix(in srgb, var(--text) 72%, transparent);
+		line-height: 1.6;
+		margin-top: 4px;
+		max-width: 32rem;
+	}
+	.when {
+		grid-row: 1;
+		grid-column: 3;
+		font-family: var(--font-mono);
+		font-size: 0.7rem;
+		letter-spacing: 0.04em;
+		color: var(--text-muted);
+		white-space: nowrap;
+	}
+
+	@media (max-width: 520px) {
+		.row {
+			grid-template-columns: 14px 1fr;
+		}
+		.role,
+		.org,
+		.note,
+		.when {
+			grid-row: auto;
+			grid-column: 2;
+		}
+		.when {
+			margin-top: 4px;
+		}
+	}
+</style>
