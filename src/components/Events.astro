@@ -6,8 +6,12 @@ import { events } from "../data/events";
 	<span class="group-label">etkinlikler</span>
 	<ul class="rows">
 		{
-			events.map((e) => (
-				<li class="row">
+			events.map((e, i) => (
+				<li
+					class="row"
+					style={`--reveal-delay: ${i * 80}ms`}
+					data-reveal
+				>
 					<span class="node" aria-hidden="true" />
 					<span class="title">{e.title}</span>
 					<span class="org">

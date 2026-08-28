@@ -91,8 +91,11 @@ const now = [
 		<h2><span class="pulse" aria-hidden="true"></span>Şu sıralar</h2>
 		<ul>
 			{
-				now.map(({ label, text, accent }) => (
-					<li style={`--item: ${accent}`}>
+				now.map(({ label, text, accent }, i) => (
+					<li
+						style={`--item: ${accent}; --reveal-delay: ${i * 90}ms`}
+						data-reveal
+					>
 						<span class="now-label">{label}</span>
 						<span class="now-text">{text}</span>
 					</li>
@@ -103,7 +106,7 @@ const now = [
 
 	<Work />
 
-	<section class="featured" aria-label="Öne çıkanlar">
+	<section class="featured" aria-label="Öne çıkanlar" data-reveal>
 		<h2>Öne çıkanlar</h2>
 		<div class="stage" id="stage">
 			{
@@ -135,7 +138,7 @@ const now = [
 	<Timeline />
 	<Events />
 
-	<section class="stack" aria-label="Kullandığım teknolojiler">
+	<section class="stack" aria-label="Kullandığım teknolojiler" data-reveal>
 		<div class="marquee">
 			<ul class="marquee-track">
 				{

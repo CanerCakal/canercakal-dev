@@ -2,8 +2,18 @@
 import { community } from "../data/community";
 
 const MONTHS = [
-	"Oca", "Şub", "Mar", "Nis", "May", "Haz",
-	"Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara",
+	"Oca",
+	"Şub",
+	"Mar",
+	"Nis",
+	"May",
+	"Haz",
+	"Tem",
+	"Ağu",
+	"Eyl",
+	"Eki",
+	"Kas",
+	"Ara",
 ];
 
 const parse = (v: string) => v.split("-").map(Number) as [number, number];
@@ -35,12 +45,13 @@ const items = community.map((e, i) => {
 
 <section class="community" aria-label="Topluluk ve liderlik">
 	<h2>Topluluk</h2>
-	<ol class="tl">
+	<ol class="tl" data-line>
 		{
-			items.map((e) => (
+			items.map((e, i) => (
 				<li
 					class:list={["item", { ongoing: !e.end }]}
-					style={`--gap: ${e.gap}px`}
+					style={`--gap: ${e.gap}px; --reveal-delay: ${i * 110}ms`}
+					data-reveal
 				>
 					<div class="entry">
 						<span class="when">{e.when}</span>
@@ -80,12 +91,17 @@ const items = community.map((e, i) => {
 		top: 0.5rem;
 		bottom: 0.5rem;
 		width: 1px;
-		transform: translateX(-50%);
+		transform: translateX(-50%) scaleY(0);
+		transform-origin: top;
+		transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
 		background: linear-gradient(
 			to bottom,
 			var(--accent),
 			color-mix(in srgb, var(--accent) 10%, transparent)
 		);
+	}
+	.tl.is-visible::before {
+		transform: translateX(-50%) scaleY(1);
 	}
 
 	.item {
@@ -164,7 +180,10 @@ const items = community.map((e, i) => {
 		}
 		.tl::before {
 			left: 4px;
-			transform: none;
+			transform: scaleY(0);
+		}
+		.tl.is-visible::before {
+			transform: scaleY(1);
 		}
 		.item {
 			grid-template-columns: 1fr;
@@ -180,6 +199,13 @@ const items = community.map((e, i) => {
 		}
 		.item {
 			margin-bottom: calc(var(--gap) * 0.6);
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.tl::before,
+		.tl.is-visible::before {
+			transform: translateX(-50%) scaleY(1);
+			transition: none;
 		}
 	}
 </style>
