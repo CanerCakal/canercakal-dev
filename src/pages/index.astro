@@ -1,57 +1,23 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
-import { fetchArticles } from "../lib/medium";
 import { DOMAIN_LABELS, type Domain } from "../lib/domains";
 import Timeline from "../components/Timeline.astro";
 import Work from "../components/Work.astro";
 import Events from "../components/Events.astro";
 
-const featuredProjects = (await getCollection("projects"))
+const accents = ["var(--accent)", "var(--accent-2)", "var(--accent-3)"];
+
+const featured = (await getCollection("projects"))
 	.sort((a, b) => a.data.order - b.data.order)
-	.slice(0, 2);
-
-const articles = await fetchArticles();
-const latestArticle = articles[0] ?? null;
-
-type FeaturedCard = {
-	kind: string;
-	title: string;
-	text: string;
-	href: string;
-	accent: string;
-	domain?: Domain;
-};
-
-const featured: FeaturedCard[] = [
-	{
-		kind: "proje",
-		title: featuredProjects[0]?.data.title ?? "",
-		text: featuredProjects[0]?.data.summary ?? "",
-		href: `https://github.com/${featuredProjects[0]?.data.repo ?? ""}`,
-		accent: "var(--accent)",
-		domain: featuredProjects[0]?.data.domain,
-	},
-	...(latestArticle
-		? [
-				{
-					kind: "yazı",
-					title: latestArticle.title,
-					text: latestArticle.excerpt,
-					href: latestArticle.url,
-					accent: "var(--accent-2)",
-				},
-			]
-		: []),
-	{
-		kind: "proje",
-		title: featuredProjects[1]?.data.title ?? "",
-		text: featuredProjects[1]?.data.summary ?? "",
-		href: `https://github.com/${featuredProjects[1]?.data.repo ?? ""}`,
-		accent: "var(--accent-3)",
-		domain: featuredProjects[1]?.data.domain,
-	},
-].filter((f) => f.title);
+	.slice(0, 3)
+	.map((p, i) => ({
+		title: p.data.title,
+		text: p.data.summary,
+		href: `https://github.com/${p.data.repo}`,
+		accent: accents[i],
+		domain: p.data.domain,
+	}));
 
 const now = [
 	{
@@ -119,14 +85,11 @@ const now = [
 						style={`--item: ${f.accent}`}
 						data-card
 					>
-						<span class="meta">
-							<span class="kind">{f.kind}</span>
-							{f.domain && (
-								<span class="domain">
-									{DOMAIN_LABELS[f.domain]}
-								</span>
-							)}
-						</span>
+						{f.domain && (
+							<span class="domain">
+								{DOMAIN_LABELS[f.domain]}
+							</span>
+						)}
 						<h3>{f.title}</h3>
 						<p>{f.text}</p>
 					</a>
@@ -364,21 +327,8 @@ const now = [
 			border-color 0.3s ease,
 			box-shadow 0.3s ease;
 	}
-	.fcard .meta {
-		display: flex;
-		align-items: center;
-		gap: var(--space-2);
-	}
-	.fcard .kind {
-		font-family: var(--font-mono);
-		font-size: 0.72rem;
-		color: var(--item);
-		background: color-mix(in srgb, var(--item) 12%, transparent);
-		border: 1px solid color-mix(in srgb, var(--item) 28%, transparent);
-		padding: 2px 10px;
-		border-radius: 999px;
-	}
 	.fcard .domain {
+		display: block;
 		font-family: var(--font-mono);
 		font-size: 0.72rem;
 		color: var(--text-muted);
