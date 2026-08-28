@@ -48,13 +48,13 @@ const icons: Record<string, string> = {
 	description="Caner kimdir — kod, denge ve merak üzerine."
 >
 	<section class="about">
-		<div class="crew" aria-hidden="true">
+		<div class="crew bleed" aria-hidden="true">
 			<div class="figure side" style="--item: var(--accent)">
 				<Image
 					src={me2}
 					alt=""
 					widths={[320, 560]}
-					sizes="(max-width: 700px) 26vw, 13rem"
+					sizes="(max-width: 700px) 26vw, 17rem"
 				/>
 			</div>
 			<div class="figure lead-figure" style="--item: var(--accent-2)">
@@ -62,7 +62,7 @@ const icons: Record<string, string> = {
 					src={me}
 					alt="Caner Çakal"
 					widths={[400, 700]}
-					sizes="(max-width: 700px) 34vw, 16rem"
+					sizes="(max-width: 700px) 34vw, 21rem"
 				/>
 			</div>
 			<div class="figure side" style="--item: var(--accent-3)">
@@ -70,12 +70,12 @@ const icons: Record<string, string> = {
 					src={me3}
 					alt=""
 					widths={[320, 560]}
-					sizes="(max-width: 700px) 26vw, 13rem"
+					sizes="(max-width: 700px) 26vw, 17rem"
 				/>
 			</div>
 		</div>
 
-		<div class="content">
+		<div class="content prose-width">
 			<h1>Merhaba<span class="dot"></span></h1>
 
 			<p class="opener">
@@ -87,11 +87,11 @@ const icons: Record<string, string> = {
 			<p>
 				Asıl kıvılcım bir okul gezisinde çıktı: ODTÜ'yü gezerken oradaki
 				gönüllülerin anlattıkları ve atölyeler, o güne kadar sadece
-				kurcaladığım şeylerin bir meslek olabileceğini gösterdi.
-				Lisede artık yönüm netti — işin iç yüzüne dair neredeyse hiçbir şey
-				bilmiyordum ama "ben bilgisayar mühendisi olacağım" diyordum. Çalışmalarımın
-				karşılığını alıp bölümü kazandığımda, o gezideki çocuğun sözünü tutmuş
-				oldum.
+				kurcaladığım şeylerin bir meslek olabileceğini gösterdi. Lisede
+				artık yönüm netti — işin iç yüzüne dair neredeyse hiçbir şey
+				bilmiyordum ama "ben bilgisayar mühendisi olacağım" diyordum.
+				Çalışmalarımın karşılığını alıp bölümü kazandığımda, o gezideki
+				çocuğun sözünü tutmuş oldum.
 			</p>
 			<p>
 				Kod yazmadığım zamanlarda sporumu yapar, sosyal hayatımı
@@ -142,13 +142,13 @@ const icons: Record<string, string> = {
 	}
 	.figure {
 		position: relative;
-		width: 13rem;
+		width: 17rem;
 		transition: transform 0.35s var(--ease-spring);
 	}
 	.figure.lead-figure {
-		width: 16rem;
+		width: 21rem;
 		z-index: 2;
-		margin: 0 -2.5rem; /* yanlardakilerin üstüne hafif binsin */
+		margin: 0 -3rem; /* yanlardakilerin üstüne hafif binsin */
 	}
 	.figure.side {
 		z-index: 1;
@@ -203,7 +203,6 @@ const icons: Record<string, string> = {
 	.content {
 		position: relative;
 		z-index: 1;
-		max-width: 33rem;
 	}
 	.dot {
 		color: var(--accent);
@@ -267,7 +266,7 @@ const icons: Record<string, string> = {
 	}
 
 	@media (max-width: 820px) {
-		.content {
+		.content.prose-width {
 			max-width: none;
 		}
 	}

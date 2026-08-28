@@ -44,6 +44,8 @@ const items = community.map((e, i) => {
 ---
 
 <section class="community" aria-label="Topluluk ve liderlik">
+	<section class="community bleed" aria-label="Topluluk ve liderlik">
+	</section>
 	<h2>Topluluk</h2>
 	<ol class="tl" data-line>
 		{
@@ -67,9 +69,6 @@ const items = community.map((e, i) => {
 
 <style>
 	.community {
-		--w: min(52rem, calc(100vw - 2 * var(--space-4)));
-		width: var(--w);
-		margin-left: calc((100% - var(--w)) / 2);
 		margin-top: var(--space-6);
 	}
 	.community h2 {
@@ -168,10 +167,6 @@ const items = community.map((e, i) => {
 	}
 
 	@media (max-width: 760px) {
-		.community {
-			--w: 100%;
-			margin-left: 0;
-		}
 		.community h2 {
 			text-align: left;
 		}

@@ -20,7 +20,7 @@ const formatDate = (d: Date) =>
 			okuyabilirsin.
 		</p>
 	) : (
-		<div class="list">
+		<div class="list bleed">
 			{articles.map((a, i) => (
 				<a class="article" href={a.url} target="_blank" rel="noopener" style={'--item: ' + accents[i % 3]}>
 					<h2>{a.title}</h2>
