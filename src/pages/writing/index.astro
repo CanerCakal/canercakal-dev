@@ -1,47 +1,82 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { fetchArticles } from '../../lib/medium';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { fetchArticles } from "../../lib/medium";
 
 const articles = await fetchArticles();
-const accents = ['var(--accent)', 'var(--accent-2)', 'var(--accent-3)'];
+const accents = ["var(--accent)", "var(--accent-2)", "var(--accent-3)"];
 
 const formatDate = (d: Date) =>
-	d.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+	d.toLocaleDateString("tr-TR", {
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	});
 ---
 
-<BaseLayout title="Yazılar — Caner Çakal" description="Öğrendiklerim ve verdiğim kararlar üzerine yazdıklarım.">
-	<h1>Yazılar<span class="dot"></span></h1>
-		<p class="lead">Öğrendiklerimi ve verdiğim kararları yazıya döküyorum — hepsi ve daha fazlası Medium'da.</p>
+<BaseLayout
+	title="Yazılar — Caner Çakal"
+	description="Öğrendiklerim ve verdiğim kararlar üzerine yazdıklarım."
+>
+	<h1 data-reveal>Yazılar<span class="dot"></span></h1>
+	<p class="lead" data-reveal style="--reveal-delay: 80ms">
+		Öğrendiklerimi ve verdiğim kararları yazıya döküyorum — hepsi ve daha
+		fazlası Medium'da.
+	</p>
 
-	{articles.length === 0 ? (
-		<p class="empty">
-			Yazılar şu an yüklenemedi —
-			<a href="https://medium.com/@canercakalofficial" target="_blank" rel="noopener">Medium profilimden</a>
-			okuyabilirsin.
-		</p>
-	) : (
-		<div class="list bleed">
-			{articles.map((a, i) => (
-				<a class="article" href={a.url} target="_blank" rel="noopener" style={'--item: ' + accents[i % 3]}>
-					<h2>{a.title}</h2>
-					<p class="excerpt">{a.excerpt}</p>
-					<div class="meta">
-						<time>{formatDate(a.date)}</time>
-						{a.tags.map((t) => <span class="tag">{t}</span>)}
-					</div>
+	{
+		articles.length === 0 ? (
+			<p class="empty">
+				Yazılar şu an yüklenemedi —
+				<a
+					href="https://medium.com/@canercakalofficial"
+					target="_blank"
+					rel="noopener"
+				>
+					Medium profilimden
 				</a>
-			))}
-		</div>
-	)}
+				okuyabilirsin.
+			</p>
+		) : (
+			<div class="list bleed">
+				{articles.map((a, i) => (
+					<div
+						style={`--reveal-delay: ${Math.min(i, 5) * 70 + 160}ms`}
+						data-reveal
+					>
+						<a
+							class="article"
+							href={a.url}
+							target="_blank"
+							rel="noopener"
+							style={"--item: " + accents[i % 3]}
+						>
+							<h2>{a.title}</h2>
+							<p class="excerpt">{a.excerpt}</p>
+							<div class="meta">
+								<time>{formatDate(a.date)}</time>
+								{a.tags.map((t) => (
+									<span class="tag">{t}</span>
+								))}
+							</div>
+						</a>
+					</div>
+				))}
+			</div>
+		)
+	}
 </BaseLayout>
 
 <style>
-	.dot { color: var(--accent-3); }
+	.dot {
+		color: var(--accent-3);
+	}
 	.lead {
 		color: var(--text-muted);
 		margin-bottom: var(--space-5);
 	}
-	.empty { color: var(--text-muted); }
+	.empty {
+		color: var(--text-muted);
+	}
 
 	.list {
 		display: flex;
@@ -73,7 +108,9 @@ const formatDate = (d: Date) =>
 		margin: 0 0 var(--space-2);
 		transition: color 0.2s ease;
 	}
-	.article:hover h2 { color: var(--item); }
+	.article:hover h2 {
+		color: var(--item);
+	}
 	.excerpt {
 		color: var(--text-muted);
 		font-size: 0.9375rem;

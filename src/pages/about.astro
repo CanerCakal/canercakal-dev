@@ -48,7 +48,7 @@ const icons: Record<string, string> = {
 	description="Caner kimdir — kod, denge ve merak üzerine."
 >
 	<section class="about">
-		<div class="crew bleed" aria-hidden="true">
+		<div class="crew bleed" aria-hidden="true" data-reveal>
 			<div class="figure side" style="--item: var(--accent)">
 				<Image
 					src={me2}
@@ -76,9 +76,9 @@ const icons: Record<string, string> = {
 		</div>
 
 		<div class="content prose-width">
-			<h1>Merhaba<span class="dot"></span></h1>
+			<h1 data-reveal>Merhaba<span class="dot"></span></h1>
 
-			<p class="opener">
+			<p class="opener" data-reveal style="--reveal-delay: 120ms">
 				Ben Caner. Çocukluğumdan beri bilgisayarlar, telefonlar —
 				düğmesi olan ne varsa — ilgimi çekti. Bu merakın bedeli,
 				kurcalarken bozduğum sayısız bilgisayar oldu; kazancı ise bugün
@@ -107,7 +107,7 @@ const icons: Record<string, string> = {
 				olarak böyle yaşanmalı: dengede.
 			</p>
 
-			<ul class="contact">
+			<ul class="contact" data-reveal style="--reveal-delay: 200ms">
 				{
 					contacts.map((c) => (
 						<li style={"--item: " + c.accent}>
