@@ -22,7 +22,10 @@ const projects = await Promise.all(
 const formatDate = (iso: string) => new Date(iso).toLocaleDateString("tr-TR");
 ---
 
-<BaseLayout title="Projeler — Caner Çakal">
+<BaseLayout
+  title="Projeler — Caner Çakal"
+  description="Yaptığım iOS uygulamaları, veri bilimi ve oyun projeleri — her biri için neden ve nasıl."
+>
   <h1 data-reveal>Projeler<span class="dot"></span></h1>
   <p class="lead" data-reveal style="--reveal-delay: 80ms">
     Yaptıklarım — canlı veriler doğrudan GitHub'dan geliyor.

@@ -58,6 +58,7 @@ const currentPath = Astro.url.pathname;
         </script>
     </head>
     <body>
+        <a class="skip" href="#main">İçeriğe geç</a>
         <div class="aurora" aria-hidden="true">
             <span></span><span></span><span></span>
         </div>
@@ -84,7 +85,7 @@ const currentPath = Astro.url.pathname;
             </nav>
         </header>
 
-        <main>
+        <main id="main">
             <slot />
         </main>
 

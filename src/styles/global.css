@@ -215,3 +215,24 @@ a:hover {
         transition: none;
     }
 }
+
+/* === Skip link === */
+.skip {
+    position: absolute;
+    left: var(--space-3);
+    top: var(--space-3);
+    z-index: 100;
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    background: var(--bg);
+    border: 1px solid var(--accent);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    transform: translateY(-250%);
+    transition: transform 0.2s ease;
+}
+
+.skip:focus {
+    transform: translateY(0);
+}

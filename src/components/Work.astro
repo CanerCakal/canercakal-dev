@@ -8,10 +8,10 @@ const text =
 ---
 
 <section class="work" aria-label="İş deneyimi" data-reveal>
-	<span class="label">iş</span>
+	<h2 class="label">iş</h2>
 	<div class="body">
 		<div class="head">
-			<h2>{role}</h2>
+			<h3>{role}</h3>
 			<span class="period">{period}</span>
 		</div>
 		<span class="org">{org} · {mode}</span>
@@ -49,6 +49,7 @@ const text =
 		text-transform: uppercase;
 		color: var(--accent-2);
 		margin-top: 0.35em;
+		margin: 0;
 	}
 
 	.head {
@@ -58,7 +59,7 @@ const text =
 		gap: var(--space-3);
 		flex-wrap: wrap;
 	}
-	.work h2 {
+	.work h3 {
 		font-size: 1.0625rem;
 		margin: 0;
 	}

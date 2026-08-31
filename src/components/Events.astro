@@ -3,7 +3,7 @@ import { events } from "../data/events";
 ---
 
 <section class="events" aria-label="Etkinlikler ve yarışmalar">
-	<span class="group-label">etkinlikler</span>
+	<h2 class="group-label">etkinlikler</h2>
 	<ul class="rows">
 		{
 			events.map((e, i) => (
@@ -39,6 +39,7 @@ import { events } from "../data/events";
 		text-transform: uppercase;
 		color: var(--accent-3);
 		margin-bottom: var(--space-2);
+		margin: 0 0 var(--space-2)
 	}
 	.group-label::after {
 		content: "";
