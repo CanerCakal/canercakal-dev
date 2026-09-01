@@ -8,31 +8,31 @@ export type EventEntry = {
 
 export const events: EventEntry[] = [
 	{
-		period: "2026 Nisan",
+		period: "Nisan 2026",
 		title: "Bilişim Suçları Paneli",
 		org: "HSD Dumlupınar",
 		role: "Organizasyon",
-		text: "Üniversite ve kamu kurumlarının ortak düzenlediği panel etkinliği. 250 kişilik katılım sağlandı.",
+		text: "Üniversite ve yerel kamu kurumlarının ortak düzenlediği panel etkinliği. 250 kişilik katılım sağlandı.",
 	},
 	{
-		period: "2026 Nisan",
-		title: "Akbank Vaka Yarışması — Dijital Vasi",
+		period: "Nisan 2026",
+		title: "Akbank Case Yarışması — Dijital Vasi",
 		org: "Akbank",
 		role: "Takım üyesi",
-		text: "Tek gün süren ve verilen vaka üzerine çözüm önerisi geliştirilen yarışma.", 
+		text: "Tek gün süren ve verilen vaka üzerine çözüm önerisi geliştirilen yarışma.",
 	},
 	{
-		period: "2025 Aralık",
+		period: "Aralık 2025",
 		title: "Ideathon Kütahya",
 		org: "HSD Dumlupınar",
 		role: "Düzenleme ekibi",
-		text: "Kütahya'da ilk kez düzenlenen ideathon — şehir dışındaki HSD topluluklarından da katılım oldu.",
+		text: "Kütahya'da ilk kez düzenlenen ideathon etkinliği. Şehir dışındaki HSD topluluklarıyla birlikte yüksek bir katılım sağlandı.",
 	},
 	{
-		period: "2025 Mayıs",
+		period: "Mayıs 2025",
 		title: "KARMA",
 		org: "HSD Dumlupınar",
 		role: "Düzenleme ekibi",
-		text: "Sektörden girişimcilerin konuk olduğu panel etkinliği.",
+		text: "Sektörden girişimcilerin konuk edildiği ve deneyimlerinin aktarıldığı panel etkinliği.",
 	},
 ];

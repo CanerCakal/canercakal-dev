@@ -12,7 +12,7 @@ export const community: CommunityEntry[] = [
 		start: "2026-03",
 		org: "HSD Türkiye",
 		role: "Sosyal Medya Lideri",
-		text: "HSD'nin ana hesabının içerik koordinasyonunu ekiple birlikte yürütüyor; paylaşımların standartlara uygunluğunu değerlendiriyoruz.",
+		text: "HSD ana hesabının içerik koordinasyonunu ekiple birlikte yürütüyor; paylaşımların standartlara uygunluğunu değerlendiriyoruz.",
 	},
 	{
 		start: "2026-02",
