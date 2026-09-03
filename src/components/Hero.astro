@@ -31,7 +31,7 @@ const details = [
       <a href="/projects" class="btn primary">
         Projelerim
         <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M5 12h14M13 6l6 6-6 6" />
+          <path d="M5 12h14M13 6l6 6-6 6"></path>
         </svg>
       </a>
       <a href="/about" class="btn ghost">Hakkımda</a>
@@ -44,8 +44,8 @@ const details = [
     <div class="pivot" id="badgePivot">
       <div class="swing" id="badgeSwing">
         <svg class="cord" viewBox="0 0 120 150" aria-hidden="true">
-          <path d="M60 0 L44 118" />
-          <path d="M60 0 L76 118" />
+          <path d="M60 0 L44 118"></path>
+          <path d="M60 0 L76 118"></path>
         </svg>
         <span class="clip" aria-hidden="true"></span>
 
@@ -346,55 +346,88 @@ const details = [
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if (swing && pivot && !reduced) {
-    let angle = 0;
-    let velocity = 0;
+    let angle = 0; // derece
+    let velocity = 0; // derece / frame
     let dragging = false;
-    let target = 0;
-    let idle = 0;
+    let grabOffset = 0; // tutulan noktanın açı farkı
+    let pointerAngle = 0;
+    let lastTime = performance.now();
+    let breeze = Math.random() * 100;
 
-    const MAX = 32;
-    const STIFFNESS = 0.055;
-    const DAMPING = 0.93;
+    const GRAVITY = 0.0016; // yerçekimi — büyüdükçe hızlı düşer
+    const DAMPING = 0.988; // hava sürtünmesi
+    const MAX = 42; // maksimum açı
 
-    const angleFromPointer = (clientX: number) => {
+    // İşaretçinin, asma noktasına göre yaptığı açı
+    const readPointer = (clientX: number, clientY: number) => {
       const rect = pivot.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const dx = clientX - centerX;
-      return Math.max(-MAX, Math.min(MAX, dx * 0.22));
+      const originX = rect.left + rect.width / 2;
+      const originY = rect.top;
+      const dx = clientX - originX;
+      const dy = Math.max(clientY - originY, 40); // sıfıra bölünmeyi engelle
+      return (-Math.atan2(dx, dy) * 180) / Math.PI;
     };
 
     swing.addEventListener("pointerdown", (e) => {
       dragging = true;
-      idle = 0;
       swing.classList.add("dragging");
       swing.setPointerCapture(e.pointerId);
-      target = angleFromPointer(e.clientX);
+      pointerAngle = readPointer(e.clientX, e.clientY);
+      grabOffset = angle - pointerAngle; // tutulan yerden kopmasın
+      velocity = 0;
     });
 
     swing.addEventListener("pointermove", (e) => {
-      if (dragging) target = angleFromPointer(e.clientX);
+      if (!dragging) return;
+      pointerAngle = readPointer(e.clientX, e.clientY);
     });
 
     const release = () => {
+      if (!dragging) return;
       dragging = false;
       swing.classList.remove("dragging");
     };
 
     swing.addEventListener("pointerup", release);
     swing.addEventListener("pointercancel", release);
+    swing.addEventListener("lostpointercapture", release);
 
-    const tick = () => {
+    const tick = (now: number) => {
+      // 60fps'e normalize — yüksek tazeleme hızlı ekranlarda aynı hissi verir
+      const dt = Math.min((now - lastTime) / 16.667, 3);
+      lastTime = now;
+
       if (dragging) {
-        velocity += (target - angle) * 0.3;
-        velocity *= 0.65;
+        const wanted = Math.max(-MAX, Math.min(MAX, pointerAngle + grabOffset));
+        const prev = angle;
+        // yumuşak takip
+        angle += (wanted - angle) * 0.18 * dt;
+        // bırakınca savrulsun diye hızı koru
+        velocity = (angle - prev) / Math.max(dt, 0.001);
       } else {
-        idle += 0.006;
-        const rest = Math.sin(idle) * 1.4;
-        velocity += (rest - angle) * STIFFNESS;
-        velocity *= DAMPING;
+        // Sarkaç: ivme = -g * sin(açı)
+        const rad = (angle * Math.PI) / 180;
+        let acceleration = -GRAVITY * Math.sin(rad) * 180;
+
+        // Neredeyse durduğunda çok hafif bir esinti
+        if (Math.abs(angle) < 2 && Math.abs(velocity) < 0.05) {
+          breeze += 0.004 * dt;
+          acceleration += Math.sin(breeze) * 0.0022 * 180;
+        }
+
+        velocity += acceleration * dt;
+        velocity *= Math.pow(DAMPING, dt);
+        angle += velocity * dt;
+
+        if (angle > MAX) {
+          angle = MAX;
+          velocity *= -0.35;
+        } else if (angle < -MAX) {
+          angle = -MAX;
+          velocity *= -0.35;
+        }
       }
 
-      angle += velocity;
       swing.style.transform = `rotate(${angle.toFixed(3)}deg)`;
       requestAnimationFrame(tick);
     };
