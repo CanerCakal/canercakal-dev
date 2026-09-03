@@ -6,6 +6,7 @@ import Timeline from "../components/Timeline.astro";
 import Work from "../components/Work.astro";
 import Events from "../components/Events.astro";
 import Hero from "../components/Hero.astro";
+import TechStack from "../components/TechStack.astro";
 
 const accents = ["var(--accent)", "var(--accent-2)", "var(--accent-3)"];
 
@@ -43,6 +44,8 @@ const now = [
 	<section class="hero">
 		<Hero />
 	</section>
+
+	<TechStack />
 
 	<section class="now">
 		<h2><span class="pulse" aria-hidden="true"></span>Şu sıralar</h2>
@@ -91,55 +94,11 @@ const now = [
 
 	<Timeline />
 	<Events />
-
-	<section class="stack" aria-label="Kullandığım teknolojiler" data-reveal>
-		<div class="marquee">
-			<ul class="marquee-track">
-				{
-					[0, 1].map((copy) => (
-						<li aria-hidden={copy === 1}>
-							{[
-								"Swift",
-								"SwiftUI",
-								"SwiftData",
-								"UIKit",
-								"Python",
-								"Unity",
-								"C#",
-								"TypeScript",
-								"Astro",
-								"FastAPI",
-								"Git",
-								"Firebase",
-							].map((t) => (
-								<span class="chip">{t}</span>
-							))}
-						</li>
-					))
-				}
-			</ul>
-		</div>
-	</section>
 </BaseLayout>
 
 <style>
 	.hero {
 		margin-bottom: var(--space-6);
-	}
-	.intro {
-		font-size: 1.125rem;
-		color: var(--text-muted);
-		max-width: 38rem;
-		min-height: 5.5em; /* scramble sırasında zıplamayı önler */
-	}
-	.cursor {
-		color: var(--accent);
-		animation: blink 1.2s steps(2) infinite;
-	}
-	@keyframes blink {
-		50% {
-			opacity: 0;
-		}
 	}
 
 	.now h2 {
@@ -234,71 +193,6 @@ const now = [
 		}
 	}
 
-	.stack {
-		margin-top: var(--space-6);
-	}
-	.marquee {
-		overflow: hidden;
-		mask-image: linear-gradient(
-			90deg,
-			transparent,
-			black 12%,
-			black 88%,
-			transparent
-		);
-		-webkit-mask-image: linear-gradient(
-			90deg,
-			transparent,
-			black 12%,
-			black 88%,
-			transparent
-		);
-	}
-	.marquee-track {
-		display: flex;
-		width: max-content;
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		animation: scroll 32s linear infinite;
-	}
-	.marquee:hover .marquee-track {
-		animation-play-state: paused;
-	}
-	.marquee-track li {
-		display: flex;
-		gap: var(--space-2);
-		padding-right: var(--space-2);
-	}
-	.chip {
-		font-family: var(--font-mono);
-		font-size: 0.8125rem;
-		color: var(--text-muted);
-		background: var(--card-bg);
-		border: 1px solid var(--card-border);
-		padding: 6px 16px;
-		border-radius: 999px;
-		white-space: nowrap;
-		transition:
-			color 0.2s,
-			border-color 0.2s;
-	}
-	.chip:hover {
-		color: var(--accent);
-		border-color: var(--accent);
-	}
-	@keyframes scroll {
-		to {
-			transform: translateX(-50%);
-		}
-	}
-	@media (prefers-reduced-motion: reduce) {
-		.marquee-track {
-			animation: none;
-			flex-wrap: wrap;
-		}
-	}
-
 	.featured {
 		margin-top: var(--space-6);
 	}
@@ -384,68 +278,6 @@ const now = [
 		}
 	}
 </style>
-
-<script>
-	const el = document.getElementById("intro");
-	const reduced = window.matchMedia(
-		"(prefers-reduced-motion: reduce)",
-	).matches;
-
-	if (el && !reduced) {
-		const intro = el; // TS narrowing closure'lara taşınmaz; sabit referans çözümü
-		const original = (intro.textContent ?? "").replace(/\s+/g, " ").trim();
-		const glyphs = "!<>-_\\/[]{}=+*^?#010110";
-		const rand = () => glyphs[Math.floor(Math.random() * glyphs.length)];
-
-		// 1) Açılışta: şifre çözülme efekti
-		let progress = 0;
-		const step = Math.ceil(original.length / 55);
-		intro.textContent = original
-			.split("")
-			.map((c) => (c === " " ? " " : rand()))
-			.join("");
-
-		const decode = setInterval(() => {
-			progress += step;
-			intro.textContent = original
-				.split("")
-				.map((c, i) => (c === " " || i < progress ? c : rand()))
-				.join("");
-			if (progress >= original.length) {
-				clearInterval(decode);
-				intro.textContent = original;
-				startFlicker();
-			}
-		}, 28);
-
-		// 2) Sonrasında: arada bir küçük bölgesel titreşim
-		function startFlicker() {
-			setInterval(() => {
-				const start = Math.floor(
-					Math.random() * (original.length - 10),
-				);
-				let ticks = 0;
-				const flicker = setInterval(() => {
-					intro.textContent = original
-						.split("")
-						.map((c, i) =>
-							i >= start &&
-							i < start + 7 &&
-							c !== " " &&
-							Math.random() < 0.6
-								? rand()
-								: c,
-						)
-						.join("");
-					if (++ticks > 4) {
-						clearInterval(flicker);
-						intro.textContent = original;
-					}
-				}, 55);
-			}, 5000);
-		}
-	}
-</script>
 
 <script>
 	const stage = document.getElementById("stage");
