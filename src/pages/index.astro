@@ -5,6 +5,8 @@ import { DOMAIN_LABELS, type Domain } from "../lib/domains";
 import Timeline from "../components/Timeline.astro";
 import Work from "../components/Work.astro";
 import Events from "../components/Events.astro";
+import Hero from "../components/Hero.astro";
+import TechStack from "../components/TechStack.astro";
 
 const accents = ["var(--accent)", "var(--accent-2)", "var(--accent-3)"];
 
@@ -24,46 +26,46 @@ const now = [
 		label: "Yapıyorum",
 		text: "Bu site dahil, aklımdaki fikirleri gerçek projelere dönüştürüyorum",
 		accent: "var(--accent)",
+		icon: "M12 3 3 9v12h6v-6h6v6h6V9z",
 	},
 	{
 		label: "Odaklanıyorum",
 		text: "Swift ve iOS tarafında derinleşiyorum — MVVM mimari, modern API'ler, temiz ve okunabilir kod",
 		accent: "var(--accent-2)",
+		icon: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",
 	},
 	{
 		label: "Yazıyorum",
 		text: "Süreç sonunda öğrendiklerimi ve verdiğim kararları düzenli olarak yazıya döküyorum",
 		accent: "var(--accent-3)",
+		icon: "M4 20h4L18.5 9.5a2.12 2.12 0 0 0-3-3L5 17v3z",
 	},
 ];
 ---
 
 <BaseLayout title="Caner Çakal">
 	<section class="hero">
-		<h1>
-			Merhaba, ben <span class="gradient-text">Caner</span><span
-				class="cursor">_</span
-			>
-		</h1>
-		<p class="intro" id="intro">
-			Bilgisayar mühendisliği öğrencisiyim ancak bekleyen cinsten değilim:
-			yapıyorum, bozuyorum, tekrar yapıyorum ve sonunda yazıya döküyorum.
-			Bu aralar sürekli aynı şeylerle uğraşıyorum - herkesin cebinde olan
-			cihazlarla...
-		</p>
+		<Hero />
 	</section>
+
+	<TechStack />
 
 	<section class="now">
 		<h2><span class="pulse" aria-hidden="true"></span>Şu sıralar</h2>
 		<ul>
 			{
-				now.map(({ label, text, accent }, i) => (
+				now.map(({ label, text, accent, icon }, i) => (
 					<li
 						style={`--item: ${accent}; --reveal-delay: ${i * 90}ms`}
 						data-reveal
 					>
-						<span class="now-label">{label}</span>
-						<span class="now-text">{text}</span>
+						<span class="now-icon" aria-hidden="true">
+							<svg viewBox="0 0 24 24">
+								<path d={icon} />
+							</svg>
+						</span>
+						<h3 class="now-label">{label}</h3>
+						<p class="now-text">{text}</p>
 					</li>
 				))
 			}
@@ -100,55 +102,11 @@ const now = [
 
 	<Timeline />
 	<Events />
-
-	<section class="stack" aria-label="Kullandığım teknolojiler" data-reveal>
-		<div class="marquee">
-			<ul class="marquee-track">
-				{
-					[0, 1].map((copy) => (
-						<li aria-hidden={copy === 1}>
-							{[
-								"Swift",
-								"SwiftUI",
-								"SwiftData",
-								"UIKit",
-								"Python",
-								"Unity",
-								"C#",
-								"TypeScript",
-								"Astro",
-								"FastAPI",
-								"Git",
-								"Firebase",
-							].map((t) => (
-								<span class="chip">{t}</span>
-							))}
-						</li>
-					))
-				}
-			</ul>
-		</div>
-	</section>
 </BaseLayout>
 
 <style>
 	.hero {
 		margin-bottom: var(--space-6);
-	}
-	.intro {
-		font-size: 1.125rem;
-		color: var(--text-muted);
-		max-width: 38rem;
-		min-height: 5.5em; /* scramble sırasında zıplamayı önler */
-	}
-	.cursor {
-		color: var(--accent);
-		animation: blink 1.2s steps(2) infinite;
-	}
-	@keyframes blink {
-		50% {
-			opacity: 0;
-		}
 	}
 
 	.now h2 {
@@ -191,43 +149,83 @@ const now = [
 		list-style: none;
 		margin: 0;
 		padding: 0;
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-2);
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: var(--space-3);
 	}
 	.now li {
-		display: flex;
-		gap: var(--space-3);
-		align-items: center;
-		padding: var(--space-3);
-		background: var(--card-bg);
+		position: relative;
+		overflow: hidden;
+		padding: var(--space-4);
+		background: var(--surface);
 		border: 1px solid var(--card-border);
-		backdrop-filter: blur(16px);
-		-webkit-backdrop-filter: blur(16px);
-		border-radius: var(--radius);
+		box-shadow: var(--shadow-sm);
+		border-radius: var(--radius-lg);
 		transition:
-			border-color 0.25s var(--ease-spring),
-			transform 0.25s var(--ease-spring),
-			box-shadow 0.25s var(--ease-spring);
+			border-color var(--t-base) var(--ease-out),
+			box-shadow var(--t-base) var(--ease-out),
+			transform var(--t-base) var(--ease-spring);
+	}
+	.now li::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		opacity: 0;
+		background: radial-gradient(
+			240px circle at var(--mx, 50%) var(--my, 50%),
+			color-mix(in srgb, var(--item) 18%, transparent),
+			transparent 66%
+		);
+		transition: opacity var(--t-base) var(--ease-out);
+	}
+	.now li:hover::before {
+		opacity: 1;
+	}
+	.now li > * {
+		position: relative;
+		z-index: 1;
 	}
 	.now li:hover {
-		border-color: color-mix(in srgb, var(--item) 45%, transparent);
-		box-shadow: 0 0 28px color-mix(in srgb, var(--item) 16%, transparent);
-		transform: translateX(4px);
+		border-color: color-mix(in srgb, var(--item) 35%, transparent);
+		box-shadow: var(--shadow-md);
+		transform: translateY(-3px);
+	}
+	.now-icon {
+		display: grid;
+		place-items: center;
+		width: 42px;
+		height: 42px;
+		margin-bottom: var(--space-3);
+		border-radius: var(--radius);
+		background: color-mix(in srgb, var(--item) 10%, transparent);
+		border: 1px solid color-mix(in srgb, var(--item) 22%, transparent);
+	}
+	.now-icon svg {
+		width: 20px;
+		height: 20px;
+		fill: none;
+		stroke: var(--item);
+		stroke-width: 1.7;
+		stroke-linecap: round;
+		stroke-linejoin: round;
 	}
 	.now-label {
 		font-family: var(--font-mono);
-		font-size: 0.78rem;
-		color: var(--item);
-		background: color-mix(in srgb, var(--item) 12%, transparent);
-		border: 1px solid color-mix(in srgb, var(--item) 28%, transparent);
-		padding: 3px 12px;
-		border-radius: 999px;
-		flex-shrink: 0;
+		font-size: 0.95rem;
+		color: var(--text);
+		margin: 0 0 var(--space-2);
 	}
 	.now-text {
-		color: var(--text);
-		font-size: 0.9375rem;
+		color: var(--text-muted);
+		font-size: 0.9rem;
+		line-height: 1.65;
+		margin: 0;
+	}
+	@media (max-width: 780px) {
+		.now ul {
+			grid-template-columns: 1fr;
+		}
 	}
 	.updated {
 		font-family: var(--font-mono);
@@ -243,73 +241,9 @@ const now = [
 		}
 	}
 
-	.stack {
-		margin-top: var(--space-6);
-	}
-	.marquee {
-		overflow: hidden;
-		mask-image: linear-gradient(
-			90deg,
-			transparent,
-			black 12%,
-			black 88%,
-			transparent
-		);
-		-webkit-mask-image: linear-gradient(
-			90deg,
-			transparent,
-			black 12%,
-			black 88%,
-			transparent
-		);
-	}
-	.marquee-track {
-		display: flex;
-		width: max-content;
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		animation: scroll 32s linear infinite;
-	}
-	.marquee:hover .marquee-track {
-		animation-play-state: paused;
-	}
-	.marquee-track li {
-		display: flex;
-		gap: var(--space-2);
-		padding-right: var(--space-2);
-	}
-	.chip {
-		font-family: var(--font-mono);
-		font-size: 0.8125rem;
-		color: var(--text-muted);
-		background: var(--card-bg);
-		border: 1px solid var(--card-border);
-		padding: 6px 16px;
-		border-radius: 999px;
-		white-space: nowrap;
-		transition:
-			color 0.2s,
-			border-color 0.2s;
-	}
-	.chip:hover {
-		color: var(--accent);
-		border-color: var(--accent);
-	}
-	@keyframes scroll {
-		to {
-			transform: translateX(-50%);
-		}
-	}
-	@media (prefers-reduced-motion: reduce) {
-		.marquee-track {
-			animation: none;
-			flex-wrap: wrap;
-		}
-	}
-
 	.featured {
 		margin-top: var(--space-6);
+		margin-bottom: var(--space-6);
 	}
 	.featured h2 {
 		font-size: 1.125rem;
@@ -328,7 +262,7 @@ const now = [
 		height: fit-content;
 		padding: var(--space-4);
 		border-radius: var(--radius-lg);
-		background: color-mix(in srgb, var(--bg) 78%, #ffffff 5%);
+		background: var(--surface);
 		border: 1px solid var(--card-border);
 		color: var(--text);
 		will-change: transform, opacity;
@@ -361,22 +295,22 @@ const now = [
 	.pos-0 {
 		transform: translateZ(0);
 		z-index: 3;
-		border-color: color-mix(in srgb, var(--item) 40%, transparent);
-		box-shadow:
-			0 18px 50px rgba(0, 0, 0, 0.45),
-			0 0 34px color-mix(in srgb, var(--item) 12%, transparent);
+		border-color: color-mix(in srgb, var(--item) 35%, transparent);
+		box-shadow: var(--shadow-lg);
 	}
 	.pos-1 {
-		transform: translateX(-38%) translateZ(-160px) rotateY(14deg)
+		transform: translateX(-40%) translateZ(-160px) rotateY(14deg)
 			scale(0.94);
 		z-index: 2;
-		opacity: 0.55;
+		opacity: 0.88;
+		box-shadow: var(--shadow-sm);
 	}
 	.pos-2 {
-		transform: translateX(38%) translateZ(-160px) rotateY(-14deg)
+		transform: translateX(40%) translateZ(-160px) rotateY(-14deg)
 			scale(0.94);
 		z-index: 1;
-		opacity: 0.55;
+		opacity: 0.88;
+		box-shadow: var(--shadow-sm);
 	}
 	@media (max-width: 640px) {
 		.stage {
@@ -393,68 +327,6 @@ const now = [
 		}
 	}
 </style>
-
-<script>
-	const el = document.getElementById("intro");
-	const reduced = window.matchMedia(
-		"(prefers-reduced-motion: reduce)",
-	).matches;
-
-	if (el && !reduced) {
-		const intro = el; // TS narrowing closure'lara taşınmaz; sabit referans çözümü
-		const original = (intro.textContent ?? "").replace(/\s+/g, " ").trim();
-		const glyphs = "!<>-_\\/[]{}=+*^?#010110";
-		const rand = () => glyphs[Math.floor(Math.random() * glyphs.length)];
-
-		// 1) Açılışta: şifre çözülme efekti
-		let progress = 0;
-		const step = Math.ceil(original.length / 55);
-		intro.textContent = original
-			.split("")
-			.map((c) => (c === " " ? " " : rand()))
-			.join("");
-
-		const decode = setInterval(() => {
-			progress += step;
-			intro.textContent = original
-				.split("")
-				.map((c, i) => (c === " " || i < progress ? c : rand()))
-				.join("");
-			if (progress >= original.length) {
-				clearInterval(decode);
-				intro.textContent = original;
-				startFlicker();
-			}
-		}, 28);
-
-		// 2) Sonrasında: arada bir küçük bölgesel titreşim
-		function startFlicker() {
-			setInterval(() => {
-				const start = Math.floor(
-					Math.random() * (original.length - 10),
-				);
-				let ticks = 0;
-				const flicker = setInterval(() => {
-					intro.textContent = original
-						.split("")
-						.map((c, i) =>
-							i >= start &&
-							i < start + 7 &&
-							c !== " " &&
-							Math.random() < 0.6
-								? rand()
-								: c,
-						)
-						.join("");
-					if (++ticks > 4) {
-						clearInterval(flicker);
-						intro.textContent = original;
-					}
-				}, 55);
-			}, 5000);
-		}
-	}
-</script>
 
 <script>
 	const stage = document.getElementById("stage");
@@ -499,6 +371,22 @@ const now = [
 					apply();
 				}
 			});
+		});
+	}
+</script>
+<script>
+	const list = document.querySelector<HTMLElement>(".now ul");
+	const reducedSpot = window.matchMedia(
+		"(prefers-reduced-motion: reduce)",
+	).matches;
+
+	if (list && !reducedSpot) {
+		list.addEventListener("pointermove", (e: PointerEvent) => {
+			const target = (e.target as HTMLElement).closest("li");
+			if (!target) return;
+			const rect = target.getBoundingClientRect();
+			target.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+			target.style.setProperty("--my", `${e.clientY - rect.top}px`);
 		});
 	}
 </script>
