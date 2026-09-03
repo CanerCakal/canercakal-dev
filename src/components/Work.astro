@@ -1,97 +1,258 @@
 ---
+import * as si from "simple-icons";
+
 const role = "AI Innovators Internship Program";
 const org = "Microsoft";
 const mode = "Uzaktan";
 const period = "Mayıs - Ağustos 2026";
 const text =
-	"Lokalde çalışan, RAG mimarisine dayalı bir chatbot geliştirdim — model, veri ve arayüz tarafını uçtan uca kurduğum bir süreçti.";
+  "Lokalde çalışan, RAG mimarisine dayalı bir chatbot geliştirdim — model, veri ve arayüz tarafını uçtan uca kurduğum bir süreçti.";
+
+// Etiketleri kendine göre düzenle
+const stack = [
+  { name: "Python", slug: "siPython" },
+  { name: "RAG", slug: null },
+  { name: "LLM", slug: null },
+  { name: "Streamlit", slug: "siStreamlit" },
+];
+
+type Icon = { path: string; hex: string };
+const brand = ((si as any).siMicrosoft ?? (si as any).siMicrosoftazure) as
+  Icon | undefined;
+
+const isTooLight = (hex: string) => {
+  const r = parseInt(hex.slice(0, 2), 16);
+  const g = parseInt(hex.slice(2, 4), 16);
+  const b = parseInt(hex.slice(4, 6), 16);
+  return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.72;
+};
+
+const tags = stack.map((t) => {
+  const icon = t.slug ? ((si as any)[t.slug] as Icon | undefined) : undefined;
+  if (!icon) return { name: t.name, path: null, hex: null };
+  return {
+    name: t.name,
+    path: icon.path,
+    hex: isTooLight(icon.hex) ? "#1f2430" : `#${icon.hex}`,
+  };
+});
 ---
 
 <section class="work" aria-label="İş deneyimi" data-reveal>
-	<h2 class="label">iş</h2>
-	<div class="body">
-		<div class="head">
-			<h3>{role}</h3>
-			<span class="period">{period}</span>
-		</div>
-		<span class="org">{org} · {mode}</span>
-		<p>{text}</p>
-		<a class="link" href="/projects/elden-oracle">Çıkan işe bak →</a>
-	</div>
+  <div class="top">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 23 23">
+          <rect x="1" y="1" width="10" height="10" fill="#f25022"></rect>
+          <rect x="12" y="1" width="10" height="10" fill="#7fba00"></rect>
+          <rect x="1" y="12" width="10" height="10" fill="#00a4ef"></rect>
+          <rect x="12" y="12" width="10" height="10" fill="#ffb900"></rect>
+        </svg>
+      </span>
+      <div class="who">
+        <span class="badge">İş deneyimi</span>
+        <h3>{role}</h3>
+        <span class="org">{org} · {mode}</span>
+      </div>
+    </div>
+    <span class="period">{period}</span>
+  </div>
+
+  <p>{text}</p>
+
+  <ul class="tags">
+    {
+      tags.map((t) => (
+        <li style={t.hex ? `--brand: ${t.hex}` : ""}>
+          {t.path ? (
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d={t.path} />
+            </svg>
+          ) : (
+            <span class="dot" aria-hidden="true" />
+          )}
+          {t.name}
+        </li>
+      ))
+    }
+  </ul>
+
+  <a class="link" href="/projects/elden-oracle">
+    Çıkan işe bak
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M5 12h14M13 6l6 6-6 6"></path>
+    </svg>
+  </a>
 </section>
 
 <style>
-	.work {
-		display: grid;
-		grid-template-columns: auto 1fr;
-		gap: var(--space-3);
-		align-items: start;
-		margin-top: var(--space-5);
-		padding: var(--space-4);
-		border: 1px solid var(--card-border);
-		border-radius: var(--radius-lg);
-		background: color-mix(in srgb, var(--bg) 60%, transparent);
-		position: relative;
-		overflow: hidden;
-	}
-	.work::before {
-		content: "";
-		position: absolute;
-		inset: 0 auto 0 0;
-		width: 2px;
-		background: linear-gradient(to bottom, var(--accent-2), transparent);
-	}
+  .work {
+    position: relative;
+    overflow: hidden;
+    margin-top: var(--space-6);
+    padding: var(--space-5);
+    border-radius: var(--radius-xl);
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent-2) 9%, var(--surface)),
+      color-mix(in srgb, var(--accent) 6%, var(--surface))
+    );
+    border: 1px solid color-mix(in srgb, var(--accent-2) 24%, transparent);
+    box-shadow: var(--shadow-md);
+  }
 
-	.label {
-		font-family: var(--font-mono);
-		font-size: 0.68rem;
-		letter-spacing: 0.18em;
-		text-transform: uppercase;
-		color: var(--accent-2);
-		margin-top: 0.35em;
-		margin: 0;
-	}
+  .top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
 
-	.head {
-		display: flex;
-		align-items: baseline;
-		justify-content: space-between;
-		gap: var(--space-3);
-		flex-wrap: wrap;
-	}
-	.work h3 {
-		font-size: 1.0625rem;
-		margin: 0;
-	}
-	.period {
-		font-family: var(--font-mono);
-		font-size: 0.7rem;
-		letter-spacing: 0.04em;
-		color: var(--text-muted);
-		white-space: nowrap;
-	}
-	.org {
-		display: block;
-		font-size: 0.8125rem;
-		color: var(--text-muted);
-		margin-top: 2px;
-	}
-	.work p {
-		font-size: 0.9375rem;
-		color: color-mix(in srgb, var(--text) 72%, transparent);
-		line-height: 1.6;
-		margin: var(--space-2) 0 var(--space-3);
-		max-width: 32rem;
-	}
-	.link {
-		font-family: var(--font-mono);
-		font-size: 0.8125rem;
-	}
+  .brand {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
 
-	@media (max-width: 520px) {
-		.work {
-			grid-template-columns: 1fr;
-			gap: var(--space-2);
-		}
-	}
+  .logo {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: var(--radius);
+    background: #fff;
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .logo svg {
+    width: 24px;
+    height: 24px;
+    fill: #5e5e5e;
+  }
+
+  .logo svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .badge {
+    display: inline-block;
+    margin-bottom: 6px;
+    padding: 3px 11px;
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--accent-2) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent-2) 26%, transparent);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+  }
+
+  .work h3 {
+    font-size: 1.2rem;
+    margin: 0;
+  }
+
+  .org {
+    display: block;
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    margin-top: 3px;
+  }
+
+  .period {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    white-space: nowrap;
+    padding-top: 6px;
+  }
+
+  .work p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin: var(--space-4) 0 var(--space-4);
+    max-width: 42rem;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0 0 var(--space-4);
+    padding: 0;
+  }
+
+  .tags li {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    background: #fff;
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow-sm);
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--text);
+  }
+
+  .tags svg {
+    width: 14px;
+    height: 14px;
+    fill: var(--brand, var(--text-muted));
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-2);
+  }
+
+  .link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--accent-2);
+  }
+
+  .link svg {
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform var(--t-base) var(--ease-spring);
+  }
+
+  .link:hover svg {
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 620px) {
+    .work {
+      padding: var(--space-4);
+    }
+    .period {
+      padding-top: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .link:hover svg {
+      transform: none;
+    }
+  }
 </style>
