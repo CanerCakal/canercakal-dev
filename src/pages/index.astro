@@ -146,24 +146,45 @@ const now = [
 		gap: var(--space-2);
 	}
 	.now li {
+		position: relative;
+		overflow: hidden;
 		display: flex;
 		gap: var(--space-3);
 		align-items: center;
-		padding: var(--space-3);
-		background: var(--card-bg);
+		padding: var(--space-3) var(--space-4);
+		background: var(--surface);
 		border: 1px solid var(--card-border);
-		backdrop-filter: blur(16px);
-		-webkit-backdrop-filter: blur(16px);
-		border-radius: var(--radius);
+		box-shadow: var(--shadow-sm);
+		border-radius: var(--radius-lg);
 		transition:
-			border-color 0.25s var(--ease-spring),
-			transform 0.25s var(--ease-spring),
-			box-shadow 0.25s var(--ease-spring);
+			border-color var(--t-base) var(--ease-out),
+			box-shadow var(--t-base) var(--ease-out),
+			transform var(--t-base) var(--ease-spring);
+	}
+	.now li::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		opacity: 0;
+		background: radial-gradient(
+			260px circle at var(--mx, 50%) var(--my, 50%),
+			color-mix(in srgb, var(--item) 20%, transparent),
+			transparent 68%
+		);
+		transition: opacity var(--t-base) var(--ease-out);
+	}
+	.now li:hover::before {
+		opacity: 1;
+	}
+	.now li > * {
+		position: relative;
+		z-index: 1;
 	}
 	.now li:hover {
-		border-color: color-mix(in srgb, var(--item) 45%, transparent);
-		box-shadow: 0 0 28px color-mix(in srgb, var(--item) 16%, transparent);
-		transform: translateX(4px);
+		border-color: color-mix(in srgb, var(--item) 35%, transparent);
+		box-shadow: var(--shadow-md);
+		transform: translateY(-2px);
 	}
 	.now-label {
 		font-family: var(--font-mono);
@@ -324,4 +345,18 @@ const now = [
 			});
 		});
 	}
+</script>
+<script>
+  const list = document.querySelector<HTMLElement>(".now ul");
+  const reducedSpot = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (list && !reducedSpot) {
+    list.addEventListener("pointermove", (e: PointerEvent) => {
+      const target = (e.target as HTMLElement).closest("li");
+      if (!target) return;
+      const rect = target.getBoundingClientRect();
+      target.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+      target.style.setProperty("--my", `${e.clientY - rect.top}px`);
+    });
+  }
 </script>

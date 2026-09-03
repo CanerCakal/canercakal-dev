@@ -18,7 +18,7 @@ const items = [
   { name: "PostgreSQL", slug: "siPostgresql" },
   { name: "Docker", slug: "siDocker" },
   { name: "Unity", slug: "siUnity" },
-  { name: "C#", slug: "siCsharp" },
+  { name: "C#", slug: "siSharp" },
   { name: "Git", slug: "siGit" },
   { name: "GitHub", slug: "siGithub" },
   { name: "Cloudflare", slug: "siCloudflare" },
@@ -27,17 +27,33 @@ const items = [
 
 type Icon = { path: string; hex: string };
 
+// Beyaz zeminde kaybolan açık renkli logolar için parlaklık kontrolü
+const isTooLight = (hex: string) => {
+  const r = parseInt(hex.slice(0, 2), 16);
+  const g = parseInt(hex.slice(2, 4), 16);
+  const b = parseInt(hex.slice(4, 6), 16);
+  return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.72;
+};
+
 const resolved = items.map((item) => {
-  const icon = item.slug ? ((si as any)[item.slug] as Icon | undefined) : undefined;
+  const icon = item.slug
+    ? ((si as any)[item.slug] as Icon | undefined)
+    : undefined;
+  if (!icon) return { name: item.name, path: null, hex: null };
   return {
     name: item.name,
-    path: icon?.path ?? null,
-    hex: icon ? `#${icon.hex}` : null,
+    path: icon.path,
+    hex: isTooLight(icon.hex) ? "#1f2430" : `#${icon.hex}`,
   };
 });
 ---
 
-<section class="stack" aria-label="Kullandığım teknolojiler" data-reveal>
+<section
+  class="stack"
+  id="techStack"
+  aria-label="Kullandığım teknolojiler"
+  data-reveal
+>
   <div class="marquee">
     <ul class="marquee-track">
       {
@@ -70,8 +86,20 @@ const resolved = items.map((item) => {
   .marquee {
     overflow: hidden;
     padding: var(--space-2) 0;
-    mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
-    -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+    mask-image: linear-gradient(
+      90deg,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
   }
 
   .marquee-track {
@@ -80,11 +108,7 @@ const resolved = items.map((item) => {
     list-style: none;
     margin: 0;
     padding: 0;
-    animation: scroll 48s linear infinite;
-  }
-
-  .marquee:hover .marquee-track {
-    animation-play-state: paused;
+    will-change: transform;
   }
 
   .marquee-track li {
@@ -115,7 +139,11 @@ const resolved = items.map((item) => {
   .chip:hover {
     transform: translateY(-3px);
     box-shadow: var(--shadow-md);
-    border-color: color-mix(in srgb, var(--brand, var(--accent)) 40%, transparent);
+    border-color: color-mix(
+      in srgb,
+      var(--brand, var(--accent)) 40%,
+      transparent
+    );
   }
 
   .chip svg {
@@ -133,15 +161,8 @@ const resolved = items.map((item) => {
     flex-shrink: 0;
   }
 
-  @keyframes scroll {
-    to {
-      transform: translateX(-50%);
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .marquee-track {
-      animation: none;
       flex-wrap: wrap;
     }
     .chip:hover {
@@ -149,3 +170,48 @@ const resolved = items.map((item) => {
     }
   }
 </style>
+
+<script>
+  const root = document.getElementById("techStack");
+  const track = root?.querySelector(".marquee-track") as HTMLElement | null;
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (root && track && !reduced) {
+    const SPEED = 0.42; // px / frame (60fps'te ~25px/s)
+    const EASE = 0.06; // hız değişim yumuşaklığı — küçüldükçe daha yavaş geçiş
+
+    let offset = 0;
+    let current = SPEED;
+    let target = SPEED;
+    let half = track.scrollWidth / 2;
+    let lastTime = performance.now();
+
+    root.addEventListener("pointerenter", () => (target = 0));
+    root.addEventListener("pointerleave", () => (target = SPEED));
+
+    // Sekme arka plandayken boşuna çalışmasın
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) lastTime = performance.now();
+    });
+
+    window.addEventListener("resize", () => {
+      half = track.scrollWidth / 2;
+    });
+
+    const tick = (now: number) => {
+      const dt = Math.min((now - lastTime) / 16.667, 3);
+      lastTime = now;
+
+      // Hedefe yumuşak yaklaşma
+      current += (target - current) * EASE * dt;
+
+      offset += current * dt;
+      if (offset >= half) offset -= half;
+
+      track.style.transform = `translate3d(${-offset}px, 0, 0)`;
+      requestAnimationFrame(tick);
+    };
+
+    requestAnimationFrame(tick);
+  }
+</script>

@@ -215,10 +215,6 @@ const currentPath = Astro.url.pathname;
             transition: none;
         }
     }
-    nav ul a:hover {
-        color: var(--accent);
-        opacity: 1;
-    }
 
     main {
         max-width: var(--max-width);
@@ -274,6 +270,12 @@ const currentPath = Astro.url.pathname;
         backdrop-filter: blur(1px) saturate(1.6);
         -webkit-backdrop-filter: blur(1px) saturate(1.6);
     }
+    .lens.on-grab {
+        width: 84px;
+        height: 84px;
+        border-color: color-mix(in srgb, var(--accent-2) 60%, transparent);
+        border-width: 2px;
+    }
     @media (pointer: coarse), (prefers-reduced-motion: reduce) {
         .lens {
             display: none;
@@ -318,7 +320,12 @@ const currentPath = Astro.url.pathname;
         document.addEventListener("mouseover", (e) => {
             const t = e.target;
             if (t instanceof Element) {
-                lens.classList.toggle("on-link", !!t.closest("a, button"));
+                const hit = t.closest("a, button, [data-lens]");
+                lens.classList.toggle("on-link", !!hit);
+                lens.classList.toggle(
+                    "on-grab",
+                    !!hit?.hasAttribute("data-lens-grab"),
+                );
             }
         });
     }
