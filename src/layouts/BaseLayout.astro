@@ -64,9 +64,12 @@ const currentPath = Astro.url.pathname;
             <span></span><span></span><span></span>
         </div>
         <div class="lens" id="lens" aria-hidden="true"></div>
-        <header class="site-header">
-            <nav>
-                <a href="/" class="logo">Caner ÇAKAL</a>
+        <header class="site-header" id="siteHeader">
+            <nav aria-label="Ana gezinme">
+                <a href="/" class="logo">
+                    <span class="mark">CÇ</span>
+                    <span class="name">Caner ÇAKAL</span>
+                </a>
                 <ul>
                     {
                         nav.map(({ path, label }) => (
@@ -103,43 +106,115 @@ const currentPath = Astro.url.pathname;
 
 <style>
     .site-header {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        background: color-mix(in srgb, var(--bg) 78%, transparent);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        border-bottom: 1px solid var(--border);
+        position: fixed;
+        top: var(--space-3);
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: var(--z-header);
+        width: min(var(--width-page), calc(100vw - 2 * var(--space-3)));
+        transition:
+            transform var(--t-base) var(--ease-out),
+            opacity var(--t-base) var(--ease-out);
     }
+
+    .site-header.is-hidden {
+        transform: translateX(-50%) translateY(calc(-100% - var(--space-3)));
+        opacity: 0;
+        pointer-events: none;
+    }
+
     .site-header nav {
-        max-width: var(--max-width);
-        margin: 0 auto;
-        padding: var(--space-3);
-    }
-    nav {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: var(--space-3);
+        padding: 10px 10px 10px var(--space-3);
+        border-radius: var(--radius-pill);
+        background: var(--surface-raised);
+        border: 1px solid var(--surface-raised-border);
+        box-shadow: var(--shadow-md);
+        backdrop-filter: blur(var(--blur-raised));
+        -webkit-backdrop-filter: blur(var(--blur-raised));
     }
+
     .logo {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
         font-family: var(--font-mono);
         font-weight: 600;
         color: var(--text);
+        flex-shrink: 0;
     }
+
+    .logo:hover {
+        opacity: 1;
+    }
+
+    .mark {
+        display: grid;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        border-radius: var(--radius-sm);
+        background: var(--gradient);
+        color: #fff;
+        font-size: 0.78rem;
+        letter-spacing: 0.02em;
+    }
+
+    .name {
+        font-size: 0.9rem;
+    }
+
     nav ul {
         display: flex;
-        gap: var(--space-3);
+        align-items: center;
+        gap: var(--space-1);
         list-style: none;
         margin: 0;
         padding: 0;
     }
+
     nav ul a {
+        display: block;
+        padding: 7px 14px;
+        border-radius: var(--radius-pill);
         font-family: var(--font-mono);
-        font-size: 0.875rem;
+        font-size: 0.83rem;
         color: var(--text-muted);
+        transition:
+            color var(--t-fast) var(--ease-out),
+            background var(--t-fast) var(--ease-out);
     }
-    nav ul a.active,
+
+    nav ul a:hover {
+        color: var(--text);
+        background: rgba(18, 21, 31, 0.05);
+        opacity: 1;
+    }
+
+    nav ul a.active {
+        color: var(--accent);
+        background: var(--accent-subtle);
+        opacity: 1;
+    }
+
+    @media (max-width: 560px) {
+        .name {
+            display: none;
+        }
+        nav ul a {
+            padding: 7px 10px;
+            font-size: 0.78rem;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .site-header {
+            transition: none;
+        }
+    }
     nav ul a:hover {
         color: var(--accent);
         opacity: 1;
@@ -148,7 +223,7 @@ const currentPath = Astro.url.pathname;
     main {
         max-width: var(--max-width);
         margin: 0 auto;
-        padding: var(--space-5) var(--space-3);
+        padding: 6rem var(--space-3) var(--space-5);
         min-height: 60vh;
     }
 
@@ -268,5 +343,40 @@ const currentPath = Astro.url.pathname;
             { rootMargin: "0px 0px -10% 0px", threshold: 0.12 },
         );
         targets.forEach((el) => io.observe(el));
+    }
+</script>
+<script>
+    const header = document.getElementById("siteHeader");
+    if (header) {
+        let lastY = window.scrollY;
+        let ticking = false;
+
+        const update = () => {
+            const y = window.scrollY;
+            const goingDown = y > lastY;
+
+            // İlk 120px'de her zaman görünür
+            if (y < 120) {
+                header.classList.remove("is-hidden");
+            } else if (goingDown && y - lastY > 4) {
+                header.classList.add("is-hidden");
+            } else if (!goingDown && lastY - y > 4) {
+                header.classList.remove("is-hidden");
+            }
+
+            lastY = y;
+            ticking = false;
+        };
+
+        window.addEventListener(
+            "scroll",
+            () => {
+                if (!ticking) {
+                    requestAnimationFrame(update);
+                    ticking = true;
+                }
+            },
+            { passive: true },
+        );
     }
 </script>
