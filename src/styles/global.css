@@ -88,6 +88,7 @@
 
 body {
     margin: 0;
+    padding-bottom: 6rem;
     background: var(--bg);
     color: var(--text);
     font-family: var(--font-body);

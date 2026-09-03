@@ -2,6 +2,7 @@
 import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import "../styles/global.css";
+import DockNav from "../components/DockNav.astro";
 
 interface Props {
     title: string;
@@ -96,6 +97,7 @@ const currentPath = Astro.url.pathname;
                 rel="noopener">source</a
             >
         </footer>
+        <DockNav currentPath={currentPath} />
     </body>
 </html>
 
