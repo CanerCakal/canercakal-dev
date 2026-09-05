@@ -3,6 +3,7 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import "../styles/global.css";
 import DockNav from "../components/DockNav.astro";
+import { socials, socialIcons } from "../data/social";
 
 interface Props {
     title: string;
@@ -94,15 +95,38 @@ const currentPath = Astro.url.pathname;
         </main>
 
         <footer class="site-footer">
-            <span class="prompt">$ echo</span> built in public — <a
-                href="https://github.com/CanerCakal/canercakal-dev"
-                target="_blank"
-                rel="noopener">source</a
-            >
+            <ul class="social" aria-label="Sosyal hesaplar">
+                {
+                    socials
+                        .filter((s) => s.href)
+                        .map((s) => (
+                            <li style={"--item: " + s.accent}>
+                                <a
+                                    href={s.href}
+                                    target="_blank"
+                                    rel="noopener"
+                                    aria-label={s.short}
+                                    title={s.short}
+                                >
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d={socialIcons[s.icon]} />
+                                    </svg>
+                                </a>
+                            </li>
+                        ))
+                }
+            </ul>
+            <p class="credit">
+                <a
+                    href="https://github.com/CanerCakal/canercakal-dev"
+                    target="_blank"
+                    rel="noopener">built in public</a
+                >
+            </p>
         </footer>
-        <DockNav currentPath={currentPath} />
     </body>
 </html>
+<DockNav currentPath={currentPath} />
 
 <style>
     .site-header {
@@ -224,16 +248,68 @@ const currentPath = Astro.url.pathname;
     }
 
     .site-footer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-3);
         max-width: var(--max-width);
         margin: 0 auto;
-        padding: var(--space-4) var(--space-3);
-        font-family: var(--font-mono);
-        font-size: 0.8125rem;
-        color: var(--text-muted);
+        padding: var(--space-5) var(--space-3) var(--space-4);
         border-top: 1px solid var(--border);
     }
-    .prompt {
+    .credit {
+        margin: 0;
+        font-family: var(--font-mono);
+        font-size: 0.76rem;
+        color: var(--text-muted);
+    }
+    .credit a {
+        color: var(--text-muted);
+    }
+    .credit a:hover {
         color: var(--accent);
+        opacity: 1;
+    }
+    .social {
+        display: flex;
+        gap: var(--space-2);
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    .social a {
+        display: grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: #fff;
+        border: 1px solid var(--card-border);
+        box-shadow: var(--shadow-sm);
+        transition:
+            transform var(--t-base) var(--ease-spring),
+            border-color var(--t-base) var(--ease-out),
+            box-shadow var(--t-base) var(--ease-out);
+    }
+    .social a:hover {
+        transform: translateY(-3px);
+        border-color: color-mix(in srgb, var(--item) 45%, transparent);
+        box-shadow: var(--shadow-md);
+        opacity: 1;
+    }
+    .social svg {
+        width: 17px;
+        height: 17px;
+        fill: var(--text-muted);
+        transition: fill var(--t-base) var(--ease-out);
+    }
+    .social a:hover svg {
+        fill: var(--item);
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .social a:hover {
+            transform: none;
+        }
     }
     .lens {
         position: fixed;

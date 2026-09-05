@@ -3,132 +3,127 @@ import { events } from "../data/events";
 ---
 
 <section class="events" aria-label="Etkinlikler ve yarışmalar">
-	<h2 class="group-label">Etkinlikler</h2>
-	<ul class="rows">
-		{
-			events.map((e, i) => (
-				<li
-					class="row"
-					style={`--reveal-delay: ${i * 80}ms`}
-					data-reveal
-				>
-					<span class="node" aria-hidden="true" />
-					<span class="title">{e.title}</span>
-					<span class="org">
-						{e.org} · {e.role}
-					</span>
-					{e.text && <span class="note">{e.text}</span>}
-					<span class="when">{e.period}</span>
-				</li>
-			))
-		}
-	</ul>
+  <h2>Etkinlikler</h2>
+  <ul class="grid">
+    {
+      events.map((e, i) => (
+        <li class="card" style={`--reveal-delay: ${i * 80}ms`} data-reveal>
+          <div class="top">
+            <span class="node" aria-hidden="true" />
+            <span class="when">{e.period}</span>
+          </div>
+          <h3>{e.title}</h3>
+          <span class="org">
+            {e.org} · {e.role}
+          </span>
+          {e.text && <p>{e.text}</p>}
+        </li>
+      ))
+    }
+  </ul>
 </section>
 
 <style>
-	.events {
-		margin-top: var(--space-5);
-	}
-	.group-label {
-		display: flex;
-		align-items: center;
-		gap: var(--space-3);
-		font-family: var(--font-mono);
-		font-size: 0.68rem;
-		letter-spacing: 0.18em;
-		text-transform: uppercase;
-		color: var(--accent-3);
-		margin-bottom: var(--space-2);
-		margin: 0 0 var(--space-2)
-	}
-	.group-label::after {
-		content: "";
-		flex: 1;
-		height: 1px;
-		background: linear-gradient(
-			to right,
-			color-mix(in srgb, var(--accent-3) 40%, transparent),
-			transparent
-		);
-	}
+  .events {
+    margin-top: var(--space-6);
+    margin-bottom: var(--space-6);
+  }
+  .events h2 {
+    font-size: 1.35rem;
+    text-align: center;
+    margin-bottom: var(--space-5);
+  }
 
-	.rows {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-	}
-	.row {
-		display: grid;
-		grid-template-columns: 14px 1fr auto;
-		align-items: baseline;
-		column-gap: var(--space-3);
-		padding: var(--space-2) 0;
-		border-bottom: 1px solid
-			color-mix(in srgb, var(--border) 55%, transparent);
-	}
-	.row:last-child {
-		border-bottom: none;
-	}
+  .grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+  }
 
-	.node {
-		grid-row: 1;
-		grid-column: 1;
-		width: 6px;
-		height: 6px;
-		margin-top: 0.55em;
-		border-radius: 1px;
-		transform: rotate(45deg);
-		border: 1px solid color-mix(in srgb, var(--accent-3) 45%, transparent);
-	}
+  .card {
+    position: relative;
+    overflow: hidden;
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow-sm);
+    transition:
+      transform var(--t-base) var(--ease-spring),
+      box-shadow var(--t-base) var(--ease-out),
+      border-color var(--t-base) var(--ease-out);
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--accent-3), transparent);
+    opacity: 0.7;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: color-mix(in srgb, var(--accent-3) 28%, transparent);
+  }
 
-	.title {
-		grid-row: 1;
-		grid-column: 2;
-		font-family: var(--font-mono);
-		font-size: 0.9375rem;
-		font-weight: 600;
-		letter-spacing: -0.01em;
-		color: var(--text);
-	}
-	.org {
-		grid-row: 2;
-		grid-column: 2;
-		font-size: 0.8125rem;
-		color: var(--text-muted);
-		line-height: 1.5;
-	}
-	.note {
-		grid-row: 3;
-		grid-column: 2;
-		font-size: 0.875rem;
-		color: color-mix(in srgb, var(--text) 72%, transparent);
-		line-height: 1.6;
-		margin-top: 4px;
-		max-width: 32rem;
-	}
-	.when {
-		grid-row: 1;
-		grid-column: 3;
-		font-family: var(--font-mono);
-		font-size: 0.7rem;
-		letter-spacing: 0.04em;
-		color: var(--text-muted);
-		white-space: nowrap;
-	}
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+  .node {
+    width: 8px;
+    height: 8px;
+    border-radius: 1px;
+    transform: rotate(45deg);
+    border: 1.5px solid color-mix(in srgb, var(--accent-3) 55%, transparent);
+  }
+  .when {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
 
-	@media (max-width: 520px) {
-		.row {
-			grid-template-columns: 14px 1fr;
-		}
-		.title,
-		.org,
-		.note,
-		.when {
-			grid-row: auto;
-			grid-column: 2;
-		}
-		.when {
-			margin-top: 4px;
-		}
-	}
+  .card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .org {
+    display: block;
+    font-size: 0.83rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-top: 3px;
+  }
+  .card p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: var(--space-3) 0 0;
+  }
+
+  @media (max-width: 700px) {
+    .events h2 {
+      text-align: left;
+    }
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card:hover {
+      transform: none;
+    }
+  }
 </style>
