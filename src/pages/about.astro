@@ -71,6 +71,10 @@ import { socials as contacts, socialIcons as icons } from "../data/social";
 				Bence hayat da tam olarak böyle yaşanmalı: Dengede...
 			</p>
 
+			<h2 class="contact-label" data-reveal style="--reveal-delay: 180ms">
+				Bana ulaş
+			</h2>
+
 			<ul class="contact" data-reveal style="--reveal-delay: 200ms">
 				{
 					contacts.map((c) => (
@@ -201,78 +205,99 @@ import { socials as contacts, socialIcons as icons } from "../data/social";
 		font-style: normal;
 	}
 
-	.contact {
-		list-style: none;
-		margin: var(--space-6) 0 0;
-		padding: 0;
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: var(--space-2);
-		margin: var(--space-6) auto 0;
-	}
-	.contact li {
+	.contact-label {
 		display: flex;
 		align-items: center;
 		gap: var(--space-3);
-		padding: var(--space-3);
-		background: var(--surface);
-		border: 1px solid var(--card-border);
-		box-shadow: var(--shadow-sm);
-		border-radius: var(--radius);
+		font-family: var(--font-mono);
+		font-size: 0.7rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--text-muted);
+		margin: var(--space-6) 0 var(--space-2);
+	}
+	.contact-label::after {
+		content: "";
+		flex: 1;
+		height: 1px;
+		background: linear-gradient(to right, var(--border), transparent);
+	}
+
+	.contact {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		border-top: 1px solid var(--border);
+	}
+	.contact li {
+		display: grid;
+		grid-template-columns: 20px 6.5rem 1fr;
+		align-items: center;
+		gap: var(--space-3);
+		padding: var(--space-3) var(--space-2);
+		border-bottom: 1px solid var(--border);
 		transition:
-			border-color var(--t-base) var(--ease-out),
-			box-shadow var(--t-base) var(--ease-out),
-			transform var(--t-base) var(--ease-spring);
+			background var(--t-base) var(--ease-out),
+			padding-left var(--t-base) var(--ease-out);
 	}
 	.contact li:hover {
-		border-color: color-mix(in srgb, var(--item) 38%, transparent);
-		box-shadow: var(--shadow-md);
-		transform: translateY(-2px);
+		background: color-mix(in srgb, var(--item) 5%, transparent);
+		padding-left: var(--space-4);
 	}
 	.ic {
 		display: grid;
 		place-items: center;
-		width: 36px;
-		height: 36px;
-		flex-shrink: 0;
-		border-radius: var(--radius-sm);
-		background: color-mix(in srgb, var(--item) 10%, transparent);
-		border: 1px solid color-mix(in srgb, var(--item) 20%, transparent);
 	}
 	.ic svg {
 		width: 17px;
 		height: 17px;
+		fill: var(--text-muted);
+		transition: fill var(--t-base) var(--ease-out);
+	}
+	.contact li:hover .ic svg {
 		fill: var(--item);
 	}
 	.meta {
-		display: flex;
-		flex-direction: column;
-		min-width: 0;
+		display: contents;
 	}
 	.k {
 		font-family: var(--font-mono);
-		font-size: 0.66rem;
-		letter-spacing: 0.08em;
+		font-size: 0.68rem;
+		letter-spacing: 0.1em;
 		text-transform: uppercase;
 		color: var(--text-muted);
 	}
 	.meta a,
 	.v {
 		font-family: var(--font-mono);
-		font-size: 0.82rem;
+		font-size: 0.85rem;
 		color: var(--text);
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
+	.meta a {
+		width: fit-content;
+		border-bottom: 1px solid transparent;
+		transition:
+			color var(--t-base) var(--ease-out),
+			border-color var(--t-base) var(--ease-out);
+	}
 	.meta a:hover {
 		color: var(--item);
+		border-bottom-color: color-mix(in srgb, var(--item) 45%, transparent);
 		opacity: 1;
 	}
 
-	@media (max-width: 640px) {
-		.contact {
-			grid-template-columns: 1fr;
+	@media (max-width: 560px) {
+		.contact li {
+			grid-template-columns: 20px 1fr;
+			align-items: start;
+		}
+		.meta {
+			display: flex;
+			flex-direction: column;
+			min-width: 0;
 		}
 	}
 
