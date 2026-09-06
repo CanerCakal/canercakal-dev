@@ -51,10 +51,13 @@ const formatDate = (iso: string) => new Date(iso).toLocaleDateString("tr-TR");
             <div class="meta">
               {p.live?.language && <span class="lang">{p.live.language}</span>}
               {p.tags
-                .filter(
-                  (t) =>
-                    t.toLowerCase() !== (p.live?.language ?? "").toLowerCase(),
-                )
+                .filter((t) => {
+                  const lang = (p.live?.language ?? "").toLowerCase();
+                  if (!lang) return true;
+                  const tag = t.toLowerCase();
+                  // "Swift" ile "Swift 6" aynı sayılsın
+                  return tag !== lang && !tag.startsWith(lang + " ");
+                })
                 .map((t) => (
                   <span class="tag">{t}</span>
                 ))}

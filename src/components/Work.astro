@@ -17,8 +17,6 @@ const stack = [
 ];
 
 type Icon = { path: string; hex: string };
-const brand = ((si as any).siMicrosoft ?? (si as any).siMicrosoftazure) as
-  Icon | undefined;
 
 const isTooLight = (hex: string) => {
   const r = parseInt(hex.slice(0, 2), 16);

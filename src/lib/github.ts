@@ -13,15 +13,26 @@ const TOKEN =
   undefined;
 
 export async function fetchRepo(repo: string): Promise<RepoData | null> {
-  try {
-    const headers: Record<string, string> = {
-      Accept: 'application/vnd.github+json',
-      'User-Agent': 'canercakal-dev-site',
-      'X-GitHub-Api-Version': '2022-11-28',
-    };
-    if (TOKEN) headers.Authorization = `Bearer ${TOKEN}`;
+  const base: Record<string, string> = {
+    Accept: 'application/vnd.github+json',
+    'User-Agent': 'canercakal-dev-site',
+    'X-GitHub-Api-Version': '2022-11-28',
+  };
 
-    const res = await fetch(`https://api.github.com/repos/${repo}`, { headers });
+  const request = async (withToken: boolean) => {
+    const headers = { ...base };
+    if (withToken && TOKEN) headers.Authorization = `Bearer ${TOKEN}`;
+    return fetch(`https://api.github.com/repos/${repo}`, { headers });
+  };
+
+  try {
+    let res = await request(true);
+
+    // Token bozuksa kimliksiz tekrar dene — yıldızsız kalmaktansa rate limit'e razıyız
+    if (res.status === 401 && TOKEN) {
+      console.warn(`[github] token reddedildi, kimliksiz deneniyor: ${repo}`);
+      res = await request(false);
+    }
 
     if (!res.ok) {
       const body = await res.text().catch(() => '');

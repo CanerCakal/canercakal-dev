@@ -42,7 +42,16 @@ const updated = live
                         <span class="pill lang">{live.language}</span>
                     )
                 }
-                {entry.data.tags.map((t) => <span class="pill">{t}</span>)}
+                {
+                    entry.data.tags
+                        .filter((t) => {
+                            const lang = (live?.language ?? "").toLowerCase();
+                            if (!lang) return true;
+                            const tag = t.toLowerCase();
+                            return tag !== lang && !tag.startsWith(lang + " ");
+                        })
+                        .map((t) => <span class="pill">{t}</span>)
+                }
             </div>
 
             <div class="row">
@@ -107,16 +116,18 @@ const updated = live
     }
     .pill {
         font-family: var(--font-mono);
-        font-size: 0.75rem;
+        font-size: 0.76rem;
+        background: var(--surface);
         border: 1px solid var(--card-border);
+        box-shadow: var(--shadow-sm);
         color: var(--text-muted);
-        padding: 2px 10px;
-        border-radius: 999px;
+        padding: 4px 12px;
+        border-radius: var(--radius-pill);
     }
     .pill.lang {
         background: var(--accent-subtle);
         color: var(--accent);
-        border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+        border-color: color-mix(in srgb, var(--accent) 28%, transparent);
     }
     .row {
         display: flex;
@@ -128,17 +139,20 @@ const updated = live
         font-family: var(--font-mono);
         font-size: 0.875rem;
         color: var(--text);
-        background: var(--card-bg);
+        background: var(--surface);
         border: 1px solid var(--card-border);
-        padding: 8px 18px;
-        border-radius: var(--radius);
+        box-shadow: var(--shadow-sm);
+        padding: 10px 20px;
+        border-radius: var(--radius-pill);
         transition:
-            border-color 0.25s ease,
-            box-shadow 0.25s ease;
+            border-color var(--t-base) var(--ease-out),
+            box-shadow var(--t-base) var(--ease-out),
+            transform var(--t-base) var(--ease-spring);
     }
     .repo-btn:hover {
-        border-color: color-mix(in srgb, var(--accent) 50%, transparent);
-        box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 14%, transparent);
+        border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
         opacity: 1;
     }
     .updated {
@@ -178,16 +192,17 @@ const updated = live
     .prose code {
         font-family: var(--font-mono);
         font-size: 0.85em;
-        background: var(--card-bg);
+        background: color-mix(in srgb, var(--accent) 8%, transparent);
         border: 1px solid var(--card-border);
-        padding: 1px 6px;
+        color: var(--accent);
+        padding: 1px 7px;
         border-radius: 6px;
     }
     .prose pre {
-        background: rgba(0, 0, 0, 0.35);
+        background: #f2f3f8;
         border: 1px solid var(--card-border);
         border-radius: var(--radius);
-        padding: var(--space-3);
+        padding: var(--space-4);
         overflow-x: auto;
     }
     .prose pre code {
