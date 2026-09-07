@@ -1,0 +1,143 @@
+---
+---
+
+<div class="beams" aria-hidden="true">
+  <span class="beam b1"></span>
+  <span class="beam b2"></span>
+  <span class="beam b3"></span>
+  <span class="beam b4"></span>
+</div>
+
+<style>
+  .beams {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .beam {
+    position: absolute;
+    transform-origin: center;
+    mix-blend-mode: multiply;
+    will-change: transform;
+    /* Uçları inceltip kuyruk hissi veren dikey maske */
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.35) 12%,
+      #000 38%,
+      #000 62%,
+      rgba(0, 0, 0, 0.35) 86%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.35) 12%,
+      #000 38%,
+      #000 62%,
+      rgba(0, 0, 0, 0.35) 86%,
+      transparent 100%
+    );
+  }
+
+  .b1 {
+    top: -70vh;
+    left: -14vw;
+    width: 44vw;
+    height: 240vh;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--accent) 7%, transparent) 20%,
+      color-mix(in srgb, var(--accent) 20%, transparent) 46%,
+      color-mix(in srgb, var(--accent) 20%, transparent) 54%,
+      color-mix(in srgb, var(--accent) 7%, transparent) 80%,
+      transparent 100%
+    );
+    animation: sway-a 34s ease-in-out infinite;
+  }
+
+  .b2 {
+    top: -80vh;
+    left: 22vw;
+    width: 36vw;
+    height: 250vh;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--accent-2) 7%, transparent) 18%,
+      color-mix(in srgb, var(--accent-2) 22%, transparent) 50%,
+      color-mix(in srgb, var(--accent-2) 7%, transparent) 82%,
+      transparent 100%
+    );
+    animation: sway-b 43s ease-in-out infinite;
+  }
+
+  .b3 {
+    top: -60vh;
+    left: 52vw;
+    width: 50vw;
+    height: 230vh;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--accent-3) 6%, transparent) 22%,
+      color-mix(in srgb, var(--accent-3) 18%, transparent) 50%,
+      color-mix(in srgb, var(--accent-3) 6%, transparent) 78%,
+      transparent 100%
+    );
+    animation: sway-c 56s ease-in-out infinite;
+  }
+
+  /* İnce, keskin hüzme — ekranı boydan boya kesiyor */
+  .b4 {
+    top: -90vh;
+    left: 8vw;
+    width: 13vw;
+    height: 270vh;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--accent-2) 26%, transparent) 50%,
+      transparent 100%
+    );
+    animation: sway-d 27s ease-in-out infinite;
+  }
+
+  @keyframes sway-a {
+    0%, 100% { transform: rotate(12deg) translate3d(-4vw, 0, 0); }
+    50%      { transform: rotate(28deg) translate3d(16vw, 6vh, 0); }
+  }
+  @keyframes sway-b {
+    0%, 100% { transform: rotate(-24deg) translate3d(4vw, 0, 0); }
+    50%      { transform: rotate(-4deg) translate3d(-18vw, -7vh, 0); }
+  }
+  @keyframes sway-c {
+    0%, 100% { transform: rotate(36deg) translate3d(0, 0, 0); }
+    50%      { transform: rotate(18deg) translate3d(-14vw, 9vh, 0); }
+  }
+  @keyframes sway-d {
+    0%, 100% { transform: rotate(-48deg) translate3d(-6vw, 0, 0); }
+    50%      { transform: rotate(-28deg) translate3d(22vw, -5vh, 0); }
+  }
+
+  @media (max-width: 700px) {
+    .beam {
+      opacity: 0.7;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .beam {
+      animation: none;
+    }
+    .b1 { transform: rotate(18deg); }
+    .b2 { transform: rotate(-14deg); }
+    .b3 { transform: rotate(26deg); }
+    .b4 { transform: rotate(-38deg); }
+  }
+</style>
