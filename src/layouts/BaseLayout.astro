@@ -4,7 +4,7 @@ import "@fontsource-variable/jetbrains-mono";
 import "../styles/global.css";
 import DockNav from "../components/DockNav.astro";
 import { socials, socialIcons } from "../data/social";
-import Starfield from "../components/Starfield.astro";
+import Beams from "../components/Beams.astro";
 
 interface Props {
     title: string;
@@ -65,7 +65,7 @@ const currentPath = Astro.url.pathname;
         <div class="aurora" aria-hidden="true">
             <span></span><span></span><span></span>
         </div>
-        <Starfield />
+        <Beams />
         <div class="lens" id="lens" aria-hidden="true"></div>
         <header class="site-header" id="siteHeader">
             <nav aria-label="Ana gezinme">
