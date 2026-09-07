@@ -1,36 +1,51 @@
 /* === Design Tokens === */
 :root {
-    color-scheme: dark;
+    color-scheme: light;
 
-    /* Aurora dark palet */
-    --bg: #0a0b16;
-    --text: #e8eaf2;
-    --text-muted: #98a0b3;
+    /* Zemin */
+    --bg: #f7f8fc;
+    --surface: #ffffff;
 
-    --accent: #22d3ee;
-    /* cyan — ana */
-    --accent-2: #a78bfa;
-    /* violet */
-    --accent-3: #f472b6;
-    /* pembe */
-    --accent-subtle: rgba(34, 211, 238, 0.12);
+    /* Metin */
+    --text: #12151f;
+    --text-muted: #5a6377;
+
+   /* Accent — analog mor→mavi yayı */
+    --accent: #6d28d9;      /* violet-700 */
+    --accent-2: #2563eb;    /* blue-600 */
+    --accent-3: #0369a1;    /* sky-700 */
+    --accent-subtle: rgba(109, 40, 217, 0.08);
     --gradient: linear-gradient(100deg, var(--accent), var(--accent-2), var(--accent-3));
 
-    /* Cam kart sistemi */
-    --card-bg: rgba(255, 255, 255, 0.045);
-    --card-border: rgba(255, 255, 255, 0.09);
-    --border: rgba(255, 255, 255, 0.08);
+
+    /* Kart sistemi */
+    --card-bg: rgba(255, 255, 255, 0.78);
+    --card-border: rgba(18, 21, 31, 0.08);
+    --border: rgba(18, 21, 31, 0.07);
 
     /* Aurora lekeleri */
-    --aurora-1: rgba(34, 211, 238, 0.20);
-    --aurora-2: rgba(167, 139, 250, 0.18);
-    --aurora-3: rgba(244, 114, 182, 0.14);
+    --aurora-1: rgba(109, 40, 217, 0.07);
+    --aurora-2: rgba(37, 99, 235, 0.06);
+    --aurora-3: rgba(3, 105, 161, 0.05);
+
+    /* Yüzeyler */
+    --surface-raised: rgba(255, 255, 255, 0.88);
+    --surface-raised-border: rgba(18, 21, 31, 0.10);
+
+    /* Gölge */
+    --shadow-sm: 0 1px 3px rgba(18, 21, 31, 0.06);
+    --shadow-md: 0 6px 18px rgba(18, 21, 31, 0.08);
+    --shadow-lg: 0 16px 40px rgba(18, 21, 31, 0.10);
+
+    /* Blur */
+    --blur-card: 16px;
+    --blur-raised: 22px;
 
     /* Typography */
     --font-body: 'Inter Variable', system-ui, sans-serif;
     --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
 
-    /* Spacing (değişmedi) */
+    /* Spacing */
     --space-1: 0.25rem;
     --space-2: 0.5rem;
     --space-3: 1rem;
@@ -38,13 +53,31 @@
     --space-5: 2.5rem;
     --space-6: 4rem;
 
+    /* Yarıçap */
+    --radius-sm: 8px;
     --radius: 12px;
     --radius-lg: 20px;
-    --ease-spring: cubic-bezier(0.34, 1.3, 0.64, 1);
+    --radius-xl: 28px;
+    --radius-pill: 999px;
 
+    /* Hareket */
+    --ease-spring: cubic-bezier(0.34, 1.3, 0.64, 1);
+    --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --t-fast: 0.18s;
+    --t-base: 0.28s;
+    --t-slow: 0.5s;
+
+    /* Katman sırası */
+    --z-header: 10;
+    --z-dock: 20;
+    --z-skip: 100;
+    --z-lens: 9999;
+
+    /* Genişlik */
     --width-prose: 33rem;
-    --max-width: 42rem;
-    --width-wide: 52rem;
+    --max-width: 64rem;
+    --width-wide: 64rem;
+    --width-page: 64rem;
 }
 
 /* === Reset & Base === */
@@ -56,6 +89,7 @@
 
 body {
     margin: 0;
+    padding-bottom: 6rem;
     background: var(--bg);
     color: var(--text);
     font-family: var(--font-body);
@@ -102,8 +136,8 @@ a:hover {
     width: 55vmax;
     height: 55vmax;
     border-radius: 50%;
-    filter: blur(90px);
-    opacity: 0.9;
+    filter: blur(130px);
+    opacity: 0.65;
 }
 
 .aurora span:nth-child(1) {

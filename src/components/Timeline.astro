@@ -43,18 +43,22 @@ const items = community.map((e, i) => {
 });
 ---
 
-<section class="community" aria-label="Topluluk ve liderlik">
-	<section class="community bleed" aria-label="Topluluk ve liderlik">
-	</section>
+<section class="community" id="communityTl" aria-label="Topluluk ve liderlik">
 	<h2>Topluluk</h2>
-	<ol class="tl" data-line>
+	<ol class="tl">
+		<div class="rail" aria-hidden="true">
+			<span class="rail-fill" id="railFill"></span>
+			<span class="rail-head" id="railHead"></span>
+		</div>
 		{
 			items.map((e, i) => (
 				<li
 					class:list={["item", { ongoing: !e.end }]}
 					style={`--gap: ${e.gap}px; --reveal-delay: ${i * 110}ms`}
 					data-reveal
+					data-node
 				>
+					<span class="node" aria-hidden="true" />
 					<div class="entry">
 						<span class="when">{e.when}</span>
 						<h3>{e.role}</h3>
@@ -70,11 +74,12 @@ const items = community.map((e, i) => {
 <style>
 	.community {
 		margin-top: var(--space-6);
+		margin-bottom: var(--space-6);
 	}
 	.community h2 {
-		font-size: 1.125rem;
+		font-size: 1.35rem;
 		text-align: center;
-		margin-bottom: var(--space-5);
+		margin-bottom: var(--space-6);
 	}
 
 	.tl {
@@ -83,87 +88,122 @@ const items = community.map((e, i) => {
 		margin: 0;
 		padding: 0;
 	}
-	.tl::before {
-		content: "";
+
+	/* --- Ray --- */
+	.rail {
 		position: absolute;
 		left: 50%;
 		top: 0.5rem;
 		bottom: 0.5rem;
-		width: 1px;
-		transform: translateX(-50%) scaleY(0);
-		transform-origin: top;
-		transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-		background: linear-gradient(
-			to bottom,
-			var(--accent),
-			color-mix(in srgb, var(--accent) 10%, transparent)
-		);
+		width: 3px;
+		transform: translateX(-50%);
+		border-radius: 2px;
+		background: color-mix(in srgb, var(--text) 10%, transparent);
 	}
-	.tl.is-visible::before {
-		transform: translateX(-50%) scaleY(1);
+	.rail-fill {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: var(--progress, 0%);
+		border-radius: 2px;
+		background: linear-gradient(to bottom, var(--accent), var(--accent-2));
+	}
+	.rail-head {
+		position: absolute;
+		left: 50%;
+		top: var(--progress, 0%);
+		width: 15px;
+		height: 15px;
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+		background: #fff;
+		border: 3px solid var(--accent-2);
+		box-shadow:
+			0 0 0 5px color-mix(in srgb, var(--accent-2) 14%, transparent),
+			0 0 22px color-mix(in srgb, var(--accent-2) 55%, transparent);
 	}
 
+	/* --- Kayıtlar --- */
 	.item {
 		position: relative;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		column-gap: var(--space-5);
+		column-gap: var(--space-6);
 		margin-bottom: var(--gap);
 	}
-	.item::before {
-		content: "";
+	.node {
 		position: absolute;
 		left: 50%;
-		top: 0.55rem;
-		width: 9px;
-		height: 9px;
+		top: 1.6rem;
+		width: 11px;
+		height: 11px;
 		border-radius: 50%;
 		transform: translateX(-50%);
 		background: var(--bg);
-		border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+		border: 2px solid color-mix(in srgb, var(--text) 18%, transparent);
+		transition:
+			background var(--t-base) var(--ease-out),
+			border-color var(--t-base) var(--ease-out);
+		z-index: 1;
 	}
-	.item.ongoing::before {
-		background: var(--accent);
-		border-color: var(--accent);
-		box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 50%, transparent);
+	.item.passed .node {
+		background: var(--accent-2);
+		border-color: var(--accent-2);
+	}
+
+	.entry {
+		padding: var(--space-4);
+		border-radius: var(--radius-lg);
+		background: var(--surface);
+		border: 1px solid var(--card-border);
+		box-shadow: var(--shadow-sm);
+		text-align: left;
+		transition:
+			box-shadow var(--t-base) var(--ease-out),
+			border-color var(--t-base) var(--ease-out),
+			transform var(--t-base) var(--ease-spring);
+	}
+	.entry:hover {
+		box-shadow: var(--shadow-md);
+		border-color: color-mix(in srgb, var(--accent-2) 28%, transparent);
+		transform: translateY(-3px);
 	}
 
 	.item:nth-child(odd) .entry {
 		grid-column: 1;
-		text-align: right;
 	}
 	.item:nth-child(even) .entry {
 		grid-column: 2;
-		text-align: left;
 	}
 
 	.when {
 		display: block;
 		font-family: var(--font-mono);
-		font-size: 0.7rem;
+		font-size: 0.72rem;
 		letter-spacing: 0.06em;
 		color: var(--text-muted);
 	}
 	.ongoing .when {
-		color: var(--accent);
+		color: var(--accent-2);
 	}
 	.item h3 {
-		font-size: 0.9375rem;
+		font-size: 1rem;
 		font-weight: 600;
 		letter-spacing: -0.01em;
-		margin: 2px 0 0;
+		margin: 4px 0 0;
 	}
 	.org {
 		display: block;
-		font-size: 0.8125rem;
+		font-size: 0.83rem;
 		color: var(--text-muted);
 		line-height: 1.5;
 	}
 	.item p {
-		font-size: 0.875rem;
-		color: color-mix(in srgb, var(--text) 70%, transparent);
-		line-height: 1.6;
-		margin: var(--space-2) 0 0;
+		font-size: 0.88rem;
+		color: var(--text-muted);
+		line-height: 1.65;
+		margin: var(--space-3) 0 0;
 	}
 
 	@media (max-width: 760px) {
@@ -171,36 +211,101 @@ const items = community.map((e, i) => {
 			text-align: left;
 		}
 		.tl {
-			padding-left: var(--space-4);
+			padding-left: var(--space-5);
 		}
-		.tl::before {
-			left: 4px;
-			transform: scaleY(0);
+		.rail {
+			left: 5px;
+			transform: none;
 		}
-		.tl.is-visible::before {
-			transform: scaleY(1);
+		.rail-head {
+			left: 50%;
+			transform: translate(-50%, -50%);
 		}
 		.item {
 			grid-template-columns: 1fr;
 		}
-		.item::before {
-			left: calc(var(--space-4) * -1 + 4px);
-			transform: translateX(-50%);
+		.node {
+			left: calc(var(--space-5) * -1 + 6px);
 		}
 		.item:nth-child(odd) .entry,
 		.item:nth-child(even) .entry {
 			grid-column: 1;
-			text-align: left;
 		}
 		.item {
 			margin-bottom: calc(var(--gap) * 0.6);
 		}
 	}
+
 	@media (prefers-reduced-motion: reduce) {
-		.tl::before,
-		.tl.is-visible::before {
-			transform: translateX(-50%) scaleY(1);
-			transition: none;
+		.rail-fill {
+			height: 100%;
+		}
+		.rail-head {
+			display: none;
+		}
+		.item .node {
+			background: var(--accent-2);
+			border-color: var(--accent-2);
+		}
+		.entry:hover {
+			transform: none;
 		}
 	}
 </style>
+<script>
+	const section = document.getElementById("communityTl");
+	const rail = section?.querySelector(".rail") as HTMLElement | null;
+	const fill = document.getElementById("railFill");
+	const head = document.getElementById("railHead");
+	const nodes = Array.from(section?.querySelectorAll("[data-node]") ?? []);
+	const calmTl = window.matchMedia(
+		"(prefers-reduced-motion: reduce)",
+	).matches;
+
+	if (section && rail && fill && head && !calmTl) {
+		let ticking = false;
+		let progress = 0;
+		let current = 0;
+
+		const measure = () => {
+			const rect = rail.getBoundingClientRect();
+			// Ekranın %55'i referans çizgisi — ray oraya kadar dolar
+			const marker = window.innerHeight * 0.55;
+			const raw = (marker - rect.top) / rect.height;
+			progress = Math.max(0, Math.min(1, raw));
+		};
+
+		const paint = () => {
+			current += (progress - current) * 0.12;
+			const pct = `${(current * 100).toFixed(2)}%`;
+			fill.style.setProperty("--progress", pct);
+			head.style.setProperty("--progress", pct);
+
+			// Geçilen düğümleri işaretle
+			const railRect = rail.getBoundingClientRect();
+			const headY = railRect.top + railRect.height * current;
+			nodes.forEach((n) => {
+				const nodeY = n.getBoundingClientRect().top + 26;
+				n.classList.toggle("passed", headY >= nodeY);
+			});
+
+			if (Math.abs(progress - current) > 0.0005) {
+				requestAnimationFrame(paint);
+			} else {
+				ticking = false;
+			}
+		};
+
+		const onScroll = () => {
+			measure();
+			if (!ticking) {
+				ticking = true;
+				requestAnimationFrame(paint);
+			}
+		};
+
+		window.addEventListener("scroll", onScroll, { passive: true });
+		window.addEventListener("resize", onScroll);
+		onScroll();
+	}
+</script>

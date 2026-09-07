@@ -1,0 +1,155 @@
+---
+interface Props {
+  currentPath: string;
+}
+const { currentPath } = Astro.props;
+
+const items = [
+  { path: "/", label: "Ana sayfa", icon: "home" },
+  { path: "/projects", label: "Projeler", icon: "folder" },
+  { path: "/writing", label: "Yazılar", icon: "pen" },
+  { path: "/about", label: "Hakkımda", icon: "user" },
+];
+
+const icons: Record<string, string> = {
+  home: "M3 10.5 12 3l9 7.5M5.25 9.75V21h13.5V9.75",
+  folder:
+    "M3 7.5A1.5 1.5 0 0 1 4.5 6h4.2l1.8 2.25h9A1.5 1.5 0 0 1 21 9.75v8.7a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18.45z",
+  pen: "M4 20h4L18.5 9.5a2.12 2.12 0 0 0-3-3L5 17v3z",
+  user: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4.5 20.25a7.5 7.5 0 0 1 15 0",
+};
+
+const isActive = (path: string) =>
+  path === "/" ? currentPath === "/" : currentPath.startsWith(path);
+---
+
+<nav class="dock" aria-label="Hızlı gezinme">
+  <ul>
+    {
+      items.map((item) => (
+        <li>
+          <a
+            href={item.path}
+            data-label={item.label}
+            aria-label={item.label}
+            aria-current={isActive(item.path) ? "page" : undefined}
+            class:list={{ active: isActive(item.path) }}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d={icons[item.icon]} />
+            </svg>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .dock {
+    position: fixed;
+    bottom: var(--space-4);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: var(--z-dock);
+  }
+
+  .dock ul {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 8px;
+    border-radius: var(--radius-pill);
+    background: var(--surface-raised);
+    border: 1px solid var(--surface-raised-border);
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(var(--blur-raised));
+    -webkit-backdrop-filter: blur(var(--blur-raised));
+  }
+
+  .dock a {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: var(--text-muted);
+    transition:
+      color var(--t-base) var(--ease-out),
+      background var(--t-base) var(--ease-out),
+      transform var(--t-base) var(--ease-spring);
+  }
+
+  .dock a:hover {
+    color: var(--text);
+    background: rgba(18, 21, 31, 0.05);
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+
+  .dock a.active {
+    color: var(--accent);
+    background: var(--accent-subtle);
+  }
+
+  .dock svg {
+    width: 21px;
+    height: 21px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Etiket balonu */
+  .dock a::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    padding: 5px 11px;
+    border-radius: var(--radius-sm);
+    background: var(--text);
+    color: var(--bg);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity var(--t-fast) var(--ease-out),
+      transform var(--t-fast) var(--ease-out);
+  }
+
+  .dock a:hover::after,
+  .dock a:focus-visible::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  @media (max-width: 480px) {
+    .dock a {
+      width: 40px;
+      height: 40px;
+    }
+    .dock svg {
+      width: 19px;
+      height: 19px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dock a,
+    .dock a::after {
+      transition: none;
+    }
+    .dock a:hover {
+      transform: none;
+    }
+  }
+</style>

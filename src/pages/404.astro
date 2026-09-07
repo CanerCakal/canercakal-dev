@@ -1,25 +1,106 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="404 — Caner Çakal">
-  <div class="notfound">
-    <h1><span class="prompt">$</span> cd: no such file or directory<span class="cursor">_</span></h1>
-    <p>Aradığın sayfa burada değil — belki taşındı, belki hiç olmadı.</p>
-    <a href="/">cd ~/</a>
-  </div>
+<BaseLayout
+	title="404 — Caner Çakal"
+	description="Aradığın sayfa bulunamadı."
+>
+	<section class="notfound" data-reveal>
+		<span class="code gradient-text">404</span>
+		<h1>Bu sayfa burada değil</h1>
+		<p>
+			Belki taşındı, belki hiç olmadı. Aşağıdan devam edebilirsin.
+		</p>
+
+		<div class="links">
+			<a class="btn primary" href="/">
+				Ana sayfa
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M5 12h14M13 6l6 6-6 6" />
+				</svg>
+			</a>
+			<a class="btn ghost" href="/projects">Projeler</a>
+			<a class="btn ghost" href="/writing">Yazılar</a>
+		</div>
+	</section>
 </BaseLayout>
 
 <style>
-  .notfound h1 {
-    font-size: 1.375rem;
-  }
-  .prompt { color: var(--accent); }
-  .cursor {
-    color: var(--accent);
-    animation: blink 1.2s steps(2) infinite;
-  }
-  @keyframes blink { 50% { opacity: 0; } }
-  .notfound p { color: var(--text-muted); }
-  .notfound a { font-family: var(--font-mono); }
+	.notfound {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		padding: var(--space-6) 0;
+	}
+
+	.code {
+		font-family: var(--font-mono);
+		font-size: clamp(4rem, 14vw, 8rem);
+		font-weight: 600;
+		line-height: 1;
+		letter-spacing: -0.04em;
+	}
+
+	.notfound h1 {
+		font-size: 1.5rem;
+		margin: var(--space-4) 0 var(--space-2);
+	}
+
+	.notfound p {
+		color: var(--text-muted);
+		max-width: 28rem;
+		margin: 0 0 var(--space-5);
+	}
+
+	.links {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: var(--space-3);
+	}
+
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-2);
+		padding: 11px 22px;
+		border-radius: var(--radius-pill);
+		font-family: var(--font-mono);
+		font-size: 0.86rem;
+		transition:
+			transform var(--t-base) var(--ease-spring),
+			box-shadow var(--t-base) var(--ease-out);
+	}
+	.btn:hover {
+		transform: translateY(-2px);
+		opacity: 1;
+	}
+	.btn.primary {
+		background: var(--accent);
+		color: #fff;
+		box-shadow: var(--shadow-md);
+	}
+	.btn.ghost {
+		background: var(--surface);
+		color: var(--text);
+		border: 1px solid var(--card-border);
+		box-shadow: var(--shadow-sm);
+	}
+	.btn svg {
+		width: 16px;
+		height: 16px;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.btn:hover {
+			transform: none;
+		}
+	}
 </style>

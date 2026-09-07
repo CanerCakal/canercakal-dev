@@ -1,0 +1,217 @@
+---
+import * as si from "simple-icons";
+
+// slug: simple-icons anahtarı (siSwift → "siSwift"). Yoksa monogram gösterilir.
+const items = [
+  { name: "Swift", slug: "siSwift" },
+  { name: "SwiftUI", slug: "siSwift" },
+  { name: "SwiftData", slug: "siSwift" },
+  { name: "Xcode", slug: "siXcode" },
+  { name: "Firebase", slug: "siFirebase" },
+  { name: "Python", slug: "siPython" },
+  { name: "scikit-learn", slug: "siScikitlearn" },
+  { name: "pandas", slug: "siPandas" },
+  { name: "TypeScript", slug: "siTypescript" },
+  { name: "React", slug: "siReact" },
+  { name: "Astro", slug: "siAstro" },
+  { name: "FastAPI", slug: "siFastapi" },
+  { name: "PostgreSQL", slug: "siPostgresql" },
+  { name: "Docker", slug: "siDocker" },
+  { name: "Unity", slug: "siUnity" },
+  { name: "C#", slug: "siSharp" },
+  { name: "Git", slug: "siGit" },
+  { name: "GitHub", slug: "siGithub" },
+  { name: "Cloudflare", slug: "siCloudflare" },
+  { name: "Figma", slug: "siFigma" },
+];
+
+type Icon = { path: string; hex: string };
+
+// Beyaz zeminde kaybolan açık renkli logolar için parlaklık kontrolü
+const isTooLight = (hex: string) => {
+  const r = parseInt(hex.slice(0, 2), 16);
+  const g = parseInt(hex.slice(2, 4), 16);
+  const b = parseInt(hex.slice(4, 6), 16);
+  return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.72;
+};
+
+const resolved = items.map((item) => {
+  const icon = item.slug
+    ? ((si as any)[item.slug] as Icon | undefined)
+    : undefined;
+  if (!icon) return { name: item.name, path: null, hex: null };
+  return {
+    name: item.name,
+    path: icon.path,
+    hex: isTooLight(icon.hex) ? "#1f2430" : `#${icon.hex}`,
+  };
+});
+---
+
+<section
+  class="stack"
+  id="techStack"
+  aria-label="Kullandığım teknolojiler"
+  data-reveal
+>
+  <div class="marquee">
+    <ul class="marquee-track">
+      {
+        [0, 1].map((copy) => (
+          <li aria-hidden={copy === 1}>
+            {resolved.map((t) => (
+              <span class="chip" style={t.hex ? `--brand: ${t.hex}` : ""}>
+                {t.path ? (
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d={t.path} />
+                  </svg>
+                ) : (
+                  <span class="dot" aria-hidden="true" />
+                )}
+                {t.name}
+              </span>
+            ))}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .stack {
+    margin: var(--space-5) 0 var(--space-6);
+  }
+
+  .marquee {
+    overflow: hidden;
+    padding: var(--space-2) 0;
+    mask-image: linear-gradient(
+      90deg,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    will-change: transform;
+  }
+
+  .marquee-track li {
+    display: flex;
+    gap: var(--space-3);
+    padding-right: var(--space-3);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 18px;
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow-sm);
+    font-family: var(--font-mono);
+    font-size: 0.83rem;
+    color: var(--text);
+    white-space: nowrap;
+    transition:
+      transform var(--t-base) var(--ease-spring),
+      box-shadow var(--t-base) var(--ease-out),
+      border-color var(--t-base) var(--ease-out);
+  }
+
+  .chip:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: color-mix(
+      in srgb,
+      var(--brand, var(--accent)) 40%,
+      transparent
+    );
+  }
+
+  .chip svg {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    fill: var(--brand, var(--text-muted));
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      flex-wrap: wrap;
+    }
+    .chip:hover {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  const root = document.getElementById("techStack");
+  const track = root?.querySelector(".marquee-track") as HTMLElement | null;
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (root && track && !reduced) {
+    const SPEED = 0.42; // px / frame (60fps'te ~25px/s)
+    const EASE = 0.06; // hız değişim yumuşaklığı — küçüldükçe daha yavaş geçiş
+
+    let offset = 0;
+    let current = SPEED;
+    let target = SPEED;
+    let half = track.scrollWidth / 2;
+    let lastTime = performance.now();
+
+    root.addEventListener("pointerenter", () => (target = 0));
+    root.addEventListener("pointerleave", () => (target = SPEED));
+
+    // Sekme arka plandayken boşuna çalışmasın
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) lastTime = performance.now();
+    });
+
+    window.addEventListener("resize", () => {
+      half = track.scrollWidth / 2;
+    });
+
+    const tick = (now: number) => {
+      const dt = Math.min((now - lastTime) / 16.667, 3);
+      lastTime = now;
+
+      // Hedefe yumuşak yaklaşma
+      current += (target - current) * EASE * dt;
+
+      offset += current * dt;
+      if (offset >= half) offset -= half;
+
+      track.style.transform = `translate3d(${-offset}px, 0, 0)`;
+      requestAnimationFrame(tick);
+    };
+
+    requestAnimationFrame(tick);
+  }
+</script>

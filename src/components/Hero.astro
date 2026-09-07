@@ -1,0 +1,437 @@
+---
+import { Image } from "astro:assets";
+import me from "../assets/me.png";
+
+const details = [
+  { label: "UNVAN", value: "iOS Developer" },
+  { label: "KONUM", value: "Kütahya, Türkiye" },
+  { label: "OKUL", value: "Kütahya Dumlupınar Üniversitesi" },
+  { label: "DURUM", value: "Öğrenci" },
+];
+---
+
+<section class="hero" data-reveal>
+  <div class="left">
+    <span class="status">
+      <i aria-hidden="true"></i>
+      Yeni fırsatlara açığım
+    </span>
+
+    <h1>
+      Merhaba, ben<br />
+      <span class="gradient-text">Caner Çakal</span>
+    </h1>
+
+    <p class="intro">
+      Bilgisayar mühendisliği öğrencisiyim ancak bekleyen cinsten değilim:
+      yapıyorum, bozuyorum, tekrar yapıyorum ve sonunda yazıya döküyorum.
+    </p>
+
+    <div class="cta">
+      <a href="/projects" class="btn primary">
+        Projelerim
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6"></path>
+        </svg>
+      </a>
+      <a href="/about" class="btn ghost">Hakkımda</a>
+    </div>
+  </div>
+
+  <div class="badge-area">
+    <span class="hint">Kartı sürükle</span>
+
+    <div class="pivot" id="badgePivot">
+      <div class="swing" id="badgeSwing" data-lens data-lens-grab>
+        <svg class="cord" viewBox="0 0 120 150" aria-hidden="true">
+          <path d="M60 0 L44 118"></path>
+          <path d="M60 0 L76 118"></path>
+        </svg>
+        <span class="clip" aria-hidden="true"></span>
+
+        <article class="badge">
+          <div class="badge-top">
+            <div class="photo">
+              <Image src={me} alt="Caner Çakal" width={220} height={220} />
+            </div>
+          </div>
+
+          <div class="badge-body">
+            <h2>Caner Çakal</h2>
+            <span class="role">iOS Developer</span>
+
+            <dl>
+              {
+                details.map((d) => (
+                  <div class="row">
+                    <dt>{d.label}</dt>
+                    <dd>{d.value}</dd>
+                  </div>
+                ))
+              }
+            </dl>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: var(--space-5);
+    align-items: center;
+    padding: var(--space-6) 0 var(--space-5);
+  }
+
+  /* --- Sol --- */
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow-sm);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .status i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent-2);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    50% {
+      opacity: 0.35;
+      transform: scale(0.8);
+    }
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    margin: var(--space-4) 0 var(--space-3);
+    line-height: 1.15;
+  }
+
+  .intro {
+    color: var(--text-muted);
+    max-width: var(--width-prose);
+    margin: 0 0 var(--space-5);
+  }
+
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 12px 22px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    transition:
+      transform var(--t-base) var(--ease-spring),
+      box-shadow var(--t-base) var(--ease-out);
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+    opacity: 1;
+  }
+
+  .btn.primary {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn.ghost {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn svg {
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* --- Asılı kart --- */
+  .badge-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .hint {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    opacity: 0.7;
+  }
+
+  .pivot {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    perspective: 900px;
+  }
+
+  .swing {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-origin: 50% 0;
+    transform: rotate(0deg);
+    will-change: transform;
+    cursor: grab;
+    touch-action: pan-y;
+  }
+
+  .swing.dragging {
+    cursor: grabbing;
+  }
+
+  .cord {
+    width: 120px;
+    height: 90px;
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 5;
+    stroke-linecap: round;
+    opacity: 0.85;
+  }
+
+  .clip {
+    width: 46px;
+    height: 12px;
+    margin-top: -6px;
+    border-radius: 4px;
+    background: var(--text);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .badge {
+    width: 15.5rem;
+    margin-top: -2px;
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    user-select: none;
+  }
+
+  .badge-top {
+    display: grid;
+    place-items: center;
+    padding: var(--space-4) var(--space-3) var(--space-3);
+    background: var(--gradient);
+  }
+
+  .photo {
+    width: 6.5rem;
+    height: 6.5rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid rgba(255, 255, 255, 0.9);
+    box-shadow: var(--shadow-md);
+  }
+
+  .photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+  }
+
+  .badge-body {
+    padding: var(--space-3) var(--space-4) var(--space-4);
+    text-align: center;
+  }
+
+  .badge-body h2 {
+    font-size: 1.05rem;
+    margin: 0 0 2px;
+  }
+
+  .role {
+    display: inline-block;
+    margin-bottom: var(--space-3);
+    padding: 3px 12px;
+    border-radius: var(--radius-pill);
+    background: var(--accent-subtle);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+  }
+
+  dl {
+    margin: 0;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  dt {
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  dd {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text);
+    text-align: right;
+  }
+
+  @media (max-width: 860px) {
+    .hero {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .status i {
+      animation: none;
+    }
+    .btn:hover {
+      transform: none;
+    }
+    .swing {
+      cursor: default;
+    }
+  }
+</style>
+
+<script>
+  const swing = document.getElementById("badgeSwing");
+  const pivot = document.getElementById("badgePivot");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (swing && pivot && !reduced) {
+    let angle = 0; // derece
+    let velocity = 0; // derece / frame
+    let dragging = false;
+    let grabOffset = 0; // tutulan noktanın açı farkı
+    let pointerAngle = 0;
+    let lastTime = performance.now();
+    let breeze = Math.random() * 100;
+
+    const GRAVITY = 0.0016; // yerçekimi — büyüdükçe hızlı düşer
+    const DAMPING = 0.988; // hava sürtünmesi
+    const MAX = 42; // maksimum açı
+
+    // İşaretçinin, asma noktasına göre yaptığı açı
+    const readPointer = (clientX: number, clientY: number) => {
+      const rect = pivot.getBoundingClientRect();
+      const originX = rect.left + rect.width / 2;
+      const originY = rect.top;
+      const dx = clientX - originX;
+      const dy = Math.max(clientY - originY, 40); // sıfıra bölünmeyi engelle
+      return (-Math.atan2(dx, dy) * 180) / Math.PI;
+    };
+
+    swing.addEventListener("pointerdown", (e) => {
+      dragging = true;
+      swing.classList.add("dragging");
+      swing.setPointerCapture(e.pointerId);
+      pointerAngle = readPointer(e.clientX, e.clientY);
+      grabOffset = angle - pointerAngle; // tutulan yerden kopmasın
+      velocity = 0;
+    });
+
+    swing.addEventListener("pointermove", (e) => {
+      if (!dragging) return;
+      pointerAngle = readPointer(e.clientX, e.clientY);
+    });
+
+    const release = () => {
+      if (!dragging) return;
+      dragging = false;
+      swing.classList.remove("dragging");
+    };
+
+    swing.addEventListener("pointerup", release);
+    swing.addEventListener("pointercancel", release);
+    swing.addEventListener("lostpointercapture", release);
+
+    const tick = (now: number) => {
+      // 60fps'e normalize — yüksek tazeleme hızlı ekranlarda aynı hissi verir
+      const dt = Math.min((now - lastTime) / 16.667, 3);
+      lastTime = now;
+
+      if (dragging) {
+        const wanted = Math.max(-MAX, Math.min(MAX, pointerAngle + grabOffset));
+        const prev = angle;
+        // yumuşak takip
+        angle += (wanted - angle) * 0.18 * dt;
+        // bırakınca savrulsun diye hızı koru
+        velocity = (angle - prev) / Math.max(dt, 0.001);
+      } else {
+        // Sarkaç: ivme = -g * sin(açı)
+        const rad = (angle * Math.PI) / 180;
+        let acceleration = -GRAVITY * Math.sin(rad) * 180;
+
+        // Neredeyse durduğunda çok hafif bir esinti
+        if (Math.abs(angle) < 2 && Math.abs(velocity) < 0.05) {
+          breeze += 0.004 * dt;
+          acceleration += Math.sin(breeze) * 0.0022 * 180;
+        }
+
+        velocity += acceleration * dt;
+        velocity *= Math.pow(DAMPING, dt);
+        angle += velocity * dt;
+
+        if (angle > MAX) {
+          angle = MAX;
+          velocity *= -0.35;
+        } else if (angle < -MAX) {
+          angle = -MAX;
+          velocity *= -0.35;
+        }
+      }
+
+      swing.style.transform = `rotate(${angle.toFixed(3)}deg)`;
+      requestAnimationFrame(tick);
+    };
+
+    requestAnimationFrame(tick);
+  }
+</script>

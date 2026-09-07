@@ -37,10 +37,10 @@ const formatDate = (d: Date) =>
 				okuyabilirsin.
 			</p>
 		) : (
-			<div class="list bleed">
+			<ol class="list">
 				{articles.map((a, i) => (
-					<div
-						style={`--reveal-delay: ${Math.min(i, 5) * 70 + 160}ms`}
+					<li
+						style={`--item: ${accents[i % 3]}; --reveal-delay: ${Math.min(i, 5) * 70 + 160}ms`}
 						data-reveal
 					>
 						<a
@@ -48,20 +48,35 @@ const formatDate = (d: Date) =>
 							href={a.url}
 							target="_blank"
 							rel="noopener"
-							style={"--item: " + accents[i % 3]}
 						>
-							<h2>{a.title}</h2>
-							<p class="excerpt">{a.excerpt}</p>
-							<div class="meta">
-								<time>{formatDate(a.date)}</time>
-								{a.tags.map((t) => (
-									<span class="tag">{t}</span>
-								))}
-							</div>
+							<span class="num">
+								{String(i + 1).padStart(2, "0")}
+							</span>
+							<span class="body">
+								<span class="top">
+									<h2>{a.title}</h2>
+									<time>{formatDate(a.date)}</time>
+								</span>
+								<p class="excerpt">{a.excerpt}</p>
+								<span class="meta">
+									{a.tags.map((t) => (
+										<span class="tag">{t}</span>
+									))}
+									<span class="go">
+										Medium'da oku
+										<svg
+											viewBox="0 0 24 24"
+											aria-hidden="true"
+										>
+											<path d="M7 17 17 7M9 7h8v8" />
+										</svg>
+									</span>
+								</span>
+							</span>
 						</a>
-					</div>
+					</li>
 				))}
-			</div>
+			</ol>
 		)
 	}
 </BaseLayout>
@@ -79,63 +94,145 @@ const formatDate = (d: Date) =>
 	}
 
 	.list {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-3);
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		border-top: 1px solid var(--border);
 	}
+	.list li {
+		border-bottom: 1px solid var(--border);
+	}
+
 	.article {
-		display: block;
-		padding: var(--space-4);
-		background: var(--card-bg);
-		border: 1px solid var(--card-border);
-		backdrop-filter: blur(16px);
-		-webkit-backdrop-filter: blur(16px);
-		border-radius: var(--radius-lg);
+		display: grid;
+		grid-template-columns: 3rem 1fr;
+		gap: var(--space-3);
+		padding: var(--space-4) var(--space-3);
 		color: var(--text);
 		transition:
-			border-color 0.25s var(--ease-spring),
-			transform 0.25s var(--ease-spring),
-			box-shadow 0.25s var(--ease-spring);
+			background var(--t-base) var(--ease-out),
+			padding-left var(--t-base) var(--ease-out);
 	}
 	.article:hover {
-		border-color: color-mix(in srgb, var(--item) 45%, transparent);
-		box-shadow: 0 0 30px color-mix(in srgb, var(--item) 14%, transparent);
-		transform: translateY(-3px);
+		background: color-mix(in srgb, var(--item) 5%, transparent);
+		padding-left: var(--space-5);
 		opacity: 1;
 	}
+
+	.num {
+		font-family: var(--font-mono);
+		font-size: 0.8rem;
+		color: var(--text-muted);
+		padding-top: 4px;
+		transition: color var(--t-base) var(--ease-out);
+	}
+	.article:hover .num {
+		color: var(--item);
+	}
+
+	.body {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+	}
+	.top {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: var(--space-4);
+	}
 	.article h2 {
-		font-size: 1.0625rem;
-		margin: 0 0 var(--space-2);
-		transition: color 0.2s ease;
+		font-size: 1.05rem;
+		margin: 0;
+		transition: color var(--t-base) var(--ease-out);
 	}
 	.article:hover h2 {
 		color: var(--item);
 	}
+	.top time {
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
+		color: var(--text-muted);
+		white-space: nowrap;
+		flex-shrink: 0;
+	}
+
 	.excerpt {
 		color: var(--text-muted);
-		font-size: 0.9375rem;
+		font-size: 0.92rem;
 		line-height: 1.7;
-		margin: 0 0 var(--space-3);
+		margin: var(--space-2) 0 var(--space-3);
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
 	}
+
 	.meta {
 		display: flex;
 		align-items: center;
 		flex-wrap: wrap;
 		gap: var(--space-2);
-		font-family: var(--font-mono);
-		font-size: 0.75rem;
-		color: var(--text-muted);
-	}
-	.meta time {
-		color: var(--item);
 	}
 	.tag {
+		font-family: var(--font-mono);
+		font-size: 0.72rem;
 		border: 1px solid var(--card-border);
-		padding: 1px 10px;
-		border-radius: 999px;
+		background: var(--surface);
+		color: var(--text-muted);
+		padding: 3px 11px;
+		border-radius: var(--radius-pill);
+	}
+	.go {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		margin-left: auto;
+		font-family: var(--font-mono);
+		font-size: 0.76rem;
+		color: var(--item);
+		opacity: 0;
+		transform: translateX(-6px);
+		transition:
+			opacity var(--t-base) var(--ease-out),
+			transform var(--t-base) var(--ease-out);
+	}
+	.article:hover .go,
+	.article:focus-visible .go {
+		opacity: 1;
+		transform: translateX(0);
+	}
+	.go svg {
+		width: 13px;
+		height: 13px;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	@media (max-width: 640px) {
+		.article {
+			grid-template-columns: 2.2rem 1fr;
+		}
+		.top {
+			flex-direction: column;
+			gap: 4px;
+		}
+		.go {
+			opacity: 1;
+			transform: none;
+			margin-left: 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.article:hover {
+			padding-left: var(--space-3);
+		}
+		.go {
+			transition: none;
+		}
 	}
 </style>

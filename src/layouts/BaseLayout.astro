@@ -2,6 +2,8 @@
 import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import "../styles/global.css";
+import DockNav from "../components/DockNav.astro";
+import { socials, socialIcons } from "../data/social";
 
 interface Props {
     title: string;
@@ -34,7 +36,7 @@ const currentPath = Astro.url.pathname;
         <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="sitemap" href="/sitemap-index.xml" />
-        <meta name="theme-color" content="#0a0b16" />
+        <meta name="theme-color" content="#f7f8fc" />
 
         <!-- Open Graph -->
         <meta property="og:type" content="website" />
@@ -63,9 +65,12 @@ const currentPath = Astro.url.pathname;
             <span></span><span></span><span></span>
         </div>
         <div class="lens" id="lens" aria-hidden="true"></div>
-        <header class="site-header">
-            <nav>
-                <a href="/" class="logo">Caner ÇAKAL</a>
+        <header class="site-header" id="siteHeader">
+            <nav aria-label="Ana gezinme">
+                <a href="/" class="logo">
+                    <span class="mark">CÇ</span>
+                    <span class="name">Caner ÇAKAL</span>
+                </a>
                 <ul>
                     {
                         nav.map(({ path, label }) => (
@@ -90,77 +95,221 @@ const currentPath = Astro.url.pathname;
         </main>
 
         <footer class="site-footer">
-            <span class="prompt">$ echo</span> built in public — <a
-                href="https://github.com/CanerCakal/canercakal-dev"
-                target="_blank"
-                rel="noopener">source</a
-            >
+            <ul class="social" aria-label="Sosyal hesaplar">
+                {
+                    socials
+                        .filter((s) => s.href)
+                        .map((s) => (
+                            <li style={"--item: " + s.accent}>
+                                <a
+                                    href={s.href}
+                                    target="_blank"
+                                    rel="noopener"
+                                    aria-label={s.short}
+                                    title={s.short}
+                                >
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d={socialIcons[s.icon]} />
+                                    </svg>
+                                </a>
+                            </li>
+                        ))
+                }
+            </ul>
+            <p class="credit">
+                <a
+                    href="https://github.com/CanerCakal/canercakal-dev"
+                    target="_blank"
+                    rel="noopener">built in public</a
+                >
+            </p>
         </footer>
     </body>
 </html>
+<DockNav currentPath={currentPath} />
 
 <style>
     .site-header {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        background: color-mix(in srgb, var(--bg) 62%, transparent);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        border-bottom: 1px solid var(--border);
+        position: fixed;
+        top: var(--space-3);
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: var(--z-header);
+        width: min(var(--width-page), calc(100vw - 2 * var(--space-3)));
+        transition:
+            transform var(--t-base) var(--ease-out),
+            opacity var(--t-base) var(--ease-out);
     }
+
+    .site-header.is-hidden {
+        transform: translateX(-50%) translateY(calc(-100% - var(--space-3)));
+        opacity: 0;
+        pointer-events: none;
+    }
+
     .site-header nav {
-        max-width: var(--max-width);
-        margin: 0 auto;
-        padding: var(--space-3);
-    }
-    nav {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: var(--space-3);
+        padding: 10px 10px 10px var(--space-3);
+        border-radius: var(--radius-pill);
+        background: var(--surface-raised);
+        border: 1px solid var(--surface-raised-border);
+        box-shadow: var(--shadow-md);
+        backdrop-filter: blur(var(--blur-raised));
+        -webkit-backdrop-filter: blur(var(--blur-raised));
     }
+
     .logo {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
         font-family: var(--font-mono);
         font-weight: 600;
         color: var(--text);
+        flex-shrink: 0;
     }
+
+    .logo:hover {
+        opacity: 1;
+    }
+
+    .mark {
+        display: grid;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        border-radius: var(--radius-sm);
+        background: var(--gradient);
+        color: #fff;
+        font-size: 0.78rem;
+        letter-spacing: 0.02em;
+    }
+
+    .name {
+        font-size: 0.9rem;
+    }
+
     nav ul {
         display: flex;
-        gap: var(--space-3);
+        align-items: center;
+        gap: var(--space-1);
         list-style: none;
         margin: 0;
         padding: 0;
     }
+
     nav ul a {
+        display: block;
+        padding: 7px 14px;
+        border-radius: var(--radius-pill);
         font-family: var(--font-mono);
-        font-size: 0.875rem;
+        font-size: 0.83rem;
         color: var(--text-muted);
+        transition:
+            color var(--t-fast) var(--ease-out),
+            background var(--t-fast) var(--ease-out);
     }
-    nav ul a.active,
+
     nav ul a:hover {
-        color: var(--accent);
+        color: var(--text);
+        background: rgba(18, 21, 31, 0.05);
         opacity: 1;
+    }
+
+    nav ul a.active {
+        color: var(--accent);
+        background: var(--accent-subtle);
+        opacity: 1;
+    }
+
+    @media (max-width: 560px) {
+        .name {
+            display: none;
+        }
+        nav ul a {
+            padding: 7px 10px;
+            font-size: 0.78rem;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .site-header {
+            transition: none;
+        }
     }
 
     main {
         max-width: var(--max-width);
         margin: 0 auto;
-        padding: var(--space-5) var(--space-3);
+        padding: 6rem var(--space-3) var(--space-5);
         min-height: 60vh;
     }
 
     .site-footer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-3);
         max-width: var(--max-width);
         margin: 0 auto;
-        padding: var(--space-4) var(--space-3);
-        font-family: var(--font-mono);
-        font-size: 0.8125rem;
-        color: var(--text-muted);
+        padding: var(--space-5) var(--space-3) var(--space-4);
         border-top: 1px solid var(--border);
     }
-    .prompt {
+    .credit {
+        margin: 0;
+        font-family: var(--font-mono);
+        font-size: 0.76rem;
+        color: var(--text-muted);
+    }
+    .credit a {
+        color: var(--text-muted);
+    }
+    .credit a:hover {
         color: var(--accent);
+        opacity: 1;
+    }
+    .social {
+        display: flex;
+        gap: var(--space-2);
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    .social a {
+        display: grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: #fff;
+        border: 1px solid var(--card-border);
+        box-shadow: var(--shadow-sm);
+        transition:
+            transform var(--t-base) var(--ease-spring),
+            border-color var(--t-base) var(--ease-out),
+            box-shadow var(--t-base) var(--ease-out);
+    }
+    .social a:hover {
+        transform: translateY(-3px);
+        border-color: color-mix(in srgb, var(--item) 45%, transparent);
+        box-shadow: var(--shadow-md);
+        opacity: 1;
+    }
+    .social svg {
+        width: 17px;
+        height: 17px;
+        fill: var(--text-muted);
+        transition: fill var(--t-base) var(--ease-out);
+    }
+    .social a:hover svg {
+        fill: var(--item);
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .social a:hover {
+            transform: none;
+        }
     }
     .lens {
         position: fixed;
@@ -172,10 +321,10 @@ const currentPath = Astro.url.pathname;
         pointer-events: none;
         z-index: 9999;
         transform: translate(-100px, -100px);
-        border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+        border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
         background: radial-gradient(
             circle,
-            color-mix(in srgb, var(--accent) 10%, transparent),
+            color-mix(in srgb, var(--accent) 14%, transparent),
             transparent 70%
         );
         backdrop-filter: blur(2.5px) saturate(1.3);
@@ -196,6 +345,12 @@ const currentPath = Astro.url.pathname;
         border-color: color-mix(in srgb, var(--accent-3) 55%, transparent);
         backdrop-filter: blur(1px) saturate(1.6);
         -webkit-backdrop-filter: blur(1px) saturate(1.6);
+    }
+    .lens.on-grab {
+        width: 84px;
+        height: 84px;
+        border-color: color-mix(in srgb, var(--accent-2) 60%, transparent);
+        border-width: 2px;
     }
     @media (pointer: coarse), (prefers-reduced-motion: reduce) {
         .lens {
@@ -241,7 +396,12 @@ const currentPath = Astro.url.pathname;
         document.addEventListener("mouseover", (e) => {
             const t = e.target;
             if (t instanceof Element) {
-                lens.classList.toggle("on-link", !!t.closest("a, button"));
+                const hit = t.closest("a, button, [data-lens]");
+                lens.classList.toggle("on-link", !!hit);
+                lens.classList.toggle(
+                    "on-grab",
+                    !!hit?.hasAttribute("data-lens-grab"),
+                );
             }
         });
     }
@@ -266,5 +426,40 @@ const currentPath = Astro.url.pathname;
             { rootMargin: "0px 0px -10% 0px", threshold: 0.12 },
         );
         targets.forEach((el) => io.observe(el));
+    }
+</script>
+<script>
+    const header = document.getElementById("siteHeader");
+    if (header) {
+        let lastY = window.scrollY;
+        let ticking = false;
+
+        const update = () => {
+            const y = window.scrollY;
+            const goingDown = y > lastY;
+
+            // İlk 120px'de her zaman görünür
+            if (y < 120) {
+                header.classList.remove("is-hidden");
+            } else if (goingDown && y - lastY > 4) {
+                header.classList.add("is-hidden");
+            } else if (!goingDown && lastY - y > 4) {
+                header.classList.remove("is-hidden");
+            }
+
+            lastY = y;
+            ticking = false;
+        };
+
+        window.addEventListener(
+            "scroll",
+            () => {
+                if (!ticking) {
+                    requestAnimationFrame(update);
+                    ticking = true;
+                }
+            },
+            { passive: true },
+        );
     }
 </script>
