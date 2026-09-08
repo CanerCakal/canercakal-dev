@@ -4,6 +4,7 @@ import "@fontsource-variable/jetbrains-mono";
 import "../styles/global.css";
 import DockNav from "../components/DockNav.astro";
 import { socials, socialIcons } from "../data/social";
+import Beams from "../components/Beams.astro";
 
 interface Props {
     title: string;
@@ -12,7 +13,7 @@ interface Props {
 
 const {
     title,
-    description = "Caner Çakal — iOS Developer & Technical Writer",
+    description = "Caner Çakal — iOS Developer ve bilgisayar mühendisliği öğrencisi. Swift ile yaptığım uygulamalar, farklı alandaki projeler ve öğrendiklerimi yazdığım notlar.",
 } = Astro.props;
 
 const nav = [
@@ -39,6 +40,7 @@ const currentPath = Astro.url.pathname;
         <meta name="theme-color" content="#f7f8fc" />
 
         <!-- Open Graph -->
+        <meta property="og:site_name" content="Caner Çakal" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -61,9 +63,7 @@ const currentPath = Astro.url.pathname;
     </head>
     <body>
         <a class="skip" href="#main">İçeriğe geç</a>
-        <div class="aurora" aria-hidden="true">
-            <span></span><span></span><span></span>
-        </div>
+        <Beams />
         <div class="lens" id="lens" aria-hidden="true"></div>
         <header class="site-header" id="siteHeader">
             <nav aria-label="Ana gezinme">
@@ -319,7 +319,7 @@ const currentPath = Astro.url.pathname;
         height: 44px;
         border-radius: 50%;
         pointer-events: none;
-        z-index: 9999;
+        z-index: var(--z-lens);
         transform: translate(-100px, -100px);
         border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
         background: radial-gradient(

@@ -10,10 +10,13 @@
     --text: #12151f;
     --text-muted: #5a6377;
 
-   /* Accent — analog mor→mavi yayı */
-    --accent: #6d28d9;      /* violet-700 */
-    --accent-2: #2563eb;    /* blue-600 */
-    --accent-3: #0369a1;    /* sky-700 */
+    /* Accent — analog mor→mavi yayı */
+    --accent: #6d28d9;
+    /* violet-700 */
+    --accent-2: #2563eb;
+    /* blue-600 */
+    --accent-3: #0369a1;
+    /* sky-700 */
     --accent-subtle: rgba(109, 40, 217, 0.08);
     --gradient: linear-gradient(100deg, var(--accent), var(--accent-2), var(--accent-3));
 
@@ -22,11 +25,6 @@
     --card-bg: rgba(255, 255, 255, 0.78);
     --card-border: rgba(18, 21, 31, 0.08);
     --border: rgba(18, 21, 31, 0.07);
-
-    /* Aurora lekeleri */
-    --aurora-1: rgba(109, 40, 217, 0.07);
-    --aurora-2: rgba(37, 99, 235, 0.06);
-    --aurora-3: rgba(3, 105, 161, 0.05);
 
     /* Yüzeyler */
     --surface-raised: rgba(255, 255, 255, 0.88);
@@ -38,7 +36,6 @@
     --shadow-lg: 0 16px 40px rgba(18, 21, 31, 0.10);
 
     /* Blur */
-    --blur-card: 16px;
     --blur-raised: 22px;
 
     /* Typography */
@@ -65,7 +62,6 @@
     --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
     --t-fast: 0.18s;
     --t-base: 0.28s;
-    --t-slow: 0.5s;
 
     /* Katman sırası */
     --z-header: 10;
@@ -122,91 +118,6 @@ a:hover {
     color: var(--accent);
 }
 
-/* === Aurora background === */
-.aurora {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    overflow: hidden;
-    pointer-events: none;
-}
-
-.aurora span {
-    position: absolute;
-    width: 55vmax;
-    height: 55vmax;
-    border-radius: 50%;
-    filter: blur(130px);
-    opacity: 0.65;
-}
-
-.aurora span:nth-child(1) {
-    background: radial-gradient(circle, var(--aurora-1), transparent 65%);
-    top: -20%;
-    left: -12%;
-    animation: drift-1 18s ease-in-out infinite alternate;
-}
-
-.aurora span:nth-child(2) {
-    background: radial-gradient(circle, var(--aurora-2), transparent 65%);
-    bottom: -25%;
-    right: -15%;
-    animation: drift-2 22s ease-in-out infinite alternate;
-}
-
-.aurora span:nth-child(3) {
-    background: radial-gradient(circle, var(--aurora-3), transparent 68%);
-    top: 30%;
-    left: 45%;
-    width: 40vmax;
-    height: 40vmax;
-    animation: drift-3 26s ease-in-out infinite alternate;
-}
-
-@keyframes drift-1 {
-    50% {
-        transform: translate(16vw, 14vh) scale(1.2) rotate(20deg);
-    }
-
-    to {
-        transform: translate(6vw, 22vh) scale(1.05) rotate(-10deg);
-    }
-}
-
-@keyframes drift-2 {
-    50% {
-        transform: translate(-14vw, -8vh) scale(1.18) rotate(-25deg);
-    }
-
-    to {
-        transform: translate(-20vw, -16vh) scale(0.95) rotate(15deg);
-    }
-}
-
-@keyframes drift-3 {
-    50% {
-        transform: translate(-10vw, 12vh) scale(1.15) rotate(30deg);
-    }
-
-    to {
-        transform: translate(14vw, -8vh) scale(0.85) rotate(-20deg);
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .aurora span {
-        animation: none;
-    }
-}
-
-/* === Yardımcılar === */
-.glass {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-}
-
 .gradient-text {
     background: var(--gradient);
     -webkit-background-clip: text;
@@ -255,7 +166,7 @@ a:hover {
     position: absolute;
     left: var(--space-3);
     top: var(--space-3);
-    z-index: 100;
+    z-index: var(--z-skip);
     padding: 8px 16px;
     border-radius: var(--radius);
     background: var(--bg);
@@ -269,4 +180,8 @@ a:hover {
 
 .skip:focus {
     transform: translateY(0);
+}
+
+main {
+    position: relative;
 }
