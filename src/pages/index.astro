@@ -43,7 +43,7 @@ const now = [
 ];
 ---
 
-<BaseLayout title="Caner Çakal">
+<BaseLayout title="Caner Çakal — iOS Developer & Yazılım Geliştirici">
 	<section class="hero">
 		<Hero />
 	</section>
@@ -272,7 +272,6 @@ const now = [
 	.stage {
 		position: relative;
 		height: 19rem;
-		perspective: 1400px;
 	}
 	.fcard {
 		position: absolute;
@@ -287,8 +286,8 @@ const now = [
 		color: var(--text);
 		will-change: transform;
 		transition:
-			transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-			opacity 0.45s ease,
+			transform 0.55s cubic-bezier(0.32, 0.72, 0, 1),
+			opacity 0.4s ease,
 			border-color 0.3s ease,
 			box-shadow 0.3s ease;
 	}
@@ -362,21 +361,21 @@ const now = [
 	}
 
 	.pos-0 {
-		transform: translate3d(0, 0, 0);
+		transform: translateX(0) scale(1);
 		z-index: 3;
 		border-color: color-mix(in srgb, var(--item) 32%, transparent);
 		box-shadow: var(--shadow-lg);
 	}
 	.pos-1 {
-		transform: translate3d(-62%, 0, -190px) rotateY(16deg) scale(0.92);
+		transform: translateX(-58%) scale(0.88);
 		z-index: 2;
-		opacity: 0.5;
+		opacity: 0.55;
 		box-shadow: var(--shadow-sm);
 	}
 	.pos-2 {
-		transform: translate3d(62%, 0, -190px) rotateY(-16deg) scale(0.92);
+		transform: translateX(58%) scale(0.88);
 		z-index: 1;
-		opacity: 0.5;
+		opacity: 0.55;
 		box-shadow: var(--shadow-sm);
 	}
 
@@ -408,10 +407,10 @@ const now = [
 
 	@media (max-width: 900px) {
 		.pos-1 {
-			transform: translate3d(-52%, 0, -190px) rotateY(16deg) scale(0.9);
+			transform: translateX(-48%) scale(0.86);
 		}
 		.pos-2 {
-			transform: translate3d(52%, 0, -190px) rotateY(-16deg) scale(0.9);
+			transform: translateX(48%) scale(0.86);
 		}
 	}
 	@media (max-width: 640px) {
@@ -422,10 +421,10 @@ const now = [
 			max-width: calc(100vw - 4rem);
 		}
 		.pos-1 {
-			transform: translate3d(0, -11%, -170px) scale(0.9);
+			transform: translateY(-13%) scale(0.86);
 		}
 		.pos-2 {
-			transform: translate3d(0, 11%, -170px) scale(0.9);
+			transform: translateY(13%) scale(0.86);
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {

@@ -13,7 +13,7 @@ interface Props {
 
 const {
     title,
-    description = "Caner Çakal — iOS Developer & Technical Writer",
+    description = "Caner Çakal — iOS Developer ve bilgisayar mühendisliği öğrencisi. Swift ile yaptığım uygulamalar, farklı alandaki projeler ve öğrendiklerimi yazdığım notlar.",
 } = Astro.props;
 
 const nav = [
@@ -40,6 +40,7 @@ const currentPath = Astro.url.pathname;
         <meta name="theme-color" content="#f7f8fc" />
 
         <!-- Open Graph -->
+        <meta property="og:site_name" content="Caner Çakal" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
