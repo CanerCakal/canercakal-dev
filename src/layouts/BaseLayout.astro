@@ -319,7 +319,7 @@ const currentPath = Astro.url.pathname;
         height: 44px;
         border-radius: 50%;
         pointer-events: none;
-        z-index: 9999;
+        z-index: var(--z-lens);
         transform: translate(-100px, -100px);
         border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
         background: radial-gradient(

@@ -10,10 +10,13 @@
     --text: #12151f;
     --text-muted: #5a6377;
 
-   /* Accent — analog mor→mavi yayı */
-    --accent: #6d28d9;      /* violet-700 */
-    --accent-2: #2563eb;    /* blue-600 */
-    --accent-3: #0369a1;    /* sky-700 */
+    /* Accent — analog mor→mavi yayı */
+    --accent: #6d28d9;
+    /* violet-700 */
+    --accent-2: #2563eb;
+    /* blue-600 */
+    --accent-3: #0369a1;
+    /* sky-700 */
     --accent-subtle: rgba(109, 40, 217, 0.08);
     --gradient: linear-gradient(100deg, var(--accent), var(--accent-2), var(--accent-3));
 
@@ -33,7 +36,6 @@
     --shadow-lg: 0 16px 40px rgba(18, 21, 31, 0.10);
 
     /* Blur */
-    --blur-card: 16px;
     --blur-raised: 22px;
 
     /* Typography */
@@ -60,7 +62,6 @@
     --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
     --t-fast: 0.18s;
     --t-base: 0.28s;
-    --t-slow: 0.5s;
 
     /* Katman sırası */
     --z-header: 10;
@@ -117,14 +118,6 @@ a:hover {
     color: var(--accent);
 }
 
-/* === Yardımcılar === */
-.glass {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-}
-
 .gradient-text {
     background: var(--gradient);
     -webkit-background-clip: text;
@@ -173,7 +166,7 @@ a:hover {
     position: absolute;
     left: var(--space-3);
     top: var(--space-3);
-    z-index: 100;
+    z-index: var(--z-skip);
     padding: 8px 16px;
     border-radius: var(--radius);
     background: var(--bg);
@@ -188,6 +181,7 @@ a:hover {
 .skip:focus {
     transform: translateY(0);
 }
+
 main {
     position: relative;
 }
