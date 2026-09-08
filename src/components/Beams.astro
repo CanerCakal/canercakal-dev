@@ -1,4 +1,5 @@
 ---
+
 ---
 
 <div class="beams" aria-hidden="true">
@@ -52,13 +53,13 @@
     background: linear-gradient(
       90deg,
       transparent 0%,
-      color-mix(in srgb, var(--accent) 7%, transparent) 20%,
-      color-mix(in srgb, var(--accent) 20%, transparent) 46%,
-      color-mix(in srgb, var(--accent) 20%, transparent) 54%,
-      color-mix(in srgb, var(--accent) 7%, transparent) 80%,
+      color-mix(in srgb, var(--accent) 4%, transparent) 20%,
+      color-mix(in srgb, var(--accent) 12%, transparent) 46%,
+      color-mix(in srgb, var(--accent) 12%, transparent) 54%,
+      color-mix(in srgb, var(--accent) 4%, transparent) 80%,
       transparent 100%
     );
-    animation: sway-a 34s ease-in-out infinite;
+    animation: sway-a 26s ease-in-out infinite;
   }
 
   .b2 {
@@ -69,12 +70,12 @@
     background: linear-gradient(
       90deg,
       transparent 0%,
-      color-mix(in srgb, var(--accent-2) 7%, transparent) 18%,
-      color-mix(in srgb, var(--accent-2) 22%, transparent) 50%,
-      color-mix(in srgb, var(--accent-2) 7%, transparent) 82%,
+      color-mix(in srgb, var(--accent-2) 4%, transparent) 18%,
+      color-mix(in srgb, var(--accent-2) 13%, transparent) 50%,
+      color-mix(in srgb, var(--accent-2) 4%, transparent) 82%,
       transparent 100%
     );
-    animation: sway-b 43s ease-in-out infinite;
+    animation: sway-b 33s ease-in-out infinite;
   }
 
   .b3 {
@@ -85,12 +86,12 @@
     background: linear-gradient(
       90deg,
       transparent 0%,
-      color-mix(in srgb, var(--accent-3) 6%, transparent) 22%,
-      color-mix(in srgb, var(--accent-3) 18%, transparent) 50%,
-      color-mix(in srgb, var(--accent-3) 6%, transparent) 78%,
+      color-mix(in srgb, var(--accent-3) 3%, transparent) 22%,
+      color-mix(in srgb, var(--accent-3) 11%, transparent) 50%,
+      color-mix(in srgb, var(--accent-3) 3%, transparent) 78%,
       transparent 100%
     );
-    animation: sway-c 56s ease-in-out infinite;
+    animation: sway-c 41s ease-in-out infinite;
   }
 
   /* İnce, keskin hüzme — ekranı boydan boya kesiyor */
@@ -102,27 +103,47 @@
     background: linear-gradient(
       90deg,
       transparent 0%,
-      color-mix(in srgb, var(--accent-2) 26%, transparent) 50%,
+      color-mix(in srgb, var(--accent-2) 15%, transparent) 50%,
       transparent 100%
     );
-    animation: sway-d 27s ease-in-out infinite;
+    animation: sway-d 21s ease-in-out infinite;
   }
 
   @keyframes sway-a {
-    0%, 100% { transform: rotate(12deg) translate3d(-4vw, 0, 0); }
-    50%      { transform: rotate(28deg) translate3d(16vw, 6vh, 0); }
+    0%,
+    100% {
+      transform: rotate(12deg) translate3d(-4vw, 0, 0);
+    }
+    50% {
+      transform: rotate(28deg) translate3d(16vw, 6vh, 0);
+    }
   }
   @keyframes sway-b {
-    0%, 100% { transform: rotate(-24deg) translate3d(4vw, 0, 0); }
-    50%      { transform: rotate(-4deg) translate3d(-18vw, -7vh, 0); }
+    0%,
+    100% {
+      transform: rotate(-24deg) translate3d(4vw, 0, 0);
+    }
+    50% {
+      transform: rotate(-4deg) translate3d(-18vw, -7vh, 0);
+    }
   }
   @keyframes sway-c {
-    0%, 100% { transform: rotate(36deg) translate3d(0, 0, 0); }
-    50%      { transform: rotate(18deg) translate3d(-14vw, 9vh, 0); }
+    0%,
+    100% {
+      transform: rotate(36deg) translate3d(0, 0, 0);
+    }
+    50% {
+      transform: rotate(18deg) translate3d(-14vw, 9vh, 0);
+    }
   }
   @keyframes sway-d {
-    0%, 100% { transform: rotate(-48deg) translate3d(-6vw, 0, 0); }
-    50%      { transform: rotate(-28deg) translate3d(22vw, -5vh, 0); }
+    0%,
+    100% {
+      transform: rotate(-48deg) translate3d(-6vw, 0, 0);
+    }
+    50% {
+      transform: rotate(-28deg) translate3d(22vw, -5vh, 0);
+    }
   }
 
   @media (max-width: 700px) {
@@ -135,9 +156,31 @@
     .beam {
       animation: none;
     }
-    .b1 { transform: rotate(18deg); }
-    .b2 { transform: rotate(-14deg); }
-    .b3 { transform: rotate(26deg); }
-    .b4 { transform: rotate(-38deg); }
+    .b1 {
+      transform: rotate(18deg);
+    }
+    .b2 {
+      transform: rotate(-14deg);
+    }
+    .b3 {
+      transform: rotate(26deg);
+    }
+    .b4 {
+      transform: rotate(-38deg);
+    }
+  }
+
+  .beams::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      color-mix(in srgb, var(--bg) 55%, transparent) 22%,
+      color-mix(in srgb, var(--bg) 55%, transparent) 78%,
+      transparent 100%
+    );
+    pointer-events: none;
   }
 </style>
